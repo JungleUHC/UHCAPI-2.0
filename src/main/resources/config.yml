@@ -1,0 +1,9 @@
+# This is the main configuration file for the application.
+
+# Configuration section about the server-logs settings.
+logging:
+  # Displays information to help debugging the application
+  debug-mode: false
+
+  # Displays information to help developers with verbose logs from the application
+  dev-mode  : false

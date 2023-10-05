@@ -1,0 +1,24 @@
+# Name of the plugin, that will be displayed in the server console and on the plugin list
+name: UHC-API
+
+# Version of the plugin, self-set by the build.gradle file when the next-tag is created on the git repository
+version: ${project.version}
+
+# Author list, based on the git collaborators of the plugin, queried by the "git log --pretty="%an" | sort -u" command and reformatted.
+authors: ["${project.authors}"]
+
+# Main class of the plugin, that will be loaded by the server
+main: fr.altaks.uhcapi2.Main
+
+## Explicitly set the load order of the plugin, if not set, the server will load the plugin after loadings the worlds.
+## You can set STARTUP or use the onLoad() method of the main class to interact with the server before the worlds are loaded.
+load: POSTWORLD
+
+## Description of the plugin, displayed on the plugin list
+description: "API pour les modes de jeu UHC de JungleUHC"
+
+## URL of the server's website if there is one
+website: mc.jungleuhc.fr
+
+## The prefix that will be used in the console to log outputs
+prefix: "UHCAPI"
