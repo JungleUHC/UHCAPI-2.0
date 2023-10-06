@@ -1,6 +1,7 @@
 package fr.altaks.uhcapi2;
 
 import fr.altaks.uhcapi2.core.IPluginCommand;
+import fr.mrmicky.fastinv.FastInvManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -127,6 +128,7 @@ public class Main extends JavaPlugin {
         }
 
         // Your code here...
+
 
         logDebug("Registered " + commandsCount + " commands and " + successfullyLoadedListenersCount + " listeners successfully.");
         if(failedLoadListenersCount > 0) {

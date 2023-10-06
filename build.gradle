@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
     id 'com.palantir.git-version' version '3.0.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'fr.altaks.uhcapi2'
@@ -27,6 +28,8 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT' // The Spigot API with no shadowing. Requires the OSS repo.
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT' // The full Spigot server with no shadowing. Requires mavenLocal.
+
+    implementation 'fr.mrmicky:FastInv:3.0.4'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
     testImplementation 'org.mockito:mockito-core:4.0.0'
@@ -66,4 +69,9 @@ idea {
 
 test {
     useJUnitPlatform() // JUnit 5
+}
+
+shadowJar {
+    // Replace 'com.yourpackage' with the package of your plugin
+    relocate 'fr.mrmicky.fastinv', 'fr.altaks.fastinv'
 }

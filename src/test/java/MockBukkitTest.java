@@ -57,7 +57,7 @@ public class MockBukkitTest {
 
     @AfterAll
     public void tearDown() {
-        MockBukkit.unload();
+        if(MockBukkit.isMocked()) MockBukkit.unload();
     }
 
 
