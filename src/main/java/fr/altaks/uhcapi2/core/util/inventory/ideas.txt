@@ -1,0 +1,51 @@
+InvalidItemTypeException()
+
+InventoryItemType :
+ X Interactive
+ X Rotating
+ X Swapping
+ X Static
+
+InventorySlotGroup
+
+X 1st to 6th row
+X 1st to 9th column
+X Inner square
+X Outer square
+X Middle square
+X Left-Offset-Checkboard
+X Right-Offset-Checkboard
+X All
+X remove(int... slots)
+X add(int... slots)
+X merge(InventorySlotGroup... groups)
+
+InventoryUtil
+    from()
+    create()
+        InventoryBuilder
+          Un type d'inventaire
+          Un titre
+          Méthodes de base des inventaires
+
+          addSpecialItem(MenuItemType, Class<? extends ItemStack>, boolean canBeMoved=false)
+          addSpecialItem(MenuItemType, Class<? extends SpecialItem>, boolean canBeMoved=false)
+
+          dispatchItems(int... slots)
+          dispatchItems(InventorySlotGroup... groups)
+          dispatchMatchingItems()
+
+          -> CustomInventoryBuilder
+          -> Anvil
+          -> Beacon
+          -> Brewing
+          -> Chest
+          -> Dispenser
+          -> Dropper
+          -> Enchanting
+          -> EnderChest
+          -> Furnace
+          -> Hopper
+          -> Merchant
+          -> Player
+          -> Workbench

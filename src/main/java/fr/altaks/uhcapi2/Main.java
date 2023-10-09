@@ -1,7 +1,6 @@
 package fr.altaks.uhcapi2;
 
 import fr.altaks.uhcapi2.core.IPluginCommand;
-import fr.mrmicky.fastinv.FastInvManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
