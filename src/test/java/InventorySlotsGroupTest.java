@@ -34,7 +34,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of ALL InventorySlotsGroup",
                 () -> assertEquals(54, InventorySlotsGroup.ALL.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.ALL.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.ALL.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.ALL.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -50,7 +55,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of FIRST_ROW InventorySlotsGroup",
                 () -> assertEquals(9, InventorySlotsGroup.FIRST_ROW.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.FIRST_ROW.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.FIRST_ROW.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.FIRST_ROW.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -67,7 +77,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of SECOND_ROW InventorySlotsGroup",
                 () -> assertEquals(9, InventorySlotsGroup.SECOND_ROW.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.SECOND_ROW.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.SECOND_ROW.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.SECOND_ROW.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -83,7 +98,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of THIRD_ROW InventorySlotsGroup",
                 () -> assertEquals(9, InventorySlotsGroup.THIRD_ROW.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.THIRD_ROW.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.THIRD_ROW.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.THIRD_ROW.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -99,7 +119,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of FOURTH_ROW InventorySlotsGroup",
                 () -> assertEquals(9, InventorySlotsGroup.FOURTH_ROW.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.FOURTH_ROW.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.FOURTH_ROW.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.FOURTH_ROW.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -115,7 +140,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of FIFTH_ROW InventorySlotsGroup",
                 () -> assertEquals(9, InventorySlotsGroup.FIFTH_ROW.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.FIFTH_ROW.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.FIFTH_ROW.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.FIFTH_ROW.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -131,7 +161,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of SIXTH_ROW InventorySlotsGroup",
                 () -> assertEquals(9, InventorySlotsGroup.SIXTH_ROW.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.SIXTH_ROW.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.SIXTH_ROW.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.SIXTH_ROW.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -147,7 +182,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of FIRST_COLUMN InventorySlotsGroup",
                 () -> assertEquals(6, InventorySlotsGroup.FIRST_COLUMN.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.FIRST_COLUMN.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.FIRST_COLUMN.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.FIRST_COLUMN.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -163,7 +203,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of SECOND_COLUMN InventorySlotsGroup",
                 () -> assertEquals(6, InventorySlotsGroup.SECOND_COLUMN.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.SECOND_COLUMN.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.SECOND_COLUMN.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.SECOND_COLUMN.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -179,7 +224,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of THIRD_COLUMN InventorySlotsGroup",
                 () -> assertEquals(6, InventorySlotsGroup.THIRD_COLUMN.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.THIRD_COLUMN.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.THIRD_COLUMN.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.THIRD_COLUMN.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -195,7 +245,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of FOURTH_COLUMN InventorySlotsGroup",
                 () -> assertEquals(6, InventorySlotsGroup.FOURTH_COLUMN.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.FOURTH_COLUMN.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.FOURTH_COLUMN.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.FOURTH_COLUMN.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -211,7 +266,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of FIFTH_COLUMN InventorySlotsGroup",
                 () -> assertEquals(6, InventorySlotsGroup.FIFTH_COLUMN.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.FIFTH_COLUMN.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.FIFTH_COLUMN.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.FIFTH_COLUMN.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -227,7 +287,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of SIXTH_COLUMN InventorySlotsGroup",
                 () -> assertEquals(6, InventorySlotsGroup.SIXTH_COLUMN.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.SIXTH_COLUMN.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.SIXTH_COLUMN.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.SIXTH_COLUMN.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -243,7 +308,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of SEVENTH_COLUMN InventorySlotsGroup",
                 () -> assertEquals(6, InventorySlotsGroup.SEVENTH_COLUMN.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.SEVENTH_COLUMN.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.SEVENTH_COLUMN.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.SEVENTH_COLUMN.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -259,7 +329,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of EIGHTH_COLUMN InventorySlotsGroup",
                 () -> assertEquals(6, InventorySlotsGroup.EIGHTH_COLUMN.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.EIGHTH_COLUMN.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.EIGHTH_COLUMN.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.EIGHTH_COLUMN.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -275,7 +350,12 @@ public class InventorySlotsGroupTest {
         assertAll(
                 "Asserts of NINTH_COLUMN InventorySlotsGroup",
                 () -> assertEquals(6, InventorySlotsGroup.NINTH_COLUMN.getSlots().size()),
-                () -> assertEquals(slots, InventorySlotsGroup.NINTH_COLUMN.getSlots())
+                () -> assertEquals(slots, InventorySlotsGroup.NINTH_COLUMN.getSlots()),
+                () -> {
+                    for(int slot : InventorySlotsGroup.NINTH_COLUMN.getSlots()){
+                        assert 0 <= slot && slot < 54;
+                    }
+                }
         );
 
     }
@@ -341,6 +421,9 @@ public class InventorySlotsGroupTest {
                 20, 21, 22, 23, 24,
                 29, 30, 31, 32, 33
         ).getSlots(), InventorySlotsGroup.INNER_RECTANGLE.getSlots());
+        for(int slot : InventorySlotsGroup.INNER_RECTANGLE.getSlots()){
+            assert 0 <= slot && slot < 54;
+        }
     }
 
     @Test
@@ -355,6 +438,9 @@ public class InventorySlotsGroupTest {
                 36,                             44,
                 45, 46, 47, 48, 49, 50, 51, 52, 53
         ).getSlots(), InventorySlotsGroup.OUTER_RECTANGLE.getSlots());
+        for(int slot : InventorySlotsGroup.OUTER_RECTANGLE.getSlots()){
+            assert 0 <= slot && slot < 54;
+        }
     }
 
     @Test
@@ -367,6 +453,9 @@ public class InventorySlotsGroupTest {
                 28,                     34,
                 37, 38, 39, 40, 41, 42, 43
         ).getSlots(), InventorySlotsGroup.MIDDLE_RECTANGLE.getSlots());
+        for(int slot : InventorySlotsGroup.MIDDLE_RECTANGLE.getSlots()){
+            assert 0 <= slot && slot < 54;
+        }
     }
 
     @Test
@@ -378,6 +467,9 @@ public class InventorySlotsGroupTest {
 
         assertEquals(27, InventorySlotsGroup.LEFT_OFFSET_CHECKBOARD.getSlots().size());
         assertEquals(slots, InventorySlotsGroup.LEFT_OFFSET_CHECKBOARD.getSlots());
+        for(int slot : InventorySlotsGroup.LEFT_OFFSET_CHECKBOARD.getSlots()){
+            assert 0 <= slot && slot < 54;
+        }
     }
 
     @Test
@@ -389,6 +481,9 @@ public class InventorySlotsGroupTest {
 
         assertEquals(27, InventorySlotsGroup.RIGHT_OFFSET_CHECKBOARD.getSlots().size());
         assertEquals(slots, InventorySlotsGroup.RIGHT_OFFSET_CHECKBOARD.getSlots());
+        for(int slot : InventorySlotsGroup.RIGHT_OFFSET_CHECKBOARD.getSlots()){
+            assert 0 <= slot && slot < 54;
+        }
     }
 
 

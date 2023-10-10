@@ -28,8 +28,12 @@ InventoryUtil
           Un titre
           Méthodes de base des inventaires
 
-          addSpecialItem(MenuItemType, Class<? extends ItemStack>, boolean canBeMoved=false)
-          addSpecialItem(MenuItemType, Class<? extends SpecialItem>, boolean canBeMoved=false)
+          addStaticItem(ItemStack, boolean canBeMoved=false)
+          addInteractiveItem(ItemStack, Consumer<InventoryClickEvent> event, boolean canBeMoved=false)
+          addRotatingItem(List<ItemStack> itemRotation, boolean canBeMoved=false)
+          addSwappingItem(ItemStack startingItem, ItemStack otherItem, Predicate<ItemStack> condition, boolean canBeMoved=false)
+          // faire pareil pour les inventoryslots
+          // faire par set et pas add
 
           dispatchItems(int... slots)
           dispatchItems(InventorySlotGroup... groups)
