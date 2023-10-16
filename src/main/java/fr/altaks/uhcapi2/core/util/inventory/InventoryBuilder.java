@@ -1,5 +1,6 @@
 package fr.altaks.uhcapi2.core.util.inventory;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,24 +15,59 @@ import java.util.ListIterator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class InventoryBuilder implements Inventory, InventoryHolder {
+@SuppressWarnings("deprecation")
+public class InventoryBuilder {
 
     private Inventory inventory;
 
-    public InventoryBuilder(Inventory inv){
+    public InventoryBuilder(Inventory inv, boolean deepCopy){
 
+        if(deepCopy){
+            // Copy inventory nature
+            if(inv.getType() == InventoryType.CHEST){
+                this.inventory = Bukkit.createInventory(inv.getHolder(), inv.getSize(), inv.getTitle());
+            } else {
+                this.inventory = Bukkit.createInventory(inv.getHolder(), inv.getType(), inv.getTitle());
+            }
+
+            // Copy inventory content
+            for(int slotIndex = 0; slotIndex < inv.getSize(); slotIndex++){
+                this.inventory.setItem(slotIndex, inv.getItem(slotIndex).clone());
+            }
+        } else {
+            this.inventory = inv;
+        }
     }
 
-    public InventoryBuilder(String title, int size, InventoryHolder holder){
-
+    private void checkInventorySize(int size) throws IllegalArgumentException {
+        if(size > 54 || size % 9 != 0) throw new IllegalArgumentException("Invalid inventory size on creation : " + size + " (size has to be between 9 and 54, and be a multiple of 9");
     }
 
-    public InventoryBuilder(String title, int size){
-
+    public InventoryBuilder(String title, int size, InventoryHolder holder) throws IllegalArgumentException {
+        checkInventorySize(size);
+        this.inventory = Bukkit.createInventory(holder, size, title);
     }
 
-    public InventoryBuilder(int size){
+    public InventoryBuilder(String title, int size) throws IllegalArgumentException {
+        checkInventorySize(size);
+        this.inventory = Bukkit.createInventory(null, size, title);
+    }
 
+    public InventoryBuilder(String title, InventoryType type, InventoryHolder holder){
+        this.inventory = Bukkit.createInventory(holder, type, title);
+    }
+
+    public InventoryBuilder(String title, InventoryType type){
+        this.inventory = Bukkit.createInventory(null, type, title);
+    }
+
+    public InventoryBuilder(int size) throws IllegalArgumentException {
+        checkInventorySize(size);
+        this.inventory = Bukkit.createInventory(null, size);
+    }
+
+    public Inventory build(){
+        return this.inventory;
     }
 
     public void addStaticItem(ItemStack item, boolean canBeMoved){
@@ -131,182 +167,182 @@ public class InventoryBuilder implements Inventory, InventoryHolder {
 
     }
 
-    @Override
+    
     public int getSize() {
         return 0;
     }
 
-    @Override
+    
     public int getMaxStackSize() {
         return 0;
     }
 
-    @Override
+    
     public void setMaxStackSize(int i) {
 
     }
 
-    @Override
+    
     public String getName() {
         return null;
     }
 
-    @Override
+    
     public ItemStack getItem(int i) {
         return null;
     }
 
-    @Override
+    
     public void setItem(int i, ItemStack itemStack) {
 
     }
 
-    @Override
+    
     public HashMap<Integer, ItemStack> addItem(ItemStack... itemStacks) throws IllegalArgumentException {
         return null;
     }
 
-    @Override
+    
     public HashMap<Integer, ItemStack> removeItem(ItemStack... itemStacks) throws IllegalArgumentException {
         return null;
     }
 
-    @Override
+    
     public ItemStack[] getContents() {
         return new ItemStack[0];
     }
 
-    @Override
+    
     public void setContents(ItemStack[] itemStacks) throws IllegalArgumentException {
 
     }
 
-    @Override
+    
     public boolean contains(int i) {
         return false;
     }
 
-    @Override
+    
     public boolean contains(Material material) throws IllegalArgumentException {
         return false;
     }
 
-    @Override
+    
     public boolean contains(ItemStack itemStack) {
         return false;
     }
 
-    @Override
+    
     public boolean contains(int i, int i1) {
         return false;
     }
 
-    @Override
+    
     public boolean contains(Material material, int i) throws IllegalArgumentException {
         return false;
     }
 
-    @Override
+    
     public boolean contains(ItemStack itemStack, int i) {
         return false;
     }
 
-    @Override
+    
     public boolean containsAtLeast(ItemStack itemStack, int i) {
         return false;
     }
 
-    @Override
+    
     public HashMap<Integer, ? extends ItemStack> all(int i) {
         return null;
     }
 
-    @Override
+    
     public HashMap<Integer, ? extends ItemStack> all(Material material) throws IllegalArgumentException {
         return null;
     }
 
-    @Override
+    
     public HashMap<Integer, ? extends ItemStack> all(ItemStack itemStack) {
         return null;
     }
 
-    @Override
+    
     public int first(int i) {
         return 0;
     }
 
-    @Override
+    
     public int first(Material material) throws IllegalArgumentException {
         return 0;
     }
 
-    @Override
+    
     public int first(ItemStack itemStack) {
         return 0;
     }
 
-    @Override
+    
     public int firstEmpty() {
         return 0;
     }
 
-    @Override
+    
     public void remove(int i) {
 
     }
 
-    @Override
+    
     public void remove(Material material) throws IllegalArgumentException {
 
     }
 
-    @Override
+    
     public void remove(ItemStack itemStack) {
 
     }
 
-    @Override
+    
     public void clear(int i) {
 
     }
 
-    @Override
+    
     public void clear() {
 
     }
 
-    @Override
+    
     public List<HumanEntity> getViewers() {
         return null;
     }
 
-    @Override
+    
     public String getTitle() {
         return null;
     }
 
-    @Override
+    
     public InventoryType getType() {
         return null;
     }
 
-    @Override
+    
     public InventoryHolder getHolder() {
         return null;
     }
 
-    @Override
+    
     public ListIterator<ItemStack> iterator() {
         return null;
     }
 
-    @Override
+    
     public ListIterator<ItemStack> iterator(int i) {
         return null;
     }
 
-    @Override
+    
     public Inventory getInventory() {
         return null;
     }
