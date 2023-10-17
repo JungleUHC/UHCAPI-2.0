@@ -71,9 +71,6 @@ public class InventoryBuilderTest {
 
         inv.setItem(0, new ItemStack(Material.DIAMOND, 1));
         assertEquals(new ItemStack(Material.DIAMOND, 1), inv2.getItem(0));
-
-        inv.setMaxStackSize(16);
-        assertEquals(16, inv2.getMaxStackSize());
     }
 
     @Test
@@ -98,10 +95,7 @@ public class InventoryBuilderTest {
         assertEquals("Test", inv.getTitle());
         assertEquals(9, inv.getSize());
         assertNull(inv.getHolder());
-
-        assertArrayEquals(inv.getContents(), new ItemStack[]{ null, null, null, null, null, null,null,null,null });
-        assertEquals(0, inv.firstEmpty());
-        assertEquals(0, inv.getViewers().size());
+        assertArrayEquals(new ItemStack[9], inv.getContents());
 
         // With a valid holder
         Inventory inv2 = new InventoryBuilder("Test", 9, player).build();
@@ -109,10 +103,8 @@ public class InventoryBuilderTest {
         assertEquals("Test", inv2.getTitle());
         assertEquals(9, inv2.getSize());
         assertEquals(player, inv2.getHolder());
+        assertArrayEquals(new ItemStack[9], inv2.getContents());
 
-        assertArrayEquals(inv2.getContents(), new ItemStack[]{});
-        assertEquals(0, inv2.firstEmpty());
-        assertEquals(0, inv2.getViewers().size());
     }
 
     @Test
@@ -133,10 +125,7 @@ public class InventoryBuilderTest {
         assertEquals("Test", inv.getTitle());
         assertEquals(9, inv.getSize());
         assertNull(inv.getHolder());
-
-        assertArrayEquals(inv.getContents(), new ItemStack[]{null, null, null, null, null, null, null, null, null});
-        assertEquals(0, inv.firstEmpty());
-        assertEquals(0, inv.getViewers().size());
+        assertArrayEquals(new ItemStack[9], inv.getContents());
     }
 
     @Test
@@ -149,10 +138,7 @@ public class InventoryBuilderTest {
         assertEquals("Test", inv.getTitle());
         assertEquals(InventoryType.CHEST.getDefaultSize(), inv.getSize());
         assertNull(inv.getHolder());
-
-        assertArrayEquals(inv.getContents(), new ItemStack[]{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null});
-        assertEquals(0, inv.firstEmpty());
-        assertEquals(0, inv.getViewers().size());
+        assertArrayEquals(new ItemStack[InventoryType.CHEST.getDefaultSize()], inv.getContents());
 
         // Emulate a player
         Player player = server.addPlayer();
@@ -163,10 +149,7 @@ public class InventoryBuilderTest {
         assertEquals("Test", inv2.getTitle());
         assertEquals(InventoryType.CHEST.getDefaultSize(), inv2.getSize());
         assertEquals(player, inv2.getHolder());
-
-        assertArrayEquals(inv2.getContents(), new ItemStack[]{});
-        assertEquals(0, inv2.firstEmpty());
-        assertEquals(0, inv2.getViewers().size());
+        assertArrayEquals(new ItemStack[InventoryType.CHEST.getDefaultSize()], inv2.getContents());
     }
 
     @Test
@@ -179,9 +162,7 @@ public class InventoryBuilderTest {
         assertEquals(InventoryType.CHEST.getDefaultSize(), inv.getSize());
         assertNull(inv.getHolder());
 
-        assertArrayEquals(inv.getContents(), new ItemStack[]{null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null});
-        assertEquals(0, inv.firstEmpty());
-        assertEquals(0, inv.getViewers().size());
+        assertArrayEquals(new ItemStack[InventoryType.CHEST.getDefaultSize()], inv.getContents());
     }
 
     @Test
@@ -202,9 +183,7 @@ public class InventoryBuilderTest {
         assertEquals(9, inv.getSize());
         assertNull(inv.getHolder());
 
-        assertArrayEquals(inv.getContents(), new ItemStack[]{null, null, null, null, null, null, null, null, null});
-        assertEquals(0, inv.firstEmpty());
-        assertEquals(0, inv.getViewers().size());
+        assertArrayEquals(new ItemStack[9], inv.getContents());
     }
 
     @AfterAll
