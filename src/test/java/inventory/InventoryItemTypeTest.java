@@ -1,3 +1,5 @@
+package inventory;
+
 import fr.altaks.uhcapi2.core.util.inventory.InventoryItemType;
 import org.junit.jupiter.api.*;
 

@@ -40,7 +40,9 @@ public class InventoryBuilder {
     }
 
     private void checkInventorySize(int size) throws IllegalArgumentException {
-        if(size > 54 || size % 9 != 0) throw new IllegalArgumentException("Invalid inventory size on creation : " + size + " (size has to be between 9 and 54, and be a multiple of 9");
+        if(size > 54 || size % 9 != 0) {
+            throw new IllegalArgumentException("Invalid inventory size on creation : " + size + " (size has to be between 9 and 54, and be a multiple of 9");
+        }
     }
 
     public InventoryBuilder(String title, int size, InventoryHolder holder) throws IllegalArgumentException {
@@ -232,7 +234,7 @@ public class InventoryBuilder {
         return false;
     }
 
-    
+
     public boolean contains(int i, int i1) {
         return false;
     }
