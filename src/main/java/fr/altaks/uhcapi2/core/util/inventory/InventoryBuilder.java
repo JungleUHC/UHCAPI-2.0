@@ -180,8 +180,8 @@ public class InventoryBuilder {
     }
 
     
-    public void setMaxStackSize(int i) {
-
+    public InventoryBuilder setMaxStackSize(int i) {
+        return null;
     }
 
     
@@ -195,17 +195,20 @@ public class InventoryBuilder {
     }
 
     
-    public void setItem(int i, ItemStack itemStack) {
-
-    }
-
-    
-    public HashMap<Integer, ItemStack> addItem(ItemStack... itemStacks) throws IllegalArgumentException {
+    public InventoryBuilder setItem(int i, ItemStack itemStack) {
         return null;
     }
 
     
-    public HashMap<Integer, ItemStack> removeItem(ItemStack... itemStacks) throws IllegalArgumentException {
+    public InventoryBuilder addItem(ItemStack... itemStacks) throws IllegalArgumentException {
+        return null;
+    }
+
+    public InventoryBuilder safeAddItem(ItemStack... itemStacks) throws IllegalArgumentException {
+        return null;
+    }
+    
+    public InventoryBuilder removeItem(ItemStack... itemStacks) throws IllegalArgumentException {
         return null;
     }
 
@@ -215,8 +218,8 @@ public class InventoryBuilder {
     }
 
     
-    public void setContents(ItemStack[] itemStacks) throws IllegalArgumentException {
-
+    public InventoryBuilder setContents(ItemStack[] itemStacks) throws IllegalArgumentException {
+        return null;
     }
 
     
@@ -253,22 +256,6 @@ public class InventoryBuilder {
     public boolean containsAtLeast(ItemStack itemStack, int i) {
         return false;
     }
-
-    
-    public HashMap<Integer, ? extends ItemStack> all(int i) {
-        return null;
-    }
-
-    
-    public HashMap<Integer, ? extends ItemStack> all(Material material) throws IllegalArgumentException {
-        return null;
-    }
-
-    
-    public HashMap<Integer, ? extends ItemStack> all(ItemStack itemStack) {
-        return null;
-    }
-
     
     public int first(int i) {
         return 0;
