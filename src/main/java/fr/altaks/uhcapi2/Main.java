@@ -1,6 +1,9 @@
 package fr.altaks.uhcapi2;
 
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IPluginCommand;
+import fr.altaks.uhcapi2.listeners.HostListener;
+import fr.altaks.uhcapi2.listeners.PlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -70,7 +73,7 @@ public class Main extends JavaPlugin {
     /**
      * A HashMap of registered listening commands instances, mapped by their command name.
      */
-    private HashMap<String, IPluginCommand> registeredListeningCommands = new HashMap<>();
+    private final HashMap<String, IPluginCommand> registeredListeningCommands = new HashMap<>();
 
     /**
      * The number of registered listeners and commands during the loading {@code onEnable} phase.
@@ -80,7 +83,9 @@ public class Main extends JavaPlugin {
     /**
      * A list of classes that failed to load as listeners.
      */
-    private ArrayList<Class<?>> failedToLoadListeners = new ArrayList<>();
+    private final ArrayList<Class<?>> failedToLoadListeners = new ArrayList<>();
+
+    private GameManager gameManager;
 
     @Override
     public void onEnable() {
@@ -96,7 +101,7 @@ public class Main extends JavaPlugin {
 
         };
         Listener[] listeners = new Listener[]{
-
+            new HostListener(this), new PlayerListener(this)
         };
 
         // Automatically register commands and listeners.
@@ -127,6 +132,8 @@ public class Main extends JavaPlugin {
         }
 
         // Your code here...
+
+        this.gameManager = new GameManager(this);
 
 
         logDebug("Registered " + commandsCount + " commands and " + successfullyLoadedListenersCount + " listeners successfully.");
@@ -185,4 +192,7 @@ public class Main extends JavaPlugin {
     }
 
 
+    public GameManager getGameManager() {
+        return gameManager;
+    }
 }
