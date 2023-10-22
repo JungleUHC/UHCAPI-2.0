@@ -23,6 +23,7 @@
  */
 package fr.mrmicky.fastinv;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -118,7 +119,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder name(String name) {
-        return meta(meta -> meta.setDisplayName(name));
+        return meta(meta -> meta.setDisplayName(ChatColor.RESET + name));
     }
 
     public ItemBuilder lore(String lore) {
