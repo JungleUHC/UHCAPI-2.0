@@ -44,6 +44,8 @@ import java.util.function.Consumer;
  */
 public class ItemBuilder {
 
+    public static final ItemStack FILLING_PANE = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 15);
+
     private final ItemStack item;
 
     public static ItemBuilder copyOf(ItemStack item) {

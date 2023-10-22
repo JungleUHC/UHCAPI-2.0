@@ -1,10 +1,12 @@
 package fr.altaks.uhcapi2.core.menu;
 
+import fr.altaks.uhcapi2.core.menu.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -50,6 +52,7 @@ public class HostMainMenu extends FastInv {
 
     private String START_VALUE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODFjZTk1ZGQ0ODBmMTdmZWUwNzFmOWU4ZjdlMmU5YzA1NDJhYzcyYWI1ZDJhZTUzY2NlYWQyYmQ3MjM3MGMyNSJ9fX0=";
     private String STOP_VALUE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTkwMjUzYzQ5ZTEzY2MyZGUwMDA5MGVlNjU4MDlkYTYxN2M1M2Y1OWUzNWYwOWE3YzZlMzUwMTFkMTlhY2IzZCJ9fX0=";
+
     private ItemStack startButton = HeadBuilder.of(START_VALUE)
             .name(ChatColor.RESET +""+ ChatColor.GREEN + "\u00BB Lancer la partie \u00AB")
             .build();
@@ -59,10 +62,12 @@ public class HostMainMenu extends FastInv {
             .lore(ChatColor.GRAY + "Veuillez choisir un mode de jeu")
             .build();
 
+    private WorldMainMenu worldMainMenu = new WorldMainMenu(this);
+
     public HostMainMenu() {
         super(6*9, "Menu principal");
 
-        setItems(getCorners(), new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
+        setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
         // First line
         setItem(4, gameModeSelector);
@@ -80,7 +85,7 @@ public class HostMainMenu extends FastInv {
         setItem(31, configSupp);
 
         // Fifth line
-        setItem(38, configWorld);
+        setItem(38, configWorld, e -> worldMainMenu.open((Player) e.getWhoClicked()));
         setItem(42, configWhitelist);
 
         // Sixth line
