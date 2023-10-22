@@ -20,6 +20,10 @@ public class HostListener implements Listener {
         this.main = main;
     }
 
+    /**
+     * Sets the host to the player that joined the game if the host was null.
+     * @param event The PlayerJoinEvent
+     */
     @EventHandler
     public void onHostJoins(PlayerJoinEvent event){
         if(main.getGameManager().getHost() == null){
@@ -31,6 +35,7 @@ public class HostListener implements Listener {
 
     /**
      * Re-attributes the host role to another player if the host quits the game.
+     * @param event The PlayerQuitEvent
      */
     @EventHandler
     public void onHostQuits(PlayerQuitEvent event){
@@ -81,10 +86,7 @@ public class HostListener implements Listener {
         if(this.main.getGameManager().getHost().equals(event.getWhoClicked()) || this.main.getGameManager().getCoHosts().contains(event.getWhoClicked())){
             if(event.getCurrentItem() == null) return;
             if(event.getCurrentItem().equals(this.main.getGameManager().getHostMenuItem()) || event.getCurrentItem().equals(this.main.getGameManager().getHostGameLaunchItem())){
-                if(!event.isLeftClick() || event.isShiftClick()) {
-                    // Cancel all types of clicks if they aren't non-shift left clicks
-                    event.setCancelled(true);
-                }
+                event.setCancelled(true);
             }
         }
     }

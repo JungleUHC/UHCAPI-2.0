@@ -45,7 +45,7 @@ public class Main extends JavaPlugin {
     /**
      * The name of the plugin that appears in the console, and must be used in player chat messages.
      */
-    public static final String PLUGIN_NAME = "MyPlugin";
+    public static final String PLUGIN_NAME = "UHC API";
 
     /**
      * The prefix that appears for player intended messages.

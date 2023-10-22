@@ -2,9 +2,12 @@ package fr.altaks.uhcapi2.core;
 
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.util.ItemManager;
+import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -31,22 +34,25 @@ public class GameManager {
         return hostMenuItem;
     }
 
-    private final ItemStack hostMenuItem = new ItemManager.ItemBuilder(Material.BLAZE_ROD)
-            .setDisplayName(ChatColor.RED + "\u00BB Configurer la partie \u00AB")
-            .setLore(
+    private final ItemStack hostMenuItem = new ItemBuilder(Material.BLAZE_ROD)
+            .enchant(Enchantment.DURABILITY, 1)
+            .flags(ItemFlag.HIDE_ENCHANTS)
+            .name(ChatColor.RED + "\u00BB Configuration de la partie \u00AB")
+            .addLore(
                     "",
-                    ChatColor.GRAY + "Utilise moi pour accéder à la",
-                    ChatColor.GRAY + "configuration de la partie !"
+                    ChatColor.GRAY + "Utilise moi pour gérer la partie.",
+                    ChatColor.GRAY + "Accessible par l'hôte et les co-hôtes uniquement !"
             )
             .build();
-
     public ItemStack getHostGameLaunchItem() {
         return hostGameLaunchItem;
     }
 
-    private final ItemStack hostGameLaunchItem = new ItemManager.ItemBuilder(Material.BEACON)
-            .setDisplayName(ChatColor.GREEN + "\u00BB Lancer la partie \u00AB")
-            .setLore(
+    private final ItemStack hostGameLaunchItem = new ItemBuilder(Material.BEACON)
+            .name(ChatColor.GREEN + "\u00BB Lancer la partie \u00AB")
+            .enchant(Enchantment.DURABILITY, 1)
+            .flags(ItemFlag.HIDE_ENCHANTS)
+            .addLore(
                     "",
                     ChatColor.GRAY + "Utilise moi pour lancer la partie.",
                     ChatColor.GRAY + "Accessible par l'hôte uniquement !"
