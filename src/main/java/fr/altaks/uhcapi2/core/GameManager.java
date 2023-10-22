@@ -1,7 +1,7 @@
 package fr.altaks.uhcapi2.core;
 
 import fr.altaks.uhcapi2.Main;
-import fr.altaks.uhcapi2.core.util.ItemManager;
+import fr.altaks.uhcapi2.core.menu.HostMainMenu;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GameManager {
 
@@ -23,6 +22,7 @@ public class GameManager {
     }
 
     private Player host;
+    private final HostMainMenu hostMainMenu = new HostMainMenu();
 
     public ArrayList<Player> getCoHosts() {
         return coHosts;
@@ -119,5 +119,9 @@ public class GameManager {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public HostMainMenu getHostMainMenu() {
+        return hostMainMenu;
     }
 }
