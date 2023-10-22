@@ -16,13 +16,14 @@ public class GameManager {
 
     private Main main;
     private GameState gameState = GameState.WAITING_TO_START;
+    private final HostMainMenu hostMainMenu;
 
     public GameManager(Main main){
         this.main = main;
+        this.hostMainMenu = new HostMainMenu(main);
     }
 
     private Player host;
-    private final HostMainMenu hostMainMenu = new HostMainMenu();
 
     public ArrayList<Player> getCoHosts() {
         return coHosts;

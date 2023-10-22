@@ -9,8 +9,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import java.util.Locale;
-
 public class GameMobsSubMenu extends FastInv {
 
     private GameConfigMainMenu upperMenu;
@@ -23,6 +21,7 @@ public class GameMobsSubMenu extends FastInv {
             EntityType.VILLAGER, EntityType.WITCH, EntityType.WITHER, EntityType.WOLF, EntityType.ZOMBIE
     };
 
+    @SuppressWarnings("deprecation")
     public GameMobsSubMenu(GameConfigMainMenu upperMenu) {
         super(5*9, "Création du monde");
         this.upperMenu = upperMenu;
