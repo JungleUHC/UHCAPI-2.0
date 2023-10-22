@@ -1,5 +1,6 @@
 package fr.altaks.uhcapi2.core.menu;
 
+import fr.altaks.uhcapi2.core.menu.game.GameConfigMainMenu;
 import fr.altaks.uhcapi2.core.menu.timers.TimersMainMenu;
 import fr.altaks.uhcapi2.core.menu.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
@@ -65,6 +66,7 @@ public class HostMainMenu extends FastInv {
 
     private WorldMainMenu worldMainMenu = new WorldMainMenu(this);
     private TimersMainMenu timersMainMenu = new TimersMainMenu(this);
+    private GameConfigMainMenu gameConfigMainMenu = new GameConfigMainMenu(this);
 
     public HostMainMenu() {
         super(6*9, "Menu principal");
@@ -75,7 +77,7 @@ public class HostMainMenu extends FastInv {
         setItem(4, gameModeSelector);
 
         // Second line
-        setItem(11, configGame);
+        setItem(11, configGame, event -> gameConfigMainMenu.open((Player) event.getWhoClicked()));
         setItem(15, configScenarios);
 
         // Third line
