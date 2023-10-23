@@ -19,14 +19,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class GamemodeSelectionMenu extends FastInv {
+public class GameModeSelectionMenu extends FastInv {
 
-    private HashMap<ItemStack, Pair<File, File>> availableGameModes = new HashMap<>();
+    private final HashMap<ItemStack, Pair<File, File>> availableGameModes = new HashMap<>();
     private ItemStack chosenGameModeItem = null;
 
-    private Main main;
+    private final Main main;
 
-    public GamemodeSelectionMenu(Main main) {
+    public GameModeSelectionMenu(Main main) {
         super(6*9, "Selection du mode de jeu");
 
         // load all gameModes from the filesystem
@@ -66,16 +66,17 @@ public class GamemodeSelectionMenu extends FastInv {
         }
 
         this.main = main;
-
     }
 
     @Override
     protected void onClick(InventoryClickEvent event) {
+        event.setCancelled(true);
+
         // checks to avoid NPEs
         if(event.getClickedInventory() == null || event.getView().getBottomInventory() == event.getClickedInventory()) return;
         if(event.getCurrentItem() == null) return;
 
-        // when an item is clicked, print the chosen gamemode file name to the console
+        // when an item is clicked, print the chosen game mode file name to the console
         Pair<File, File> gameMode = availableGameModes.get(event.getCurrentItem());
         if(gameMode == null) throw new RuntimeException("GameMode not found");
         Main.logDebug("GameMode selected: " + gameMode.getLeft().getName() + " with configurator: " + gameMode.getRight().getName());

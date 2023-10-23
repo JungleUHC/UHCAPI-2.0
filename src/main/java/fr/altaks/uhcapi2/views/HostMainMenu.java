@@ -2,7 +2,8 @@ package fr.altaks.uhcapi2.views;
 
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
-import fr.altaks.uhcapi2.views.gamemode.GamemodeSelectionMenu;
+import fr.altaks.uhcapi2.views.gamemode.GameModeSelectionMenu;
+import fr.altaks.uhcapi2.views.scenarios.ScenariosMainMenu;
 import fr.altaks.uhcapi2.views.timers.TimersMainMenu;
 import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
@@ -69,7 +70,8 @@ public class HostMainMenu extends FastInv {
     private WorldMainMenu worldMainMenu = new WorldMainMenu(this);
     private TimersMainMenu timersMainMenu = new TimersMainMenu(this);
     private GameConfigMainMenu gameConfigMainMenu = new GameConfigMainMenu(this);
-    private GamemodeSelectionMenu gamemodeSelectionMenu;
+    private GameModeSelectionMenu gamemodeSelectionMenu;
+    private ScenariosMainMenu scenariosMainMenu = new ScenariosMainMenu(this);
 
     private Main main;
 
@@ -83,7 +85,7 @@ public class HostMainMenu extends FastInv {
 
         // Second line
         setItem(11, configGame, event -> gameConfigMainMenu.open((Player) event.getWhoClicked()));
-        setItem(15, configScenarios);
+        setItem(15, configScenarios, event -> scenariosMainMenu.open((Player) event.getWhoClicked()));
 
         // Third line
         setItem(18, configMod);
@@ -101,7 +103,7 @@ public class HostMainMenu extends FastInv {
         setItem(49, startButton);
 
         this.main = main;
-        gamemodeSelectionMenu = new GamemodeSelectionMenu(this.main);
+        gamemodeSelectionMenu = new GameModeSelectionMenu(this.main);
     }
 
     @Override
