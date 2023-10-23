@@ -1,7 +1,7 @@
 package fr.altaks.uhcapi2.core;
 
 import fr.altaks.uhcapi2.Main;
-import fr.altaks.uhcapi2.core.menu.HostMainMenu;
+import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -24,6 +24,16 @@ public class GameManager {
     }
 
     private Player host;
+
+    public GameMode getChosenGameMode() {
+        return chosenGameMode;
+    }
+
+    public void setChosenGameMode(GameMode chosenGameMode) {
+        this.chosenGameMode = chosenGameMode;
+    }
+
+    private GameMode chosenGameMode = null;
 
     public ArrayList<Player> getCoHosts() {
         return coHosts;

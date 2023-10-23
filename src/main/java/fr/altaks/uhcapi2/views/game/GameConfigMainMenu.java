@@ -1,10 +1,10 @@
-package fr.altaks.uhcapi2.core.menu.game;
+package fr.altaks.uhcapi2.views.game;
 
-import fr.altaks.uhcapi2.core.menu.HostMainMenu;
-import fr.altaks.uhcapi2.core.menu.game.submenus.GameBordersSubMenu;
-import fr.altaks.uhcapi2.core.menu.game.submenus.GameInvsSubMenu;
-import fr.altaks.uhcapi2.core.menu.game.submenus.GameMobsSubMenu;
-import fr.altaks.uhcapi2.core.menu.game.submenus.GameStuffSubMenu;
+import fr.altaks.uhcapi2.views.HostMainMenu;
+import fr.altaks.uhcapi2.views.game.submenus.GameBordersSubMenu;
+import fr.altaks.uhcapi2.views.game.submenus.GameInvsSubMenu;
+import fr.altaks.uhcapi2.views.game.submenus.GameMobsSubMenu;
+import fr.altaks.uhcapi2.views.game.submenus.GameStuffSubMenu;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;

@@ -1,9 +1,9 @@
-package fr.altaks.uhcapi2.core.menu.world;
+package fr.altaks.uhcapi2.views.world;
 
-import fr.altaks.uhcapi2.core.menu.HostMainMenu;
-import fr.altaks.uhcapi2.core.menu.world.submenus.WorldCaveBoostMenu;
-import fr.altaks.uhcapi2.core.menu.world.submenus.WorldNewWorldMenu;
-import fr.altaks.uhcapi2.core.menu.world.submenus.WorldStructuresMenu;
+import fr.altaks.uhcapi2.views.HostMainMenu;
+import fr.altaks.uhcapi2.views.world.submenus.WorldCaveBoostSubMenu;
+import fr.altaks.uhcapi2.views.world.submenus.WorldNewWorldSubMenu;
+import fr.altaks.uhcapi2.views.world.submenus.WorldStructuresSubMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
@@ -32,9 +32,9 @@ public class WorldMainMenu extends FastInv {
             .name("Création du monde")
             .build();
 
-    private WorldCaveBoostMenu caveBoostMenu = new WorldCaveBoostMenu(this);
-    private WorldStructuresMenu structuresMenu = new WorldStructuresMenu(this);
-    private WorldNewWorldMenu newWorldMenu = new WorldNewWorldMenu(this);
+    private WorldCaveBoostSubMenu caveBoostMenu = new WorldCaveBoostSubMenu(this);
+    private WorldStructuresSubMenu structuresMenu = new WorldStructuresSubMenu(this);
+    private WorldNewWorldSubMenu newWorldMenu = new WorldNewWorldSubMenu(this);
 
     public WorldMainMenu(HostMainMenu upperMenu) {
         super(5*9, "Gestion du Monde");

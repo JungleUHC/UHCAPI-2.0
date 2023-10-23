@@ -1,6 +1,6 @@
-package fr.altaks.uhcapi2.core.menu.game.submenus;
+package fr.altaks.uhcapi2.views.game.submenus;
 
-import fr.altaks.uhcapi2.core.menu.game.GameConfigMainMenu;
+import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;

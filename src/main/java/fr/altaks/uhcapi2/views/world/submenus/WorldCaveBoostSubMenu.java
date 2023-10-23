@@ -1,6 +1,6 @@
-package fr.altaks.uhcapi2.core.menu.world.submenus;
+package fr.altaks.uhcapi2.views.world.submenus;
 
-import fr.altaks.uhcapi2.core.menu.world.WorldMainMenu;
+import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class WorldCaveBoostMenu extends FastInv {
+public class WorldCaveBoostSubMenu extends FastInv {
 
     private WorldMainMenu upperMenu;
 
@@ -53,7 +53,7 @@ public class WorldCaveBoostMenu extends FastInv {
             .build();
 
 
-    public WorldCaveBoostMenu(WorldMainMenu upperMenu) {
+    public WorldCaveBoostSubMenu(WorldMainMenu upperMenu) {
         super(5*9, "Boost des caves");
         this.upperMenu = upperMenu;
 

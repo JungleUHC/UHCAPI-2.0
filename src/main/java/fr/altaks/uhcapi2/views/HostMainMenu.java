@@ -1,9 +1,10 @@
-package fr.altaks.uhcapi2.core.menu;
+package fr.altaks.uhcapi2.views;
 
 import fr.altaks.uhcapi2.Main;
-import fr.altaks.uhcapi2.core.menu.game.GameConfigMainMenu;
-import fr.altaks.uhcapi2.core.menu.timers.TimersMainMenu;
-import fr.altaks.uhcapi2.core.menu.world.WorldMainMenu;
+import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
+import fr.altaks.uhcapi2.views.gamemode.GamemodeSelectionMenu;
+import fr.altaks.uhcapi2.views.timers.TimersMainMenu;
+import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
@@ -68,6 +69,7 @@ public class HostMainMenu extends FastInv {
     private WorldMainMenu worldMainMenu = new WorldMainMenu(this);
     private TimersMainMenu timersMainMenu = new TimersMainMenu(this);
     private GameConfigMainMenu gameConfigMainMenu = new GameConfigMainMenu(this);
+    private GamemodeSelectionMenu gamemodeSelectionMenu;
 
     private Main main;
 
@@ -77,7 +79,7 @@ public class HostMainMenu extends FastInv {
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
         // First line
-        setItem(4, gameModeSelector);
+        setItem(4, gameModeSelector, event -> gamemodeSelectionMenu.open((Player) event.getWhoClicked()));
 
         // Second line
         setItem(11, configGame, event -> gameConfigMainMenu.open((Player) event.getWhoClicked()));
@@ -97,6 +99,9 @@ public class HostMainMenu extends FastInv {
 
         // Sixth line
         setItem(49, startButton);
+
+        this.main = main;
+        gamemodeSelectionMenu = new GamemodeSelectionMenu(this.main);
     }
 
     @Override

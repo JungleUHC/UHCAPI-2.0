@@ -1,6 +1,6 @@
-package fr.altaks.uhcapi2.core.menu.timers;
+package fr.altaks.uhcapi2.views.timers;
 
-import fr.altaks.uhcapi2.core.menu.HostMainMenu;
+import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.Material;

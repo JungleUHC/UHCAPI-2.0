@@ -1,6 +1,6 @@
-package fr.altaks.uhcapi2.core.menu.world.submenus;
+package fr.altaks.uhcapi2.views.world.submenus;
 
-import fr.altaks.uhcapi2.core.menu.world.WorldMainMenu;
+import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class WorldNewWorldMenu extends FastInv {
+public class WorldNewWorldSubMenu extends FastInv {
 
     private WorldMainMenu upperMenu;
 
@@ -24,7 +24,7 @@ public class WorldNewWorldMenu extends FastInv {
             .name("Rétracter")
             .build();
 
-    public WorldNewWorldMenu(WorldMainMenu upperMenu) {
+    public WorldNewWorldSubMenu(WorldMainMenu upperMenu) {
         super(5*9, "Création du monde");
         this.upperMenu = upperMenu;
 
