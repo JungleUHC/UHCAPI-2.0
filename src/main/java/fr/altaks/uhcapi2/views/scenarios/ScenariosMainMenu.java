@@ -42,6 +42,11 @@ public class ScenariosMainMenu extends FastInv {
     );
 
     private final HashMap<Integer, Scenario> scenariosSlots = new HashMap<>();
+
+    public ArrayList<Scenario> getSelectedScenarios() {
+        return selectedScenarios;
+    }
+
     private final ArrayList<Scenario> selectedScenarios = new ArrayList<>();
 
     public ScenariosMainMenu(HostMainMenu upperMenu) {
@@ -92,8 +97,7 @@ public class ScenariosMainMenu extends FastInv {
 
         // checks to avoid NPEs
         if(event.getClickedInventory() == null || event.getView().getBottomInventory() == event.getClickedInventory()) return;
-        if(event.getCurrentItem() == null) return;
-        if(event.getCurrentItem().getType() == Material.STAINED_GLASS_PANE) return;
+        if(!scenariosSlots.containsKey(event.getSlot())) return;
         if(Arrays.asList(49, 41).contains(event.getSlot())) return; // return arrow or second page
 
         // get the scenario from the clicked item
