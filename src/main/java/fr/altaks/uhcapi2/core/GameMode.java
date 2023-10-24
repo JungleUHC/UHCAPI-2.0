@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class GameMode {
 
-    private String pluginName;
+    private final String pluginName;
 
     public String getPluginName() {
         return pluginName;

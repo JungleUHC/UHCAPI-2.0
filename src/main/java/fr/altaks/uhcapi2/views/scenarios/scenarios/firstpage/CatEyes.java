@@ -1,7 +1,8 @@
-package fr.altaks.uhcapi2.views.scenarios.scenarios;
+package fr.altaks.uhcapi2.views.scenarios.scenarios.firstpage;
 
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.views.scenarios.Scenario;
+import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.Material;
 
 public class CatEyes implements Scenario {
@@ -16,8 +17,8 @@ public class CatEyes implements Scenario {
     }
 
     @Override
-    public Material getIcon() {
-        return Material.EYE_OF_ENDER;
+    public ItemBuilder getIcon() {
+        return new ItemBuilder(Material.EYE_OF_ENDER);
     }
 
     @Override

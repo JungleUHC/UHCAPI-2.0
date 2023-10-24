@@ -1,16 +1,17 @@
 package fr.altaks.uhcapi2.views.scenarios;
 
 import fr.altaks.uhcapi2.Main;
-import org.bukkit.Material;
+import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public interface Scenario {
+public interface Scenario extends Listener {
 
     String getName();
 
     String getDescription();
 
-    Material getIcon();
+    ItemBuilder getIcon();
 
     int getSlot();
 

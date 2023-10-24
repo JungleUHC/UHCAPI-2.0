@@ -2,16 +2,17 @@ package fr.altaks.uhcapi2.views.scenarios;
 
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.altaks.uhcapi2.views.HostMainMenu;
-import fr.altaks.uhcapi2.views.scenarios.scenarios.CatEyes;
+import fr.altaks.uhcapi2.views.scenarios.scenarios.firstpage.*;
+import fr.altaks.uhcapi2.views.scenarios.scenarios.secondpage.*;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +30,11 @@ public class ScenariosMainMenu extends FastInv {
             .build();
 
     private List<Scenario> scenarios = Arrays.asList(
-            new CatEyes()
+            new CatEyes(), new CutClean(), new GigaDrill(), new HasteyBabies(), new HasteyBoys(), new StarterTools(), new TimberPvP(),
+            new SafeMiner(), new FastSmelter(), new DiamondLimit(), new GoldLimit(), new SpeedyMiner(), new NoFall(), new BetaZombies(),
+            new AllStone(), new DirectToInventory(), new VeinMiner(), new DoubleOres(), new TripleOres(), new NoNametag(), new IronMan(),
+
+            new Unbreakable(), new GoldenHead(), new MasterLevel(), new NoFire(), new NoNether(), new NoRod(), new UltraApple(), new MinHP()
     );
 
     public HashMap<ItemStack, Scenario> scenarioItems = new HashMap<>();
@@ -44,17 +49,48 @@ public class ScenariosMainMenu extends FastInv {
         setItem(41, secondPage, e -> scenariosMainSecondPageMenu.open((Player) e.getWhoClicked()));
 
         for(Scenario scenario : scenarios){
-            ItemBuilder itemBuilder = new ItemBuilder(scenario.getIcon())
-                    .name(ChatColor.YELLOW + scenario.getName())
-                    .lore(ChatColor.GRAY + scenario.getDescription());
 
-            setItem(scenario.getSlot(), itemBuilder.build());
+            // Make the lore string wrap at 30 characters
+            String[] wrappedLore = wrapLore(scenario.getDescription(), 30);
+
+            // Generate the scenario item
+            ItemBuilder itemBuilder = scenario.getIcon()
+                    .name(ChatColor.YELLOW + scenario.getName())
+                    .lore(wrappedLore)
+                    .flags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+
+            if(scenario.isConfigurable()){
+                itemBuilder.addLore("", ChatColor.GREEN + "Cliquez pour configurer ce scenario");
+            }
+
+            // place the scenario item in the menu
+            if(scenario.getSlot() < 6*9){
+                setItem(scenario.getSlot(), itemBuilder.build());
+            } else {
+                scenariosMainSecondPageMenu.setItem(scenario.getSlot() - 6*9, itemBuilder.build());
+            }
         }
 
         // Set the return arrow
         setItem(49, new ItemBuilder(Material.ARROW).name("Retour").build(),
                 e -> upperMenu.open((Player) e.getWhoClicked())
         );
+    }
+
+    private String[] wrapLore(String loreToWrap, int charsAmountPerLine) {
+        String[] description = loreToWrap.split(" ");
+        StringBuilder lore = new StringBuilder();
+        lore.append("\n" + ChatColor.GRAY);
+        int lineLength = 0;
+        for(String word : description){
+            if(lineLength + word.length() > charsAmountPerLine+2){
+                lore.append("\n" + ChatColor.GRAY);
+                lineLength = 0;
+            }
+            lore.append(word).append(" ");
+            lineLength += word.length();
+        }
+        return lore.toString().split("\n");
     }
 
     @Override
