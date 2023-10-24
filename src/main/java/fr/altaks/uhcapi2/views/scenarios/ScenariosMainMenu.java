@@ -1,5 +1,6 @@
 package fr.altaks.uhcapi2.views.scenarios;
 
+import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.scenarios.scenarios.firstpage.*;
@@ -8,11 +9,14 @@ import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -21,15 +25,15 @@ public class ScenariosMainMenu extends FastInv {
 
     private HostMainMenu upperMenu;
 
-    private ScenariosMainSecondPageMenu scenariosMainSecondPageMenu;
+    private final ScenariosMainSecondPageMenu scenariosMainSecondPageMenu;
 
-    private String SECOND_PAGE_VALUE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjYzMTRkMzFiMDk1ZTRkNDIxNzYwNDk3YmU2YTE1NmY0NTlkOGM5OTU3YjdlNmIxYzEyZGViNGU0Nzg2MGQ3MSJ9fX0=";
+    private final String SECOND_PAGE_VALUE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjYzMTRkMzFiMDk1ZTRkNDIxNzYwNDk3YmU2YTE1NmY0NTlkOGM5OTU3YjdlNmIxYzEyZGViNGU0Nzg2MGQ3MSJ9fX0=";
 
-    private ItemStack secondPage = HeadBuilder.of(SECOND_PAGE_VALUE)
+    private final ItemStack secondPage = HeadBuilder.of(SECOND_PAGE_VALUE)
             .name("Page suivante")
             .build();
 
-    private List<Scenario> scenarios = Arrays.asList(
+    private final List<Scenario> scenarios = Arrays.asList(
             new CatEyes(), new CutClean(), new GigaDrill(), new HasteyBabies(), new HasteyBoys(), new StarterTools(), new TimberPvP(),
             new SafeMiner(), new FastSmelter(), new DiamondLimit(), new GoldLimit(), new SpeedyMiner(), new NoFall(), new BetaZombies(),
             new AllStone(), new DirectToInventory(), new VeinMiner(), new DoubleOres(), new TripleOres(), new NoNametag(), new IronMan(),
@@ -37,7 +41,8 @@ public class ScenariosMainMenu extends FastInv {
             new Unbreakable(), new GoldenHead(), new MasterLevel(), new NoFire(), new NoNether(), new NoRod(), new UltraApple(), new MinHP()
     );
 
-    public HashMap<ItemStack, Scenario> scenarioItems = new HashMap<>();
+    private final HashMap<Integer, Scenario> scenariosSlots = new HashMap<>();
+    private final ArrayList<Scenario> selectedScenarios = new ArrayList<>();
 
     public ScenariosMainMenu(HostMainMenu upperMenu) {
         super(6*9, "Configuration des scenarios");
@@ -63,18 +68,53 @@ public class ScenariosMainMenu extends FastInv {
                 itemBuilder.addLore("", ChatColor.GREEN + "Cliquez pour configurer ce scenario");
             }
 
+            ItemStack finalItem = itemBuilder.build();
+            changeItemVisualActivationState(scenario, finalItem, false);
+
             // place the scenario item in the menu
             if(scenario.getSlot() < 6*9){
-                setItem(scenario.getSlot(), itemBuilder.build());
+                setItem(scenario.getSlot(), finalItem);
             } else {
-                scenariosMainSecondPageMenu.setItem(scenario.getSlot() - 6*9, itemBuilder.build());
+                scenariosMainSecondPageMenu.setItem(scenario.getSlot() - 6*9, finalItem);
             }
+            scenariosSlots.put(scenario.getSlot(), scenario);
         }
 
         // Set the return arrow
         setItem(49, new ItemBuilder(Material.ARROW).name("Retour").build(),
                 e -> upperMenu.open((Player) e.getWhoClicked())
         );
+    }
+
+    @Override
+    protected void onClick(InventoryClickEvent event) {
+        event.setCancelled(true);
+
+        // checks to avoid NPEs
+        if(event.getClickedInventory() == null || event.getView().getBottomInventory() == event.getClickedInventory()) return;
+        if(event.getCurrentItem() == null) return;
+        if(event.getCurrentItem().getType() == Material.STAINED_GLASS_PANE) return;
+        if(Arrays.asList(49, 41).contains(event.getSlot())) return; // return arrow or second page
+
+        // get the scenario from the clicked item
+        Scenario scenario = scenariosSlots.get(event.getSlot());
+        if(scenario == null) throw new RuntimeException("Scenario not found");
+
+        // add glowing effect to the item if it was in the selected scenarios list
+        ItemStack item = event.getCurrentItem();
+
+        switchScenarioActivationState(scenario);
+        changeItemVisualActivationState(scenario, item, selectedScenarios.contains(scenario));
+    }
+
+    public void switchScenarioActivationState(Scenario scenario){
+        if(selectedScenarios.contains(scenario)){
+            selectedScenarios.remove(scenario);
+            Main.logDebug("Removed scenario " + scenario.getName() + " from selected scenarios");
+        } else {
+            selectedScenarios.add(scenario);
+            Main.logDebug("Added scenario " + scenario.getName() + " to selected scenarios");
+        }
     }
 
     private String[] wrapLore(String loreToWrap, int charsAmountPerLine) {
@@ -93,9 +133,19 @@ public class ScenariosMainMenu extends FastInv {
         return lore.toString().split("\n");
     }
 
-    @Override
-    protected void onClick(InventoryClickEvent event) {
-        event.setCancelled(true);
+    public HashMap<Integer, Scenario> getScenariosSlots() {
+        return scenariosSlots;
+    }
+
+    public void changeItemVisualActivationState(Scenario scenario, ItemStack item, boolean isEnabled){
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.YELLOW + scenario.getName() + " " + (isEnabled ? ChatColor.GREEN + "[Activé]" : ChatColor.RED + "[Désactivé]"));
+        item.setItemMeta(meta);
+        if(isEnabled){
+            item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        } else {
+            item.removeEnchantment(Enchantment.DURABILITY);
+        }
     }
 
 }

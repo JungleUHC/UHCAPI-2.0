@@ -11,6 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
@@ -59,6 +60,7 @@ public class GameModeSelectionMenu extends FastInv {
             ItemStack gameModeItem = new ItemBuilder(Material.PAPER)
                     .name(ChatColor.YELLOW + pluginName)
                     .lore(pluginDescriptionAsLore)
+                    .flags(ItemFlag.HIDE_ENCHANTS)
                     .build();
 
             addItem(gameModeItem);
