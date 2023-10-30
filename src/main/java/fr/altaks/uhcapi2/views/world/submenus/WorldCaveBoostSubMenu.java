@@ -4,6 +4,7 @@ import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -25,31 +26,81 @@ public class WorldCaveBoostSubMenu extends FastInv {
             "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2NkYjczYjQzMzZkM2ExMzM4MzQ0MjljMGVkY2RlMzM3M2RkNjRlZTIyMWUwY2Y3N2JlODE0OTQxMTYwYTQ0YSJ9fX0=";
 
     private ItemStack redstoneBoost = HeadBuilder.of(REDSTONE_BOOST_VALUE)
-            .name("Boost du redstone")
+            .name("Boost de la redstone")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Multiplicateur : " + 1 + "x",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +0.1",
+                    ChatColor.GRAY + "Clic droit : -0.1"
+            )
             .build();
 
     private ItemStack lapisBoost = HeadBuilder.of(LAPIS_BOOST_VALUE)
-            .name("Boost du lapis")
+            .name("Boost du Lapis-Lazuli")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Multiplicateur : " + 1 + "x",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +0.1",
+                    ChatColor.GRAY + "Clic droit : -0.1"
+            )
             .build();
 
     private ItemStack coalBoost = HeadBuilder.of(COAL_BOOST_VALUE)
             .name("Boost du charbon")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Multiplicateur : " + 1 + "x",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +0.1",
+                    ChatColor.GRAY + "Clic droit : -0.1"
+            )
             .build();
 
     private ItemStack goldBoost = HeadBuilder.of(GOLD_BOOST_VALUE)
             .name("Boost de l'or")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Multiplicateur : " + 1 + "x",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +0.1",
+                    ChatColor.GRAY + "Clic droit : -0.1"
+            )
             .build();
 
     private ItemStack diamondBoost = HeadBuilder.of(DIAMOND_BOOST_VALUE)
             .name("Boost du diamant")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Multiplicateur : " + 1 + "x",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +0.1",
+                    ChatColor.GRAY + "Clic droit : -0.1"
+            )
             .build();
 
     private ItemStack ironBoost = HeadBuilder.of(IRON_BOOST_VALUE)
             .name("Boost du fer")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Multiplicateur : " + 1 + "x",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +0.1",
+                    ChatColor.GRAY + "Clic droit : -0.1"
+            )
             .build();
 
     private ItemStack caveBoost = HeadBuilder.of(CAVE_BOOST_VALUE)
             .name("Boost des caves")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Multiplicateur : " + 1 + "x",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +0.1",
+                    ChatColor.GRAY + "Clic droit : -0.1",
+                    ChatColor.GRAY + "Permet de modifier la fréquence d'apparition des caves"
+            )
             .build();
 
 

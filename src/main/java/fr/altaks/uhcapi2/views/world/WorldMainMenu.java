@@ -7,6 +7,7 @@ import fr.altaks.uhcapi2.views.world.submenus.WorldStructuresSubMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -22,14 +23,29 @@ public class WorldMainMenu extends FastInv {
 
     private ItemStack boostConfig = HeadBuilder.of(BOOST_VALUE)
             .name("Boost des caves")
+            .lore(
+                    "",
+                    ChatColor.GRAY + "Cliquez pour configurer les boosts",
+                    ChatColor.GRAY + "conçernant les minerais, les caves"
+            )
             .build();
 
     private ItemStack structureConfig = HeadBuilder.of(STRUCTURE_VALUE)
             .name("Gestion des structures")
+            .lore(
+                    "",
+                    ChatColor.GRAY + "Cliquez pour activer/désactiver",
+                    ChatColor.GRAY + "certains structures du monde"
+            )
             .build();
 
     private ItemStack newWorldConfig = HeadBuilder.of(NEW_WORLD_VALUE)
             .name("Création du monde")
+            .lore(
+                    "",
+                    ChatColor.GRAY + "Cliquez pour re-générer le monde",
+                    ChatColor.GRAY + "(Supprime l'ancien monde généré)"
+            )
             .build();
 
     private WorldCaveBoostSubMenu caveBoostMenu = new WorldCaveBoostSubMenu(this);

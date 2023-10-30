@@ -180,7 +180,14 @@ public class GameMode {
     }
 
     public enum TimeType {
-        SECONDS, MINUTES
+        SECONDS("secondes"),
+        MINUTES("minutes");
+
+        public String humanName;
+
+        TimeType(String humanName){
+            this.humanName = humanName;
+        }
     }
 
     public static class RoleParameter {

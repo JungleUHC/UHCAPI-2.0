@@ -3,6 +3,7 @@ package fr.altaks.uhcapi2.core;
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
+import fr.altaks.uhcapi2.views.timers.TimersRolesMenu;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,7 +20,9 @@ public class GameManager {
     private GameState gameState = GameState.WAITING_TO_START;
 
     private final HostMainMenu hostMainMenu;
+
     private RolesAmountsMainMenu rolesAmountsMainMenu;
+    private TimersRolesMenu timersRolesMenu;
 
     public GameManager(Main main){
         this.main = main;
@@ -145,5 +148,13 @@ public class GameManager {
 
     public void setRolesAmountsMainMenu(RolesAmountsMainMenu rolesAmountsMainMenu) {
         this.rolesAmountsMainMenu = rolesAmountsMainMenu;
+    }
+
+    public TimersRolesMenu getTimersRolesMenu() {
+        return timersRolesMenu;
+    }
+
+    public void setTimersRolesMenu(TimersRolesMenu timersRolesMenu) {
+        this.timersRolesMenu = timersRolesMenu;
     }
 }

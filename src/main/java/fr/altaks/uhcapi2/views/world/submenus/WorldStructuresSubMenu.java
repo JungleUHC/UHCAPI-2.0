@@ -4,6 +4,7 @@ import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,14 +22,32 @@ public class WorldStructuresSubMenu extends FastInv {
 
     private ItemStack villagesStruct = HeadBuilder.of(VILLAGES_STRUCT_VALUE)
             .name("Villages")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Etat : " + ChatColor.GREEN + "Activé",
+                    "",
+                    ChatColor.GRAY + "Cliquez pour activer/désactiver la génération des villages"
+            )
             .build();
 
     private ItemStack strongholdStruct = HeadBuilder.of(STRONGHOLD_STRUCT_VALUE)
             .name("Strongholds")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Etat : " + ChatColor.GREEN + "Activé",
+                    "",
+                    ChatColor.GRAY + "Cliquez pour activer/désactiver la génération des strongholds"
+            )
             .build();
 
     private ItemStack mineshaftStruct = HeadBuilder.of(MINESHAFT_STRUCT_VALUE)
             .name("Mineshafts")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Etat : " + ChatColor.GREEN + "Activé",
+                    "",
+                    ChatColor.GRAY + "Cliquez pour activer/désactiver la génération des mineshafts"
+            )
             .build();
 
     public WorldStructuresSubMenu(WorldMainMenu upperMenu) {

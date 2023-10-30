@@ -68,7 +68,7 @@ public class HostMainMenu extends FastInv {
             .build();
 
     private WorldMainMenu worldMainMenu = new WorldMainMenu(this);
-    private TimersMainMenu timersMainMenu = new TimersMainMenu(this);
+    private TimersMainMenu timersMainMenu;
     private GameConfigMainMenu gameConfigMainMenu = new GameConfigMainMenu(this);
     private GameModeSelectionMenu gamemodeSelectionMenu;
     private ScenariosMainMenu scenariosMainMenu = new ScenariosMainMenu(this);
@@ -111,10 +111,16 @@ public class HostMainMenu extends FastInv {
 
         this.main = main;
         gamemodeSelectionMenu = new GameModeSelectionMenu(this.main);
+        timersMainMenu = new TimersMainMenu(this.main, this);
     }
 
     @Override
     protected void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
+    }
+
+
+    public TimersMainMenu getTimersMainMenu() {
+        return timersMainMenu;
     }
 }

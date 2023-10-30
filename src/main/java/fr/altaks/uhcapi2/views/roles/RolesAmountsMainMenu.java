@@ -21,8 +21,8 @@ public class RolesAmountsMainMenu extends FastInv {
 
     private final Main main;
 
-    private HashMap<Integer, GameMode.Role> slotToRole = new HashMap<>();
-    private HashMap<Integer, GameMode.GameTeam> slotToTeam = new HashMap<>();
+    private final HashMap<Integer, GameMode.Role> slotToRole = new HashMap<>();
+    private final HashMap<Integer, GameMode.GameTeam> slotToTeam = new HashMap<>();
     private GameMode.GameTeam selectedTeam;
 
     public RolesAmountsMainMenu(Main main, HostMainMenu upperMenu) {
@@ -93,11 +93,7 @@ public class RolesAmountsMainMenu extends FastInv {
             main.getGameManager().getChosenGameMode().getPlayersPerRole().put(role, newAmount);
 
             // update the clicked item lore
-            ItemMeta meta = event.getCurrentItem().getItemMeta();
-            List<String> lore = meta.getLore();
-            lore.set(1, ChatColor.YELLOW + "Nombre de joueurs : " + ChatColor.GREEN + newAmount);
-            meta.setLore(lore);
-            event.getCurrentItem().setItemMeta(meta);
+            updateItemLoreAccordingToNewPlayersRoleAmount(event, newAmount);
 
             // if the role amount is now 0, change the item to a gray dye
             if(newAmount == 0){
@@ -108,6 +104,14 @@ public class RolesAmountsMainMenu extends FastInv {
                 event.getCurrentItem().setDurability(this.selectedTeam.getItem().getDurability());
             }
         }
+    }
+
+    private static void updateItemLoreAccordingToNewPlayersRoleAmount(InventoryClickEvent event, int newAmount) {
+        ItemMeta meta = event.getCurrentItem().getItemMeta();
+        List<String> lore = meta.getLore();
+        lore.set(1, ChatColor.YELLOW + "Nombre de joueurs : " + ChatColor.GREEN + newAmount);
+        meta.setLore(lore);
+        event.getCurrentItem().setItemMeta(meta);
     }
 
     @Override
