@@ -206,7 +206,7 @@ public class GameModeSelectionMenu extends FastInv {
                     .amount(amount)
                     .data(data)
                     .name(ChatColor.RESET +""+ ChatColor.YELLOW + teamName)
-                    .addLore("", ChatColor.GRAY + teamDescription)
+                    .lore("", ChatColor.GRAY + teamDescription)
                     .build();
 
             teamFromIds.put(teamId, new GameMode.GameTeam(teamId, teamName, teamIcon, teamDescription));
