@@ -2,6 +2,7 @@ package fr.altaks.uhcapi2.core;
 
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.views.HostMainMenu;
+import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +17,9 @@ public class GameManager {
 
     private Main main;
     private GameState gameState = GameState.WAITING_TO_START;
+
     private final HostMainMenu hostMainMenu;
+    private RolesAmountsMainMenu rolesAmountsMainMenu;
 
     public GameManager(Main main){
         this.main = main;
@@ -134,5 +137,13 @@ public class GameManager {
 
     public HostMainMenu getHostMainMenu() {
         return hostMainMenu;
+    }
+
+    public RolesAmountsMainMenu getRolesAmountsMainMenu() {
+        return rolesAmountsMainMenu;
+    }
+
+    public void setRolesAmountsMainMenu(RolesAmountsMainMenu rolesAmountsMainMenu) {
+        this.rolesAmountsMainMenu = rolesAmountsMainMenu;
     }
 }

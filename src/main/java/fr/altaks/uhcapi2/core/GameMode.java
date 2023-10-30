@@ -1,8 +1,10 @@
 package fr.altaks.uhcapi2.core;
 
 import fr.altaks.uhcapi2.Main;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GameMode {
@@ -45,14 +47,16 @@ public class GameMode {
 
     private File pluginFile;
 
+    private HashMap<GameMode.GameTeam, ArrayList<Role>> rolesFromTeam;
     private HashMap<GameMode.Role, Integer> playersPerRole;
+
     private HashMap<GameMode.GameOption, Object> gameOptions;
     private HashMap<GameMode.RoleTimer, Long> rolesTimers;
     private HashMap<GameMode.RoleParameter, Object> rolesParameters;
 
     private String debugModePath;
 
-    public GameMode(String name, String pluginDescription, File pluginFile, HashMap<Role, Integer> playersPerRole, HashMap<GameOption, Object> gameOptions, HashMap<RoleTimer, Long> rolesTimers, HashMap<RoleParameter, Object> rolesParameters, String debugModePath){
+    public GameMode(String name, String pluginDescription, File pluginFile, HashMap<Role, Integer> playersPerRole, HashMap<GameTeam, ArrayList<Role>> rolesOfTeams, HashMap<GameOption, Object> gameOptions, HashMap<RoleTimer, Long> rolesTimers, HashMap<RoleParameter, Object> rolesParameters, String debugModePath){
         this.pluginName = name;
         this.pluginDescription = pluginDescription;
         this.pluginFile = pluginFile;
@@ -63,6 +67,7 @@ public class GameMode {
         this.rolesParameters = rolesParameters;
 
         this.debugModePath = debugModePath;
+        this.rolesFromTeam = rolesOfTeams;
     }
 
     public void load(Main main){
@@ -75,6 +80,10 @@ public class GameMode {
 
     public void start(){
         // trigger the GameStartEvent for the game to really start
+    }
+
+    public HashMap<GameTeam, ArrayList<Role>> getRolesFromTeam() {
+        return rolesFromTeam;
     }
 
     public enum GameModeOptionType {
@@ -122,10 +131,12 @@ public class GameMode {
 
         private String name;
         private String path;
+        private GameTeam team;
 
-        public Role(String name, String path){
+        public Role(String name, String path, GameTeam team){
             this.name = name;
             this.path = path;
+            this.team = team;
         }
 
         public String getName() {
@@ -134,6 +145,10 @@ public class GameMode {
 
         public String getPath() {
             return path;
+        }
+
+        public GameTeam getTeam() {
+            return team;
         }
     }
 
@@ -191,6 +206,37 @@ public class GameMode {
 
         public GameModeOptionType getType() {
             return type;
+        }
+    }
+
+    public static class GameTeam {
+
+        private final String id;
+        private final String name;
+        private final ItemStack item;
+        private final String description;
+
+        public GameTeam(String id, String name, ItemStack item, String description){
+            this.id = id;
+            this.name = name;
+            this.item = item;
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public ItemStack getItem() {
+            return item;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getId() {
+            return id;
         }
     }
 }

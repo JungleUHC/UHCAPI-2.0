@@ -2,6 +2,7 @@ package fr.altaks.uhcapi2.views.gamemode;
 
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.GameMode;
+import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.apache.commons.lang3.tuple.Pair;
@@ -15,10 +16,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class GameModeSelectionMenu extends FastInv {
 
@@ -101,6 +99,10 @@ public class GameModeSelectionMenu extends FastInv {
 
         // Send a message to the player
         event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.GREEN + "Mode de jeu choisi : " + ChatColor.YELLOW + this.main.getGameManager().getChosenGameMode().getPluginName());
+
+        // Create related menu instances in the manager
+        main.getGameManager().setRolesAmountsMainMenu(new RolesAmountsMainMenu(main, main.getGameManager().getHostMainMenu()));
+
     }
 
     private GameMode getGameModeFromConfigurator(File pluginFile, File configurator){
@@ -113,13 +115,31 @@ public class GameModeSelectionMenu extends FastInv {
         String pluginName = config.getString("game-name");
         String pluginDescription = config.getString("game-description");
 
-        // Loading roles amounts
 
-        HashMap<GameMode.Role, Integer> playersPerRole = loadPlayersPerRole(config);
+        // Loading teams
+        HashMap<String, GameMode.GameTeam> teamsFromID = loadTeams(config);
+        // Loading roles amounts
+        HashMap<GameMode.Role, Integer> playersPerRole = loadPlayersPerRole(config, teamsFromID);
         Main.logDebug("Loaded " + playersPerRole.size() + " roles profiles for game mode \"" + pluginName + "\" (" + pluginFile.getName() + ")");
 
         if(Main.isDevMode) for(Map.Entry<GameMode.Role, Integer> role : playersPerRole.entrySet()){
             Main.logDev(" | Role: " + role.getKey().getName() + " - Amount: " + role.getValue());
+        }
+
+        // Load reverse dictionary of team <-> roles
+        HashMap<GameMode.GameTeam, ArrayList<GameMode.Role>> rolesOfTeams = new HashMap<>();
+        for(Map.Entry<GameMode.Role, Integer> role : playersPerRole.entrySet()){
+            if(role.getKey().getTeam() != null){
+                if(!rolesOfTeams.containsKey(role.getKey().getTeam())){
+                    rolesOfTeams.put(role.getKey().getTeam(), new ArrayList<>());
+                }
+                rolesOfTeams.get(role.getKey().getTeam()).add(role.getKey());
+            }
+        }
+
+        Main.logDebug("Loaded " + rolesOfTeams.size() + " teams with roles for game mode \"" + pluginName + "\" (" + pluginFile.getName() + ")");
+        for(Map.Entry<GameMode.GameTeam, ArrayList<GameMode.Role>> entry : rolesOfTeams.entrySet()){
+            Main.logDebug(" | Team: " + entry.getKey().getName() + " - Amount of roles: " + entry.getValue().size());
         }
 
         // Loading game options
@@ -152,7 +172,47 @@ public class GameModeSelectionMenu extends FastInv {
         // debug-mode-path: <path>
         String debugModePath = config.getString("debug-mode-path");
 
-        return new GameMode(pluginName, pluginDescription, pluginFile, playersPerRole, gameOptions, rolesTimers, rolesParameters, debugModePath);
+        return new GameMode(pluginName, pluginDescription, pluginFile, playersPerRole, rolesOfTeams, gameOptions, rolesTimers, rolesParameters, debugModePath);
+    }
+
+    private HashMap<String, GameMode.GameTeam> loadTeams(FileConfiguration config) {
+        /*
+        teams:
+          <teamtag>:
+            id: <team-id>
+            name: <team-name>
+            item:
+              material: <minecraft namespaced key for material>
+              amount: <amount of itemstack>
+              data: <data to set as short>
+            description: <description>
+         */
+        HashMap<String, GameMode.GameTeam> teamFromIds = new HashMap<>();
+        for(String teamPath : config.getConfigurationSection("teams").getKeys(false)){
+
+            String teamId = config.getString("teams." + teamPath + ".id");
+            String teamName = config.getString("teams." + teamPath + ".name");
+
+            // get the itemstack
+
+            Material material = Material.getMaterial(config.getInt("teams." + teamPath + ".item.material"));
+
+            int amount = config.getInt("teams." + teamPath + ".item.amount");
+            short data = (short) config.getInt("teams." + teamPath + ".item.data");
+
+            String teamDescription = config.getString("teams." + teamPath + ".description");
+
+            ItemStack teamIcon = new ItemBuilder(material)
+                    .amount(amount)
+                    .data(data)
+                    .name(ChatColor.RESET +""+ ChatColor.YELLOW + teamName)
+                    .addLore("", ChatColor.GRAY + teamDescription)
+                    .build();
+
+            teamFromIds.put(teamId, new GameMode.GameTeam(teamId, teamName, teamIcon, teamDescription));
+        }
+
+        return teamFromIds;
     }
 
 
@@ -208,16 +268,26 @@ public class GameModeSelectionMenu extends FastInv {
         return gameOptions;
     }
 
-    private HashMap<GameMode.Role, Integer> loadPlayersPerRole(FileConfiguration config) {
+    private HashMap<GameMode.Role, Integer> loadPlayersPerRole(FileConfiguration config, HashMap<String, GameMode.GameTeam> teamsFromID){
         // roles-default-amount:
         //  <role-name-path>:
+        //    team-id: <team-id>
         //    role: <role-name>
         //    value: <amount>
         HashMap<GameMode.Role, Integer> playersPerRole = new HashMap<>();
         for(String rolePath : config.getConfigurationSection("roles-default-amount").getKeys(false)){
+
             String roleName = config.getString("roles-default-amount." + rolePath + ".role");
             int amount = config.getInt("roles-default-amount." + rolePath + ".value");
-            playersPerRole.put(new GameMode.Role(roleName, rolePath), amount);
+
+            // Load team of role
+            GameMode.GameTeam roleTeam = null;
+            if(config.isSet("roles-default-amount." + rolePath + ".team-id")){
+                roleTeam = teamsFromID.get(config.getString("roles-default-amount." + rolePath + ".team-id"));
+                if(roleTeam == null) throw new IllegalArgumentException("Team with id " + config.getString("roles-default-amount." + rolePath + ".team-id") + " not found in configuration files...");
+            }
+
+            playersPerRole.put(new GameMode.Role(roleName, rolePath, roleTeam), amount);
         }
         return playersPerRole;
     }

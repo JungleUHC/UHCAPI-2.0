@@ -89,7 +89,14 @@ public class HostMainMenu extends FastInv {
 
         // Third line
         setItem(18, configMod);
-        setItem(22, configRoles);
+        setItem(22, configRoles, event -> {
+            // if the role menu is set, open it, otherwise say that the game mode is not loaded
+            if(main.getGameManager().getRolesAmountsMainMenu() != null){
+                main.getGameManager().getRolesAmountsMainMenu().open((Player) event.getWhoClicked());
+            } else {
+                event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Veuillez choisir un mode de jeu avant de configurer les rôles");
+            }
+        });
         setItem(26, configTimers, event -> timersMainMenu.open((Player) event.getWhoClicked()));
 
         // Fourth line
