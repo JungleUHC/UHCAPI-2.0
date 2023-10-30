@@ -1,9 +1,11 @@
 package fr.altaks.uhcapi2.views.game.submenus;
 
+import fr.altaks.uhcapi2.core.util.LoreUtil;
 import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,26 +25,61 @@ public class GameBordersSubMenu extends FastInv {
 
     private ItemStack initialSize = HeadBuilder.of(INITIAL_SIZE_VALUE)
             .name("Taille initiale")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "1000",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +205 blocs",
+                    ChatColor.GRAY + "Clic droit : -250 blocs"
+            )
             .build();
 
     private ItemStack finalSize = HeadBuilder.of(FINAL_SIZE_VALUE)
             .name("Taille finale")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "200",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +205 blocs",
+                    ChatColor.GRAY + "Clic droit : -250 blocs"
+            )
             .build();
 
     private ItemStack suppConfig = HeadBuilder.of(SUPP_CONFIG_VALUE)
             .name("Configuration supplémentaire")
+            .lore(
+                    ChatColor.DARK_PURPLE + "Non implémenté pour le moment"
+            )
             .build();
 
     private ItemStack borderType = HeadBuilder.of(BORDER_TYPE_VALUE)
             .name("Type de bordure")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GREEN + "Téléportation"
+            ).addLore(LoreUtil.wrapLore(
+                    ChatColor.GRAY + "Permet de choisir le type de bordure, entre une bordure qui téléporte les joueurs en sécurité, ou une bordure qui les élimine",
+                    30
+            ))
             .build();
 
     private ItemStack borderTimer = HeadBuilder.of(BORDER_TIMER_VALUE)
             .name("Temps avant la bordure")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "30 minutes"
+            )
             .build();
 
     private ItemStack borderSpeed = HeadBuilder.of(BORDER_SPEED_VALUE)
             .name("Vitesse de la bordure")
+            .lore(
+                    "",
+                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "0.5 bloc/s",
+                    "",
+                    ChatColor.GRAY + "Clic gauche : +0.1 bloc/s",
+                    ChatColor.GRAY + "Clic droit : -0.1 bloc/s"
+            )
             .build();
 
 

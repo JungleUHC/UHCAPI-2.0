@@ -3,6 +3,7 @@ package fr.altaks.uhcapi2.views;
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
 import fr.altaks.uhcapi2.views.gamemode.GameModeSelectionMenu;
+import fr.altaks.uhcapi2.views.moderation.ModerationMainMenu;
 import fr.altaks.uhcapi2.views.scenarios.ScenariosMainMenu;
 import fr.altaks.uhcapi2.views.timers.TimersMainMenu;
 import fr.altaks.uhcapi2.views.world.WorldMainMenu;
@@ -72,6 +73,7 @@ public class HostMainMenu extends FastInv {
     private GameConfigMainMenu gameConfigMainMenu = new GameConfigMainMenu(this);
     private GameModeSelectionMenu gamemodeSelectionMenu;
     private ScenariosMainMenu scenariosMainMenu = new ScenariosMainMenu(this);
+    private ModerationMainMenu moderationMainMenu = new ModerationMainMenu(this);
 
     private Main main;
 
@@ -88,7 +90,7 @@ public class HostMainMenu extends FastInv {
         setItem(15, configScenarios, event -> scenariosMainMenu.open((Player) event.getWhoClicked()));
 
         // Third line
-        setItem(18, configMod);
+        setItem(18, configMod, event -> moderationMainMenu.open((Player) event.getWhoClicked()));
         setItem(22, configRoles, event -> {
             // if the role menu is set, open it, otherwise say that the game mode is not loaded
             if(main.getGameManager().getRolesAmountsMainMenu() != null){

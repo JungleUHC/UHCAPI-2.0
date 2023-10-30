@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 public class TimersMainMenu extends FastInv {
@@ -23,6 +24,7 @@ public class TimersMainMenu extends FastInv {
                     ChatColor.GRAY + "Clic gauche : +1 minute",
                     ChatColor.GRAY + "Clic droit : -1 minute"
             )
+            .flags(ItemFlag.HIDE_ATTRIBUTES)
             .build();
 
     private ItemStack timersRoles = new ItemBuilder(Material.ARMOR_STAND)
