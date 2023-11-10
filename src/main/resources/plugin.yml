@@ -22,3 +22,9 @@ website: mc.jungleuhc.fr
 
 ## The prefix that will be used in the console to log outputs
 prefix: "UHCAPI"
+
+commands:
+  worldtp:
+    description: "Teleporte le joueur dans un monde donne"
+    usage: "/worldtp <world>"
+    permission: "uhcapi2.worldtp"

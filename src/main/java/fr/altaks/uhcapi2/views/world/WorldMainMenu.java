@@ -53,15 +53,16 @@ public class WorldMainMenu extends FastInv {
 
     private WorldCaveBoostSubMenu caveBoostMenu;
     private WorldStructuresSubMenu structuresMenu;
-    private WorldNewWorldSubMenu newWorldMenu = new WorldNewWorldSubMenu(this);
+    private WorldNewWorldSubMenu newWorldMenu;
 
     public WorldMainMenu(GameManager manager, HostMainMenu upperMenu) {
         super(5*9, "Gestion du Monde");
         this.upperMenu = upperMenu;
         this.manager = manager;
-        this.structuresMenu = new WorldStructuresSubMenu(manager, this);
 
-        caveBoostMenu = new WorldCaveBoostSubMenu(manager, this);
+        this.structuresMenu = new WorldStructuresSubMenu(manager, this);
+        this.newWorldMenu = new WorldNewWorldSubMenu(manager, this);
+        this.caveBoostMenu = new WorldCaveBoostSubMenu(manager, this);
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
