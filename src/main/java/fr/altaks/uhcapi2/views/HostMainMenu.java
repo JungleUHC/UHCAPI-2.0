@@ -1,6 +1,7 @@
 package fr.altaks.uhcapi2.views;
 
 import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
 import fr.altaks.uhcapi2.views.gamemode.GameModeSelectionMenu;
 import fr.altaks.uhcapi2.views.moderation.ModerationMainMenu;
@@ -68,7 +69,7 @@ public class HostMainMenu extends FastInv {
             .lore(ChatColor.GRAY + "Veuillez choisir un mode de jeu")
             .build();
 
-    private WorldMainMenu worldMainMenu = new WorldMainMenu(this);
+    private WorldMainMenu worldMainMenu;
     private TimersMainMenu timersMainMenu;
     private GameConfigMainMenu gameConfigMainMenu = new GameConfigMainMenu(this);
     private GameModeSelectionMenu gamemodeSelectionMenu;
@@ -77,8 +78,9 @@ public class HostMainMenu extends FastInv {
 
     private Main main;
 
-    public HostMainMenu(Main main) {
+    public HostMainMenu(GameManager manager, Main main) {
         super(6*9, "Menu principal");
+        this.worldMainMenu = new WorldMainMenu(manager, this);
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 

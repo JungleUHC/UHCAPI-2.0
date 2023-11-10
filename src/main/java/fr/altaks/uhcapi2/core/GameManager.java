@@ -1,6 +1,7 @@
 package fr.altaks.uhcapi2.core;
 
 import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.controllers.WorldsController;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
 import fr.altaks.uhcapi2.views.timers.TimersRolesMenu;
@@ -24,9 +25,13 @@ public class GameManager {
     private RolesAmountsMainMenu rolesAmountsMainMenu;
     private TimersRolesMenu timersRolesMenu;
 
+    private WorldsController worldsController;
+
     public GameManager(Main main){
         this.main = main;
-        this.hostMainMenu = new HostMainMenu(main);
+        this.hostMainMenu = new HostMainMenu(this, main);
+
+        this.worldsController = new WorldsController();
     }
 
     private Player host;
@@ -156,5 +161,9 @@ public class GameManager {
 
     public void setTimersRolesMenu(TimersRolesMenu timersRolesMenu) {
         this.timersRolesMenu = timersRolesMenu;
+    }
+
+    public WorldsController getWorldsController() {
+        return worldsController;
     }
 }
