@@ -3,7 +3,9 @@
 # Configuration section about the server-logs settings.
 logging:
   # Displays information to help debugging the application
-  debug-mode: false
+  debug-mode: true
 
   # Displays information to help developers with verbose logs from the application
-  dev-mode  : false
+  dev-mode  : true
+
+game-modes-path: "../../data/gamemodes"

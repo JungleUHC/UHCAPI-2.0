@@ -29,8 +29,6 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT' // The Spigot API with no shadowing. Requires the OSS repo.
     compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT' // The full Spigot server with no shadowing. Requires mavenLocal.
 
-    implementation 'com.github.RicardormDev:ItemBuilderAPI:v1.0'
-
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
     testImplementation 'org.mockito:mockito-core:4.0.0'
     // https://mvnrepository.com/artifact/com.github.seeseemelk/MockBukkit-v1.13
@@ -56,6 +54,7 @@ def getGitAuthors = { ->
 }
 
 processResources {
+    dependsOn(clean)
     filter {
         it.replace('${project.version}', "${version}").replace('\"${project.authors}\"', "${getGitAuthors()}")
     }
@@ -69,6 +68,8 @@ idea {
         downloadSources = true
     }
 }
+
+
 
 test {
     useJUnitPlatform() // JUnit 5

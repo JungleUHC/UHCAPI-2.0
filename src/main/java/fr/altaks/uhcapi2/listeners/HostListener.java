@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -81,12 +82,26 @@ public class HostListener implements Listener {
      */
     @EventHandler
     public void onHostsTriesToMoveHostItems(InventoryClickEvent event){
-        if(event == null) return;
+        if(main.getGameManager().getHost() == null) return;
         if(this.main.getGameManager().getGameState() != GameState.WAITING_TO_START) return;
         if(this.main.getGameManager().getHost().equals(event.getWhoClicked()) || this.main.getGameManager().getCoHosts().contains(event.getWhoClicked())){
             if(event.getCurrentItem() == null) return;
             if(event.getCurrentItem().equals(this.main.getGameManager().getHostMenuItem()) || event.getCurrentItem().equals(this.main.getGameManager().getHostGameLaunchItem())){
                 event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onHostsUsesHostMenuItem(PlayerInteractEvent event){
+        if(main.getGameManager().getHost() == null) return;
+        if(!event.hasItem()) return;
+        if(!event.getItem().hasItemMeta()) return;
+
+        if(this.main.getGameManager().getGameState() != GameState.WAITING_TO_START) return;
+        if(this.main.getGameManager().getHost().equals(event.getPlayer()) || this.main.getGameManager().getCoHosts().contains(event.getPlayer())){
+            if(event.getItem().equals(this.main.getGameManager().getHostMenuItem())) {
+                this.main.getGameManager().getHostMainMenu().open(event.getPlayer());
             }
         }
     }
@@ -98,6 +113,7 @@ public class HostListener implements Listener {
      */
     @EventHandler
     public void onHostsTriesToDropHostItems(PlayerDropItemEvent event){
+        if(main.getGameManager().getHost() == null) return;
         if(this.main.getGameManager().getGameState() != GameState.WAITING_TO_START) return;
         if(this.main.getGameManager().getHost().equals(event.getPlayer()) || this.main.getGameManager().getCoHosts().contains(event.getPlayer())){
             if(event.getItemDrop().getItemStack().equals(this.main.getGameManager().getHostMenuItem()) || event.getItemDrop().getItemStack().equals(this.main.getGameManager().getHostGameLaunchItem())){

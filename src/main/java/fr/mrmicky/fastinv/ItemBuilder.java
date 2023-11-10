@@ -23,6 +23,7 @@
  */
 package fr.mrmicky.fastinv;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -43,6 +44,8 @@ import java.util.function.Consumer;
  * @author MrMicky
  */
 public class ItemBuilder {
+
+    public static final ItemStack FILLING_PANE = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 15);
 
     private final ItemStack item;
 
@@ -116,7 +119,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder name(String name) {
-        return meta(meta -> meta.setDisplayName(name));
+        return meta(meta -> meta.setDisplayName(ChatColor.RESET + name));
     }
 
     public ItemBuilder lore(String lore) {

@@ -4,6 +4,7 @@ import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IPluginCommand;
 import fr.altaks.uhcapi2.listeners.HostListener;
 import fr.altaks.uhcapi2.listeners.PlayerListener;
+import fr.mrmicky.fastinv.FastInvManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
@@ -134,6 +135,7 @@ public class Main extends JavaPlugin {
         // Your code here...
 
         this.gameManager = new GameManager(this);
+        FastInvManager.register(this);
 
 
         logDebug("Registered " + commandsCount + " commands and " + successfullyLoadedListenersCount + " listeners successfully.");

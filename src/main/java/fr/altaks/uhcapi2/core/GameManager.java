@@ -1,7 +1,9 @@
 package fr.altaks.uhcapi2.core;
 
 import fr.altaks.uhcapi2.Main;
-import fr.altaks.uhcapi2.core.util.ItemManager;
+import fr.altaks.uhcapi2.views.HostMainMenu;
+import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
+import fr.altaks.uhcapi2.views.timers.TimersRolesMenu;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,18 +13,33 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GameManager {
 
     private Main main;
     private GameState gameState = GameState.WAITING_TO_START;
 
+    private final HostMainMenu hostMainMenu;
+
+    private RolesAmountsMainMenu rolesAmountsMainMenu;
+    private TimersRolesMenu timersRolesMenu;
+
     public GameManager(Main main){
         this.main = main;
+        this.hostMainMenu = new HostMainMenu(main);
     }
 
     private Player host;
+
+    public GameMode getChosenGameMode() {
+        return chosenGameMode;
+    }
+
+    public void setChosenGameMode(GameMode chosenGameMode) {
+        this.chosenGameMode = chosenGameMode;
+    }
+
+    private GameMode chosenGameMode = null;
 
     public ArrayList<Player> getCoHosts() {
         return coHosts;
@@ -119,5 +136,25 @@ public class GameManager {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public HostMainMenu getHostMainMenu() {
+        return hostMainMenu;
+    }
+
+    public RolesAmountsMainMenu getRolesAmountsMainMenu() {
+        return rolesAmountsMainMenu;
+    }
+
+    public void setRolesAmountsMainMenu(RolesAmountsMainMenu rolesAmountsMainMenu) {
+        this.rolesAmountsMainMenu = rolesAmountsMainMenu;
+    }
+
+    public TimersRolesMenu getTimersRolesMenu() {
+        return timersRolesMenu;
+    }
+
+    public void setTimersRolesMenu(TimersRolesMenu timersRolesMenu) {
+        this.timersRolesMenu = timersRolesMenu;
     }
 }
