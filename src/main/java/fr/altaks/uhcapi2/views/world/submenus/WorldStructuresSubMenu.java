@@ -1,5 +1,7 @@
 package fr.altaks.uhcapi2.views.world.submenus;
 
+import fr.altaks.uhcapi2.controllers.WorldsController;
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
@@ -9,6 +11,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class WorldStructuresSubMenu extends FastInv {
 
@@ -50,9 +58,13 @@ public class WorldStructuresSubMenu extends FastInv {
             )
             .build();
 
-    public WorldStructuresSubMenu(WorldMainMenu upperMenu) {
+    private GameManager manager;
+    private HashMap<Integer, WorldsController.StructureType> slotsToStructureType = new HashMap<>();
+
+    public WorldStructuresSubMenu(GameManager manager, WorldMainMenu upperMenu) {
         super(5*9, "Gestion des structures");
         this.upperMenu = upperMenu;
+        this.manager = manager;
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
@@ -60,6 +72,10 @@ public class WorldStructuresSubMenu extends FastInv {
         setItem(20, villagesStruct);
         setItem(22, strongholdStruct);
         setItem(24, mineshaftStruct);
+
+        slotsToStructureType.put(20, WorldsController.StructureType.VILLAGE);
+        slotsToStructureType.put(22, WorldsController.StructureType.STRONGHOLD);
+        slotsToStructureType.put(24, WorldsController.StructureType.MINESHAFT);
 
         // Set the return arrow
         setItem(40, new ItemBuilder(Material.ARROW).name("Retour").build(),
@@ -70,5 +86,24 @@ public class WorldStructuresSubMenu extends FastInv {
     @Override
     protected void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
+
+        // Check interaction validity
+        if(event.getClickedInventory() == null || event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
+        if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
+
+        if(slotsToStructureType.containsKey(event.getSlot())){
+            this.manager.getWorldsController().switchStructureActivationStatus(slotsToStructureType.get(event.getSlot()));
+
+            // update item
+            updateItemLoreAccordingToNewStructureState(event, this.manager.getWorldsController().isStructureEnabled(slotsToStructureType.get(event.getSlot())));
+        }
+    }
+
+    private static void updateItemLoreAccordingToNewStructureState(InventoryClickEvent event, boolean isEnabled) {
+        ItemMeta meta = event.getCurrentItem().getItemMeta();
+        List<String> lore = meta.getLore();
+        lore.set(1, ChatColor.YELLOW + "Etat : " + ((isEnabled) ? ChatColor.GREEN + "Activé" : ChatColor.RED + "Désactivé"));
+        meta.setLore(lore);
+        event.getCurrentItem().setItemMeta(meta);
     }
 }

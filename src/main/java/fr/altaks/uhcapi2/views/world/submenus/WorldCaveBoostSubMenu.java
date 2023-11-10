@@ -1,5 +1,9 @@
 package fr.altaks.uhcapi2.views.world.submenus;
 
+import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.controllers.WorldsController;
+import fr.altaks.uhcapi2.core.GameManager;
+import fr.altaks.uhcapi2.core.util.LoreUtil;
 import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
@@ -9,6 +13,12 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public class WorldCaveBoostSubMenu extends FastInv {
 
@@ -103,10 +113,13 @@ public class WorldCaveBoostSubMenu extends FastInv {
             )
             .build();
 
+    private GameManager manager;
+    private HashMap<Integer, WorldsController.BoostType> slotsToBoostType = new HashMap<>();
 
-    public WorldCaveBoostSubMenu(WorldMainMenu upperMenu) {
+    public WorldCaveBoostSubMenu(GameManager manager, WorldMainMenu upperMenu) {
         super(5*9, "Boost des caves");
         this.upperMenu = upperMenu;
+        this.manager = manager;
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
@@ -124,6 +137,14 @@ public class WorldCaveBoostSubMenu extends FastInv {
         setItem(31, diamondBoost);
         setItem(33, ironBoost);
 
+        slotsToBoostType.put(11, WorldsController.BoostType.REDSTONE);
+        slotsToBoostType.put(13, WorldsController.BoostType.LAPIS);
+        slotsToBoostType.put(15, WorldsController.BoostType.COAL);
+        slotsToBoostType.put(22, WorldsController.BoostType.CAVE);
+        slotsToBoostType.put(29, WorldsController.BoostType.GOLD);
+        slotsToBoostType.put(31, WorldsController.BoostType.DIAMOND);
+        slotsToBoostType.put(33, WorldsController.BoostType.IRON);
+
         // Set the return arrow
         setItem(40, new ItemBuilder(Material.ARROW).name("Retour").build(),
                 e -> upperMenu.open((Player) e.getWhoClicked())
@@ -133,5 +154,31 @@ public class WorldCaveBoostSubMenu extends FastInv {
     @Override
     protected void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
+
+        // Check interaction validity
+        if(event.getClickedInventory() == null || event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
+        if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
+
+        if(slotsToBoostType.containsKey(event.getSlot())){
+            if (event.isLeftClick()) {
+                // Increase boost
+                manager.getWorldsController().increaseBoost(slotsToBoostType.get(event.getSlot()), .1f);
+            } else if (event.isRightClick()) {
+                // Decrease boost
+                manager.getWorldsController().decreaseBoost(slotsToBoostType.get(event.getSlot()), .1f);
+            }
+
+            // Update item lore
+
+            updateItemLoreAccordingToNewBoostValue(event, manager.getWorldsController().getBoosts().get(slotsToBoostType.get(event.getSlot())));
+        }
+    }
+
+    private static void updateItemLoreAccordingToNewBoostValue(InventoryClickEvent event, float newValue) {
+        ItemMeta meta = event.getCurrentItem().getItemMeta();
+        List<String> lore = meta.getLore();
+        lore.set(1, ChatColor.YELLOW + "Multiplicateur : " + NumberFormat.getNumberInstance(Locale.FRANCE).format((double) newValue) + "x");
+        meta.setLore(lore);
+        event.getCurrentItem().setItemMeta(meta);
     }
 }

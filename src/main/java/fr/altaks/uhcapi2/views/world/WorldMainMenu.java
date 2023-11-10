@@ -1,5 +1,6 @@
 package fr.altaks.uhcapi2.views.world;
 
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.world.submenus.WorldCaveBoostSubMenu;
 import fr.altaks.uhcapi2.views.world.submenus.WorldNewWorldSubMenu;
@@ -48,13 +49,20 @@ public class WorldMainMenu extends FastInv {
             )
             .build();
 
-    private WorldCaveBoostSubMenu caveBoostMenu = new WorldCaveBoostSubMenu(this);
-    private WorldStructuresSubMenu structuresMenu = new WorldStructuresSubMenu(this);
-    private WorldNewWorldSubMenu newWorldMenu = new WorldNewWorldSubMenu(this);
+    private GameManager manager;
 
-    public WorldMainMenu(HostMainMenu upperMenu) {
+    private WorldCaveBoostSubMenu caveBoostMenu;
+    private WorldStructuresSubMenu structuresMenu;
+    private WorldNewWorldSubMenu newWorldMenu;
+
+    public WorldMainMenu(GameManager manager, HostMainMenu upperMenu) {
         super(5*9, "Gestion du Monde");
         this.upperMenu = upperMenu;
+        this.manager = manager;
+
+        this.structuresMenu = new WorldStructuresSubMenu(manager, this);
+        this.newWorldMenu = new WorldNewWorldSubMenu(manager, this);
+        this.caveBoostMenu = new WorldCaveBoostSubMenu(manager, this);
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
