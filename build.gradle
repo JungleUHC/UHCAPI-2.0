@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
     id 'com.palantir.git-version' version '3.0.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'fr.altaks.uhcapi2'
@@ -32,6 +33,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:4.0.0'
     // https://mvnrepository.com/artifact/com.github.seeseemelk/MockBukkit-v1.13
     testImplementation 'com.github.seeseemelk:MockBukkit-v1.13:0.2.0'
+
 }
 
 def getGitAuthors = { ->
@@ -52,6 +54,7 @@ def getGitAuthors = { ->
 }
 
 processResources {
+    dependsOn(clean)
     filter {
         it.replace('${project.version}', "${version}").replace('\"${project.authors}\"', "${getGitAuthors()}")
     }
@@ -61,9 +64,18 @@ idea {
     module {
         inheritOutputDirs = true
         name = "spigot-template-${version}"
+        downloadJavadoc = true
+        downloadSources = true
     }
 }
 
+
+
 test {
     useJUnitPlatform() // JUnit 5
+}
+
+shadowJar {
+    // Replace 'com.yourpackage' with the package of your plugin
+    relocate 'fr.mrmicky.fastinv', 'fr.altaks.fastinv'
 }
