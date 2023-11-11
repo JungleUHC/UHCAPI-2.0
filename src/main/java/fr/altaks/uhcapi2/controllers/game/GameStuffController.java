@@ -31,6 +31,11 @@ public class GameStuffController implements IController {
     private HashMap<Enchantment, Integer> bowsLimits = new HashMap<>();
 
     private float enderPearlDropRateMultiplicator = 1.0f;
+
+    public void setAreEnderPearlEnabled(boolean areEnderPearlEnabled) {
+        this.areEnderPearlEnabled = areEnderPearlEnabled;
+    }
+
     private boolean areEnderPearlEnabled = true;
     private boolean areWaterBucketEnabled = true;
     private boolean areLavaBucketEnabled = true;
@@ -93,7 +98,7 @@ public class GameStuffController implements IController {
         return bowsLimits;
     }
 
-    public boolean isAreEnderPearlEnabled() {
+    public boolean areEnderPearlEnabled() {
         return areEnderPearlEnabled;
     }
 
