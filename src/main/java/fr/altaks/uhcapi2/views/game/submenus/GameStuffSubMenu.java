@@ -1,13 +1,25 @@
 package fr.altaks.uhcapi2.views.game.submenus;
 
+import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.controllers.GameController;
+import fr.altaks.uhcapi2.controllers.game.GameStuffController;
 import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameStuffSubMenu extends FastInv {
 
@@ -15,14 +27,31 @@ public class GameStuffSubMenu extends FastInv {
 
     private ItemStack swordConfig = new ItemBuilder(Material.IRON_SWORD)
             .name("Limites des épées")
+            .lore(
+                    "",
+                    ChatColor.RESET +""+ ChatColor.GRAY + "Limites : Valeurs par défaut",
+                    ""
+            )
+            .flags(ItemFlag.HIDE_ATTRIBUTES)
             .build();
 
     private ItemStack armorConfig = new ItemBuilder(Material.IRON_CHESTPLATE)
             .name("Limites des armures")
+            .lore(
+                    "",
+                    ChatColor.RESET +""+ ChatColor.GRAY + "Limites : Valeurs par défaut",
+                    ""
+            )
+            .flags(ItemFlag.HIDE_ATTRIBUTES)
             .build();
 
     private ItemStack bowConfig = new ItemBuilder(Material.BOW)
             .name("Limites des arcs")
+            .lore(
+                    "",
+                    ChatColor.RESET +""+ ChatColor.GRAY + "Limites : Valeurs par défaut",
+                    ""
+            )
             .build();
 
     private ItemStack pearlConfig = new ItemBuilder(Material.ENDER_PEARL)
@@ -56,8 +85,57 @@ public class GameStuffSubMenu extends FastInv {
         );
     }
 
+    public ItemStack getSwordConfigIcon() {
+        return this.getInventory().getItem(11);
+    }
+
+    public ItemStack getArmorConfigIcon() {
+        return this.getInventory().getItem(13);
+    }
+
+    public ItemStack getBowConfigIcon() {
+        return this.getInventory().getItem(15);
+    }
+
     @Override
     protected void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
+    }
+
+    private void processPearlConfigClick(InventoryClickEvent event){
+        // switch the pearl state and change lore of the item
+    }
+
+    private void processBucketConfigClick(InventoryClickEvent event){
+        // process the click :
+        // - left click -> switch water bucket activation state
+        // - right click -> switch lava bucket activation state
+    }
+
+    public void updateEnchantsLimitsLore(ItemStack item, HashMap<Enchantment, Integer> enchants){
+        // update the lore of the enchantment limits inventory according to the controller
+
+        Main.logDev("Updating enchants limits lore for item " + item);
+
+        ItemMeta meta = item.getItemMeta();
+
+        // Nullify the previous lore
+        ArrayList<String> newLore = new ArrayList<>();
+
+        newLore.add("");
+        newLore.add(ChatColor.RESET + "Nouvelles limites : ");
+        newLore.add("");
+
+        for(Map.Entry<Enchantment, Integer> entry : enchants.entrySet()){
+            if(entry.getValue() != 0){
+                newLore.add(ChatColor.RESET + "" + ChatColor.GRAY + "| " + manager.getGameController().getEnchantmentName(entry.getKey()) + " " + entry.getValue());
+            } else
+                newLore.add(ChatColor.RESET + "" + ChatColor.GRAY + "| " + manager.getGameController().getEnchantmentName(entry.getKey()) + " " + ChatColor.RED + "Désactivé");
+
+        }
+
+        meta.setLore(newLore);
+
+        item.setItemMeta(meta);
     }
 }

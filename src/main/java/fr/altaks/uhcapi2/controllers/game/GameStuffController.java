@@ -1,6 +1,7 @@
 package fr.altaks.uhcapi2.controllers.game;
 
 import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IController;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
@@ -13,11 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class GameStuffController implements IController {
 
@@ -32,17 +30,17 @@ public class GameStuffController implements IController {
     private HashMap<Enchantment, Integer> armorsLimits = new HashMap<>();
     private HashMap<Enchantment, Integer> bowsLimits = new HashMap<>();
 
-    private boolean areEnderPearlEnabled = true;
     private float enderPearlDropRateMultiplicator = 1.0f;
-
+    private boolean areEnderPearlEnabled = true;
     private boolean areWaterBucketEnabled = true;
     private boolean areLavaBucketEnabled = true;
 
     private FastInv swordsLimitsInventory, armorsLimitsInventory, bowsLimitsInventory;
 
+    private GameManager manager;
+
     public GameStuffController(Main main){
         this.main = main;
-
 
         for(Enchantment enchantment : Enchantment.values()){
             if(enchantment.canEnchantItem(swordTestItem)){
@@ -147,12 +145,13 @@ public class GameStuffController implements IController {
                     int slot = this.getInventory().firstEmpty();
                     if(slot == -1) throw new IllegalStateException("The enchants limits inventory is full");
 
+                    iconBuilder.name(main.getGameManager().getGameController().getEnchantmentName(enchant));
+
                     ItemStack icon = iconBuilder.build();
 
                     EnchantmentStorageMeta iconMeta = (EnchantmentStorageMeta) icon.getItemMeta();
                     iconMeta.addStoredEnchant(enchant, limits.get(enchant), false);
                     icon.setItemMeta(iconMeta);
-
 
                     slotsToEnchantments.put(slot, enchant);
                     setItem(slot, icon);
@@ -187,6 +186,12 @@ public class GameStuffController implements IController {
                 // update icon enchants
                 updateIconEnchants(event, enchantment, newValue);
                 updateLoreIfEnchantIsDisabled(event, enchantment, newValue);
+
+                ItemStack toUpdate = getItemStack(limits);
+                main.getGameManager().getHostMainMenu().getGameConfigMainMenu().getStuffSubMenu().updateEnchantsLimitsLore(
+                        toUpdate,
+                        limits
+                );
             }
         }
 
@@ -219,5 +224,20 @@ public class GameStuffController implements IController {
             meta.setLore(lore);
             event.getCurrentItem().setItemMeta(meta);
         }
+    }
+
+    private ItemStack getItemStack(HashMap<Enchantment, Integer> limits) {
+        ItemStack toUpdate = null;
+
+        if(limits.equals(swordsLimits)){
+            toUpdate = main.getGameManager().getHostMainMenu().getGameConfigMainMenu().getStuffSubMenu().getSwordConfigIcon();
+        } else if(limits.equals(armorsLimits)){
+            toUpdate = main.getGameManager().getHostMainMenu().getGameConfigMainMenu().getStuffSubMenu().getArmorConfigIcon();
+        } else if(limits.equals(bowsLimits)){
+            toUpdate = main.getGameManager().getHostMainMenu().getGameConfigMainMenu().getStuffSubMenu().getBowConfigIcon();
+        } else {
+            throw new IllegalStateException("The enchantment limits inventory is not linked to any menu");
+        }
+        return toUpdate;
     }
 }

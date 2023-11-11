@@ -34,7 +34,7 @@ public class GameManager {
         this.hostMainMenu = new HostMainMenu(this, main);
 
         this.worldsController = new WorldsController(main);
-        this.gameController = new GameController(main);
+        this.gameController = new GameController(this, main);
     }
 
     private Player host;
