@@ -1,5 +1,6 @@
 package fr.altaks.uhcapi2.views.game;
 
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.game.submenus.GameBordersSubMenu;
 import fr.altaks.uhcapi2.views.game.submenus.GameInvsSubMenu;
@@ -63,14 +64,19 @@ public class GameConfigMainMenu  extends FastInv {
             .name("Configuration des monstres")
             .build();
 
-    private GameStuffSubMenu stuffSubMenu = new GameStuffSubMenu(this);
+    public GameStuffSubMenu getStuffSubMenu() {
+        return stuffSubMenu;
+    }
+
+    private GameStuffSubMenu stuffSubMenu;
     private GameInvsSubMenu invsSubMenu = new GameInvsSubMenu(this);
     private GameBordersSubMenu bordersSubMenu = new GameBordersSubMenu(this);
     private GameMobsSubMenu mobsSubMenu = new GameMobsSubMenu(this);
 
-    public GameConfigMainMenu(HostMainMenu upperMenu) {
+    public GameConfigMainMenu(GameManager manager, HostMainMenu upperMenu) {
         super(5*9, "Configuration de la partie");
         this.upperMenu = upperMenu;
+        this.stuffSubMenu = new GameStuffSubMenu(manager, this);
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 

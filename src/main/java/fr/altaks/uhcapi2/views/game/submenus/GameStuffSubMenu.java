@@ -1,5 +1,6 @@
 package fr.altaks.uhcapi2.views.game.submenus;
 
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
@@ -32,16 +33,19 @@ public class GameStuffSubMenu extends FastInv {
             .name("Limites des seaux")
             .build();
 
-    public GameStuffSubMenu(GameConfigMainMenu upperMenu) {
+    private GameManager manager;
+
+    public GameStuffSubMenu(GameManager manager, GameConfigMainMenu upperMenu) {
         super(5*9, "Création du monde");
         this.upperMenu = upperMenu;
+        this.manager = manager;
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
         // 11 13 15 30 32
-        setItem(11, swordConfig);
-        setItem(13, armorConfig);
-        setItem(15, bowConfig);
+        setItem(11, swordConfig, event -> manager.getGameController().getGameStuffController().getSwordsLimitsInventory().open((Player) event.getWhoClicked()));
+        setItem(13, armorConfig, event -> manager.getGameController().getGameStuffController().getArmorsLimitsInventory().open((Player) event.getWhoClicked()));
+        setItem(15, bowConfig, event -> manager.getGameController().getGameStuffController().getBowsLimitsInventory().open((Player) event.getWhoClicked()));
 
         setItem(30, pearlConfig);
         setItem(32, bucketConfig);

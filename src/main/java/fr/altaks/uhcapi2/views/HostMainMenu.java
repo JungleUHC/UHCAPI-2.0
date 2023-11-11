@@ -71,7 +71,12 @@ public class HostMainMenu extends FastInv {
 
     private WorldMainMenu worldMainMenu;
     private TimersMainMenu timersMainMenu;
-    private GameConfigMainMenu gameConfigMainMenu = new GameConfigMainMenu(this);
+
+    public GameConfigMainMenu getGameConfigMainMenu() {
+        return gameConfigMainMenu;
+    }
+
+    private GameConfigMainMenu gameConfigMainMenu;
     private GameModeSelectionMenu gamemodeSelectionMenu;
     private ScenariosMainMenu scenariosMainMenu = new ScenariosMainMenu(this);
     private ModerationMainMenu moderationMainMenu = new ModerationMainMenu(this);
@@ -81,6 +86,7 @@ public class HostMainMenu extends FastInv {
     public HostMainMenu(GameManager manager, Main main) {
         super(6*9, "Menu principal");
         this.worldMainMenu = new WorldMainMenu(manager, this);
+        this.gameConfigMainMenu = new GameConfigMainMenu(manager, this);
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
