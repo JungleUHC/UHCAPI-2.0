@@ -11,15 +11,18 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameStuffController implements IController {
 
@@ -111,6 +114,107 @@ public class GameStuffController implements IController {
             if(!areLavaBucketEnabled){
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Les seaux de lave sont désactivés");
+            }
+        }
+    }
+
+    // --------------- Enchantments limitations related listeners --------------------
+
+    private final ArrayList<Material> swordsTypes = new ArrayList<>(Arrays.asList(
+            Material.WOOD_SWORD,
+            Material.STONE_SWORD,
+            Material.IRON_SWORD,
+            Material.GOLD_SWORD,
+            Material.DIAMOND_SWORD
+    ));
+
+    private final ArrayList<Material> armorTypes = new ArrayList<>(Arrays.asList(
+            Material.LEATHER_BOOTS, Material.LEATHER_LEGGINGS, Material.LEATHER_CHESTPLATE, Material.LEATHER_HELMET,
+            Material.CHAINMAIL_BOOTS, Material.CHAINMAIL_LEGGINGS, Material.CHAINMAIL_CHESTPLATE, Material.CHAINMAIL_HELMET,
+            Material.IRON_BOOTS, Material.IRON_LEGGINGS, Material.IRON_CHESTPLATE, Material.IRON_HELMET,
+            Material.GOLD_BOOTS, Material.GOLD_LEGGINGS, Material.GOLD_CHESTPLATE, Material.GOLD_HELMET,
+            Material.DIAMOND_BOOTS, Material.DIAMOND_LEGGINGS, Material.DIAMOND_CHESTPLATE, Material.DIAMOND_HELMET
+    ));
+
+    @EventHandler
+    public void onPlayerEnchantsViaAnvil(InventoryClickEvent event){
+        if(event.getClickedInventory().getType() == InventoryType.ANVIL){
+        if(event.getSlotType() == InventoryType.SlotType.RESULT){
+                if(event.getCurrentItem() == null) return;
+                if(event.getCurrentItem().getType() == Material.AIR) return;
+
+                if(event.getCurrentItem().getType() == Material.BOW){
+                    // Bow limitations
+                    for(Map.Entry<Enchantment, Integer> entry : event.getCurrentItem().getEnchantments().entrySet()){
+                        if(!bowsLimits.containsKey(entry.getKey())) continue;
+                        if(entry.getValue() > bowsLimits.get(entry.getKey())){
+                            event.setCancelled(true);
+                            event.getWhoClicked().sendMessage(
+                                    Main.MSG_PREFIX + ChatColor.RED + "Cet enchantement est limité à " + swordsLimits.get(entry.getKey()) + " niveau(x)"
+                            );
+                        }
+                    }
+                } else if(swordsTypes.contains(event.getCurrentItem().getType())){
+                    // Swords limitations
+                    for(Map.Entry<Enchantment, Integer> entry : event.getCurrentItem().getEnchantments().entrySet()){
+                        if(!swordsLimits.containsKey(entry.getKey())) continue;
+                        if(entry.getValue() > swordsLimits.get(entry.getKey())){
+                            event.setCancelled(true);
+                            event.getWhoClicked().sendMessage(
+                                    Main.MSG_PREFIX + ChatColor.RED + "Cet enchantement est limité à " + swordsLimits.get(entry.getKey()) + " niveau(x)"
+                            );
+                        }
+                    }
+                } else if(armorTypes.contains(event.getCurrentItem().getType())){
+                    // Armor limitations
+                    for(Map.Entry<Enchantment, Integer> entry : event.getCurrentItem().getEnchantments().entrySet()){
+                        if(!armorsLimits.containsKey(entry.getKey())) continue;
+                        if(entry.getValue() > armorsLimits.get(entry.getKey())){
+                            event.setCancelled(true);
+                            event.getWhoClicked().sendMessage(
+                                    Main.MSG_PREFIX + ChatColor.RED + "Cet enchantement est limité à " + swordsLimits.get(entry.getKey()) + " niveau(x)"
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerEnchantsItem(EnchantItemEvent event){
+        if(event.getItem().getType() == Material.BOW) {
+            // Bow limitations
+            for(Map.Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()){
+                if(!bowsLimits.containsKey(entry.getKey())) continue;
+                if(entry.getValue() > bowsLimits.get(entry.getKey())){
+                    event.setCancelled(true);
+                    event.getEnchanter().sendMessage(
+                            Main.MSG_PREFIX + ChatColor.RED + "Cet enchantement est limité à " + swordsLimits.get(entry.getKey()) + " niveau(x)"
+                    );
+                }
+            }
+        } else if(swordsTypes.contains(event.getItem().getType())){
+            // Swords limitations
+            for(Map.Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()){
+                if(!swordsLimits.containsKey(entry.getKey())) continue;
+                if(entry.getValue() > swordsLimits.get(entry.getKey())){
+                    event.setCancelled(true);
+                    event.getEnchanter().sendMessage(
+                            Main.MSG_PREFIX + ChatColor.RED + "Cet enchantement est limité à " + swordsLimits.get(entry.getKey()) + " niveau(x)"
+                    );
+                }
+            }
+        } else if(armorTypes.contains(event.getItem().getType())){
+            // Armor limitations
+            for(Map.Entry<Enchantment, Integer> entry : event.getEnchantsToAdd().entrySet()){
+                if(!armorsLimits.containsKey(entry.getKey())) continue;
+                if(entry.getValue() > armorsLimits.get(entry.getKey())){
+                    event.setCancelled(true);
+                    event.getEnchanter().sendMessage(
+                            Main.MSG_PREFIX + ChatColor.RED + "Cet enchantement est limité à " + swordsLimits.get(entry.getKey()) + " niveau(x)"
+                    );
+                }
             }
         }
     }
