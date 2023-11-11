@@ -5,11 +5,15 @@ import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IController;
 import fr.mrmicky.fastinv.FastInv;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -58,11 +62,57 @@ public class GameStuffController implements IController {
                 bowsLimits.put(enchantment, enchantment.getMaxLevel());
             }
         }
+
+
+        // TODO : REMOVE THIS FROM CONSTRUCTOR AND GIVE IT THE PROPER START METHOD
+        onGameStart();
     }
 
     @Override
     public void onGameStart() {
+        Bukkit.getPluginManager().registerEvents(this, main);
+    }
 
+    // --------------- Ender pearl limitations related listeners --------------------
+
+    @EventHandler
+    public void onPlayerTriesToUseEnderPearl(PlayerInteractEvent event){
+        if(!areEnderPearlEnabled){
+            if(event.hasItem() && event.getItem().getType().equals(Material.ENDER_PEARL)){
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Les perles de l'End sont désactivées");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEnderPearlDrop(ItemSpawnEvent event){
+        if(!areEnderPearlEnabled){
+            if(event.getEntity().getItemStack().getType() == Material.ENDER_PEARL){
+                event.getEntity().remove();
+            }
+        }
+    }
+
+    // --------------- bucket limitations related listeners --------------------
+
+    @EventHandler
+    public void onPlayerUsesWaterOrLavaBucket(PlayerBucketEmptyEvent event){
+        processBucketEvent(event);
+    }
+
+    public void processBucketEvent(PlayerBucketEvent event){
+        if(event.getBucket() == Material.WATER_BUCKET) {
+            if(!areWaterBucketEnabled){
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Les seaux d'eau sont désactivés");
+            }
+        } else if(event.getBucket() == Material.LAVA_BUCKET){
+            if(!areLavaBucketEnabled){
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Les seaux de lave sont désactivés");
+            }
+        }
     }
 
     public FastInv getSwordsLimitsInventory(){

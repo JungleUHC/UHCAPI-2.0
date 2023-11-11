@@ -59,7 +59,7 @@ public class GameManager {
         return hostMenuItem;
     }
 
-    private final ItemStack hostMenuItem = new ItemBuilder(Material.BLAZE_ROD)
+    private final ItemStack hostMenuItem = new ItemBuilder(Material.NETHER_STAR)
             .enchant(Enchantment.DURABILITY, 1)
             .flags(ItemFlag.HIDE_ENCHANTS)
             .name(ChatColor.RED + "\u00BB Configuration de la partie \u00AB")
@@ -104,8 +104,8 @@ public class GameManager {
         if(this.host != null){
             // add host items to new host inventory if the game is in WAITING mode
             if(this.gameState == GameState.WAITING_TO_START){
-                this.host.getInventory().setItem(3, hostMenuItem);
-                this.host.getInventory().setItem(5, hostGameLaunchItem);
+                this.host.getInventory().setItem(4, hostMenuItem);
+                this.host.getInventory().setItem(6, hostGameLaunchItem);
                 this.host.getInventory().setHeldItemSlot(4);
                 Main.logDebug("Giving host items to the new host");
             }
