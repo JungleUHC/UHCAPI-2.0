@@ -28,3 +28,6 @@ commands:
     description: "Teleporte le joueur dans un monde donne"
     usage: "/worldtp <world>"
     permission: "uhcapi2.worldtp"
+  validate:
+    description: "Valide la configuration de l'inventaire du joueur"
+    usage: "/validate <startinv/deathinv>"

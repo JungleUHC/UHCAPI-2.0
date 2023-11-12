@@ -1,8 +1,6 @@
 package fr.altaks.uhcapi2.views.game.submenus;
 
 import fr.altaks.uhcapi2.Main;
-import fr.altaks.uhcapi2.controllers.GameController;
-import fr.altaks.uhcapi2.controllers.game.GameStuffController;
 import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
 import fr.mrmicky.fastinv.FastInv;
@@ -16,7 +14,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

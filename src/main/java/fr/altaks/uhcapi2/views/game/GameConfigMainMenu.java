@@ -19,23 +19,21 @@ import org.bukkit.inventory.ItemStack;
 
 public class GameConfigMainMenu  extends FastInv {
 
-    private HostMainMenu upperMenu;
-
-    private ItemStack stuffConfig = new ItemBuilder(Material.DIAMOND_CHESTPLATE)
+    private final ItemStack stuffConfig = new ItemBuilder(Material.DIAMOND_CHESTPLATE)
             .enchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1)
             .flags(ItemFlag.HIDE_ENCHANTS)
             .name("Configuration des stuffs")
             .build();
 
-    private ItemStack borderConfig = new ItemBuilder(Material.IRON_FENCE)
+    private final ItemStack borderConfig = new ItemBuilder(Material.IRON_FENCE)
             .name("Configuration de la bordure")
             .build();
 
-    private ItemStack invsConfig = new ItemBuilder(Material.CHEST)
+    private final ItemStack invsConfig = new ItemBuilder(Material.CHEST)
             .name("Configuration des inventaires")
             .build();
 
-    private ItemStack xpConfig = new ItemBuilder(Material.EXP_BOTTLE)
+    private final ItemStack xpConfig = new ItemBuilder(Material.EXP_BOTTLE)
             .name("Configuration des niveaux")
             .lore(
                     ChatColor.RESET +""+ ChatColor.DARK_GRAY + "| " + ChatColor.RESET + "XP Boost",
@@ -59,7 +57,7 @@ public class GameConfigMainMenu  extends FastInv {
             .build();
 
     @SuppressWarnings("deprecation")
-    private ItemStack mobsConfig = new ItemBuilder(Material.MONSTER_EGG)
+    private final ItemStack mobsConfig = new ItemBuilder(Material.MONSTER_EGG)
             .data(EntityType.CREEPER.getTypeId())
             .name("Configuration des monstres")
             .build();
@@ -69,14 +67,15 @@ public class GameConfigMainMenu  extends FastInv {
     }
 
     private GameStuffSubMenu stuffSubMenu;
-    private GameInvsSubMenu invsSubMenu = new GameInvsSubMenu(this);
+    private GameInvsSubMenu invsSubMenu;
     private GameBordersSubMenu bordersSubMenu = new GameBordersSubMenu(this);
-    private GameMobsSubMenu mobsSubMenu = new GameMobsSubMenu(this);
+    private GameMobsSubMenu mobsSubMenu;
 
     public GameConfigMainMenu(GameManager manager, HostMainMenu upperMenu) {
         super(5*9, "Configuration de la partie");
-        this.upperMenu = upperMenu;
         this.stuffSubMenu = new GameStuffSubMenu(manager, this);
+        this.invsSubMenu = new GameInvsSubMenu(manager, this);
+        this.mobsSubMenu = new GameMobsSubMenu(manager, this);
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 

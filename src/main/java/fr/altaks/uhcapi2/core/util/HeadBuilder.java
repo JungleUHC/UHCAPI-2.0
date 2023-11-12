@@ -19,7 +19,7 @@ public class HeadBuilder {
         profile.getProperties().put("textures", new Property("textures", texture));
 
 
-        Field profileField = null;
+        Field profileField;
         try {
             profileField = meta.getClass().getDeclaredField("profile");
             profileField.setAccessible(true);

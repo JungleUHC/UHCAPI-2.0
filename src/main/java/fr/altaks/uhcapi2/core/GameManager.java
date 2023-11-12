@@ -88,6 +88,19 @@ public class GameManager {
         return host;
     }
 
+    public void giveHostItems(Player player){
+        Main.logDebug("Giving host items to " + player.getName());
+        player.getInventory().setItem(4, hostMenuItem);
+        player.getInventory().setItem(6, hostGameLaunchItem);
+        player.getInventory().setHeldItemSlot(4);
+    }
+
+    public void giveCoHostItems(Player player){
+        Main.logDebug("Giving co-host items to " + player.getName());
+        player.getInventory().setItem(0, hostMenuItem);
+        player.getInventory().setHeldItemSlot(0);
+    }
+
     /**
      * Sets the host of the game and gives him the host items if needed.
      * @param host The new host of the game.
@@ -103,12 +116,7 @@ public class GameManager {
         this.host = host;
         if(this.host != null){
             // add host items to new host inventory if the game is in WAITING mode
-            if(this.gameState == GameState.WAITING_TO_START){
-                this.host.getInventory().setItem(4, hostMenuItem);
-                this.host.getInventory().setItem(6, hostGameLaunchItem);
-                this.host.getInventory().setHeldItemSlot(4);
-                Main.logDebug("Giving host items to the new host");
-            }
+            if(this.gameState == GameState.WAITING_TO_START) giveHostItems(host);
             host.sendMessage(Main.MSG_PREFIX + "Vous êtes l'hôte de la partie !");
         }
     }
@@ -120,8 +128,7 @@ public class GameManager {
     public void addCoHost(Player newCoHost){
         this.coHosts.add(newCoHost);
         newCoHost.sendMessage(Main.MSG_PREFIX + "Vous êtes maintenant co-hôte de la partie !");
-        newCoHost.getInventory().setItem(0, hostMenuItem);
-        newCoHost.getInventory().setHeldItemSlot(0);
+        if(this.gameState == GameState.WAITING_TO_START) giveCoHostItems(newCoHost);
     }
 
     /**
@@ -132,7 +139,8 @@ public class GameManager {
     public boolean removeCoHost(Player coHostToRemove){
         if(this.coHosts.contains(coHostToRemove)){
             this.coHosts.remove(coHostToRemove);
-            coHostToRemove.sendMessage(Main.MSG_PREFIX + "Vous êtes maintenant co-hôte de la partie !");
+            if(this.gameState == GameState.WAITING_TO_START) coHostToRemove.getInventory().clear();
+            coHostToRemove.sendMessage(Main.MSG_PREFIX + "Vous n'êtes plus co-hôte de la partie !");
             return true;
         }
         return false;

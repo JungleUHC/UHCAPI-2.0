@@ -12,7 +12,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.enchantment.EnchantItemEvent;
-import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -22,7 +21,6 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class GameStuffController implements IController {
 
@@ -138,6 +136,7 @@ public class GameStuffController implements IController {
 
     @EventHandler
     public void onPlayerEnchantsViaAnvil(InventoryClickEvent event){
+        if(event.getClickedInventory() == null) return;
         if(event.getClickedInventory().getType() == InventoryType.ANVIL){
         if(event.getSlotType() == InventoryType.SlotType.RESULT){
                 if(event.getCurrentItem() == null) return;
@@ -317,9 +316,7 @@ public class GameStuffController implements IController {
                 }
             }
 
-            setItem(13, new ItemBuilder(Material.ARROW).name("Retour").build(), event -> {
-                main.getGameManager().getHostMainMenu().getGameConfigMainMenu().getStuffSubMenu().open((Player) event.getWhoClicked());
-            });
+            setItem(13, new ItemBuilder(Material.ARROW).name("Retour").build(), event -> main.getGameManager().getHostMainMenu().getGameConfigMainMenu().getStuffSubMenu().open((Player) event.getWhoClicked()));
         }
 
         @Override
@@ -386,7 +383,7 @@ public class GameStuffController implements IController {
     }
 
     private ItemStack getItemStack(HashMap<Enchantment, Integer> limits) {
-        ItemStack toUpdate = null;
+        ItemStack toUpdate;
 
         if(limits.equals(swordsLimits)){
             toUpdate = main.getGameManager().getHostMainMenu().getGameConfigMainMenu().getStuffSubMenu().getSwordConfigIcon();

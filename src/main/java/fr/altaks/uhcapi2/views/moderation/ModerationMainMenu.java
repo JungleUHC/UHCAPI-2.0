@@ -38,9 +38,7 @@ public class ModerationMainMenu extends FastInv {
         setItem(14, accessTeamsIcon);
 
         // Set the return arrow
-        setItem(22, new ItemBuilder(Material.ARROW).name("Retour").build(), event -> {
-            upperMenu.open((Player) event.getWhoClicked());
-        });
+        setItem(22, new ItemBuilder(Material.ARROW).name("Retour").build(), event -> upperMenu.open((Player) event.getWhoClicked()));
     }
 
     @Override
