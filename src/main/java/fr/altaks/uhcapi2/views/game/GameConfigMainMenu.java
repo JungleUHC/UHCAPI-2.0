@@ -68,7 +68,7 @@ public class GameConfigMainMenu  extends FastInv {
 
     private GameStuffSubMenu stuffSubMenu;
     private GameInvsSubMenu invsSubMenu;
-    private GameBordersSubMenu bordersSubMenu = new GameBordersSubMenu(this);
+    private GameBordersSubMenu bordersSubMenu;
     private GameMobsSubMenu mobsSubMenu;
 
     public GameConfigMainMenu(GameManager manager, HostMainMenu upperMenu) {
@@ -76,6 +76,7 @@ public class GameConfigMainMenu  extends FastInv {
         this.stuffSubMenu = new GameStuffSubMenu(manager, this);
         this.invsSubMenu = new GameInvsSubMenu(manager, this);
         this.mobsSubMenu = new GameMobsSubMenu(manager, this);
+        this.bordersSubMenu = new GameBordersSubMenu(manager, this);
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 

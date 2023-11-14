@@ -30,7 +30,7 @@ public class GameInvsController implements IController {
     public void onGameStart() {
         Bukkit.getPluginManager().registerEvents(this, main);
 
-        for(Player player : Bukkit.getOnlinePlayers()){
+        if(this.startingInventory != null) for(Player player : Bukkit.getOnlinePlayers()){
             if(player.getGameMode() != GameMode.SPECTATOR){
                 this.startingInventory.cloneToPlayer(player);
                 Main.logDebug("Player " + player.getName() + " has been given its starting inventory");
@@ -44,7 +44,7 @@ public class GameInvsController implements IController {
         if(player.getGameMode() == GameMode.SPECTATOR) return;
 
         Main.logDebug("Player " + player.getName() + " has died, dropping its death inventory");
-        this.deathDropsInventory.dropItemsAsPlayer(player);
+        if(this.deathDropsInventory != null) this.deathDropsInventory.dropItemsAsPlayer(player);
     }
 
     public static final String chatDelimiter = ChatColor.GRAY +""+ ChatColor.STRIKETHROUGH + "----------------------------------------";
