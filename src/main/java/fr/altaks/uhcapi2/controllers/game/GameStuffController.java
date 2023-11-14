@@ -63,10 +63,6 @@ public class GameStuffController implements IController {
                 bowsLimits.put(enchantment, enchantment.getMaxLevel());
             }
         }
-
-
-        // TODO : REMOVE THIS FROM CONSTRUCTOR AND GIVE IT THE PROPER START METHOD
-        onGameStart();
     }
 
     @Override

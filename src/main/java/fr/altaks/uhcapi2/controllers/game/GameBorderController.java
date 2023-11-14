@@ -9,6 +9,9 @@ public class GameBorderController implements IController {
 
     public GameBorderController(Main main){
         this.main = main;
+
+        // TODO Change this call placement to somewhere normal
+        onGameStart();
     }
 
     @Override

@@ -31,7 +31,10 @@ public class GameController implements IController {
 
     @Override
     public void onGameStart() {
-
+        this.gameBorderController.onGameStart();
+        this.gameInvsController.onGameStart();
+        this.gameMobsController.onGameStart();
+        this.gameStuffController.onGameStart();
     }
 
     public String getEnchantmentName(Enchantment enchantment){

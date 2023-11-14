@@ -1,6 +1,7 @@
 package fr.altaks.uhcapi2.controllers.game;
 
 import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IController;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -9,12 +10,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class GameInvsController implements IController {
 
@@ -24,14 +24,27 @@ public class GameInvsController implements IController {
 
     public GameInvsController(Main main){
         this.main = main;
-
-        // TODO : GIVE THIS CALL A REAL PLACEMENT
-        onGameStart();
     }
 
     @Override
     public void onGameStart() {
         Bukkit.getPluginManager().registerEvents(this, main);
+
+        for(Player player : Bukkit.getOnlinePlayers()){
+            if(player.getGameMode() != GameMode.SPECTATOR){
+                this.startingInventory.cloneToPlayer(player);
+                Main.logDebug("Player " + player.getName() + " has been given its starting inventory");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayersDeath(PlayerDeathEvent event){
+        Player player = event.getEntity();
+        if(player.getGameMode() == GameMode.SPECTATOR) return;
+
+        Main.logDebug("Player " + player.getName() + " has died, dropping its death inventory");
+        this.deathDropsInventory.dropItemsAsPlayer(player);
     }
 
     public static final String chatDelimiter = ChatColor.GRAY +""+ ChatColor.STRIKETHROUGH + "----------------------------------------";
@@ -155,11 +168,23 @@ public class GameInvsController implements IController {
         }
 
         public void cloneToPlayer(Player player){
-
+            // copy the items to the player inventory
+            for(Map.Entry<Integer, ItemStack> slotToItemEntry : items.entrySet()){
+                player.getInventory().setItem(slotToItemEntry.getKey(), slotToItemEntry.getValue());
+            }
         }
 
         public void dropItemsAsPlayer(Player player){
+            // drop the specified items if they aren't in the player's inventory at death
 
+            List<ItemStack> playersInv = Arrays.asList(player.getInventory().getContents());
+
+            for(Map.Entry<Integer, ItemStack> slotToItemEntry : items.entrySet()){
+                if(!playersInv.contains(slotToItemEntry.getValue())){
+                    player.getWorld().dropItemNaturally(player.getLocation(), slotToItemEntry.getValue());
+                    Main.logDev("Dropping item " + slotToItemEntry.getValue() + " as player " + player.getName() + " died.");
+                }
+            }
         }
 
     }

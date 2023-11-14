@@ -23,9 +23,6 @@ public class GameMobsController implements IController {
 
     public GameMobsController(Main main){
         this.main = main;
-
-        // TODO : CHANGE THIS CALL
-        onGameStart();
     }
 
     @Override

@@ -146,6 +146,15 @@ public class GameManager {
         return false;
     }
 
+    // Starts the game
+    public void start(){
+        // Changing gamestate
+        this.gameState = GameState.STARTED;
+
+        this.gameController.onGameStart();
+        this.worldsController.onGameStart();
+    }
+
     public GameState getGameState() {
         return gameState;
     }
