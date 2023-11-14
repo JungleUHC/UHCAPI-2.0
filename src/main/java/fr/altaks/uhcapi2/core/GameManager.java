@@ -7,6 +7,7 @@ import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
 import fr.altaks.uhcapi2.views.timers.TimersRolesMenu;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -150,6 +151,22 @@ public class GameManager {
     public void start(){
         // Changing gamestate
         this.gameState = GameState.STARTED;
+
+        // Reset player state
+        for(Player player : Bukkit.getOnlinePlayers()){
+            player.getInventory().clear();
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setSaturation(20);
+            player.setExp(0);
+            player.setLevel(0);
+            player.setFireTicks(0);
+            player.setFallDistance(0);
+            player.setTotalExperience(0);
+            player.setExhaustion(0);
+            // remove all potion effects
+            player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
+        }
 
         this.gameController.onGameStart();
         this.worldsController.onGameStart();

@@ -7,7 +7,10 @@ import fr.altaks.uhcapi2.controllers.game.GameMobsController;
 import fr.altaks.uhcapi2.controllers.game.GameStuffController;
 import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IController;
+import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 
 public class GameController implements IController {
 
@@ -18,6 +21,9 @@ public class GameController implements IController {
     private GameInvsController gameInvsController;
     private GameMobsController gameMobsController;
     private GameStuffController gameStuffController;
+
+    private float xpMultiplier = 1.0f;
+    private boolean isXpBoostEnabled = false;
 
     public GameController(GameManager manager, Main main){
         this.main = main;
@@ -35,6 +41,17 @@ public class GameController implements IController {
         this.gameInvsController.onGameStart();
         this.gameMobsController.onGameStart();
         this.gameStuffController.onGameStart();
+
+        Bukkit.getPluginManager().registerEvents(this, main);
+    }
+
+    @EventHandler
+    public void onPlayerGainsXP(PlayerExpChangeEvent event){
+        if (isXpBoostEnabled){
+            Main.logDev("XP Boost enabled, multiplying xp by " + xpMultiplier + " from base value " + event.getAmount());
+            event.setAmount((int) (event.getAmount() * xpMultiplier));
+            Main.logDev("XP Boost enabled, new xp value is " + event.getAmount());
+        }
     }
 
     public String getEnchantmentName(Enchantment enchantment){
@@ -119,5 +136,21 @@ public class GameController implements IController {
 
     public GameStuffController getGameStuffController() {
         return gameStuffController;
+    }
+
+    public float getXpMultiplier() {
+        return xpMultiplier;
+    }
+
+    public void setXpMultiplier(float xpMultiplier) {
+        this.xpMultiplier = xpMultiplier;
+    }
+
+    public boolean isXpBoostEnabled() {
+        return isXpBoostEnabled;
+    }
+
+    public void setXpBoostEnabled(boolean xpBoostEnabled) {
+        isXpBoostEnabled = xpBoostEnabled;
     }
 }

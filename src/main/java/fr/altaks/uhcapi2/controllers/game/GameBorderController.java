@@ -9,14 +9,12 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Random;
-
 public class GameBorderController implements IController {
 
     private Main main;
 
     private float initialBorderSize = 1000; // in blocks
-    private float finalBorderSize = 200; // in blocks
+    private float finalBorderSize = 150; // in blocks
 
     private boolean safeBorder = true;
 
