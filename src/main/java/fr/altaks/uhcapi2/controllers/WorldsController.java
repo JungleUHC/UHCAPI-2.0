@@ -78,7 +78,7 @@ public class WorldsController implements IController {
 
     /**
      * Indicates if the world generation is currently running (it has a 10 sec delay before starting).
-     * @return
+     * @return true if the world generation is currently running, false otherwise.
      */
     private boolean isGenerationCancellable(){
         return System.currentTimeMillis() < generationStartTime + 10000;
@@ -140,7 +140,6 @@ public class WorldsController implements IController {
 
                     Main.logDev("Unloaded the game world.");
                 }
-
 
                 Main.logDev("Awaiting for world creation...");
                 // Prepare the new world creation
@@ -263,7 +262,7 @@ public class WorldsController implements IController {
 
         /**
          * Defines a boost type.
-         * @param jsonPropertyName
+         * @param jsonPropertyName the name of the property in the world generation JSON parameters.
          */
         BoostType(String jsonPropertyName, float defaultValue){
             this.jsonPropertyName = jsonPropertyName;

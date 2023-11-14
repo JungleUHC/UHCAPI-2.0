@@ -1,5 +1,6 @@
 package fr.altaks.uhcapi2.listeners;
 
+import com.google.common.collect.Iterables;
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.GameState;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
 
 import java.util.Random;
 
@@ -68,9 +70,7 @@ public class HostListener implements Listener {
                 Main.logDebug("Host has left the game, and there's no cohost, randomizing between all players");
                 int randomPlayerIndex = (int) Math.floor(Math.random() * main.getServer().getOnlinePlayers().size());
                 main.getGameManager().setHost(
-                        main.getServer().getOnlinePlayers().toArray(
-                                new Player[main.getServer().getOnlinePlayers().size()]
-                        )[randomPlayerIndex]
+                        Iterables.get(main.getServer().getOnlinePlayers(), randomPlayerIndex)
                 );
             }
         }

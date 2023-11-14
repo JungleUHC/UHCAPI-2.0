@@ -1,6 +1,9 @@
 package fr.altaks.uhcapi2.views.game.submenus;
 
+import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.util.LoreUtil;
+import fr.altaks.uhcapi2.core.util.MinecraftDecimalFormat;
 import fr.altaks.uhcapi2.views.game.GameConfigMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
@@ -9,7 +12,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class GameBordersSubMenu extends FastInv {
 
@@ -27,7 +41,7 @@ public class GameBordersSubMenu extends FastInv {
             .name("Taille initiale")
             .lore(
                     "",
-                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "1000",
+                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "1000 blocs",
                     "",
                     ChatColor.GRAY + "Clic gauche : +205 blocs",
                     ChatColor.GRAY + "Clic droit : -250 blocs"
@@ -38,7 +52,7 @@ public class GameBordersSubMenu extends FastInv {
             .name("Taille finale")
             .lore(
                     "",
-                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "200",
+                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "200 blocs",
                     "",
                     ChatColor.GRAY + "Clic gauche : +205 blocs",
                     ChatColor.GRAY + "Clic droit : -250 blocs"
@@ -75,29 +89,79 @@ public class GameBordersSubMenu extends FastInv {
             .name("Vitesse de la bordure")
             .lore(
                     "",
-                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "0.5 bloc/s",
+                    ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + "0.5 bloc(s) / s",
                     "",
-                    ChatColor.GRAY + "Clic gauche : +0.1 bloc/s",
-                    ChatColor.GRAY + "Clic droit : -0.1 bloc/s"
+                    ChatColor.GRAY + "Clic gauche : +0.1 bloc(s) / s",
+                    ChatColor.GRAY + "Clic droit : -0.1 bloc(s) / s"
             )
             .build();
 
 
-    public GameBordersSubMenu(GameConfigMainMenu upperMenu) {
+    public GameBordersSubMenu(GameManager manager, GameConfigMainMenu upperMenu) {
         super(5*9, "Gestion des bordures");
         this.upperMenu = upperMenu;
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
         // 11 13 15
-        setItem(11, initialSize);
-        setItem(13, finalSize);
+        setItem(11, initialSize,
+                event -> processIncreaseAndDecreaseClick(
+                        event,
+                        manager.getGameController().getGameBorderController()::setInitialBorderSize,
+                        manager.getGameController().getGameBorderController()::getInitialBorderSize,
+                        205,
+                        250,
+                        Float.MAX_VALUE,
+                        manager.getGameController().getGameBorderController().getFinalBorderSize(),
+                        "blocs"
+                )
+        );
+        setItem(13, finalSize,
+                event -> processIncreaseAndDecreaseClick(
+                        event,
+                        manager.getGameController().getGameBorderController()::setFinalBorderSize,
+                        manager.getGameController().getGameBorderController()::getFinalBorderSize,
+                        205,
+                        250,
+                        manager.getGameController().getGameBorderController().getInitialBorderSize(),
+                        1,
+                        "blocs"
+                )
+        );
         setItem(15, suppConfig);
 
         // 29 31 33
-        setItem(29, borderType);
-        setItem(31, borderTimer);
-        setItem(33, borderSpeed);
+        setItem(29, borderType,
+                event -> swapBorderType(
+                        event,
+                        manager.getGameController().getGameBorderController()::setSafeBorder,
+                        manager.getGameController().getGameBorderController()::isSafeBorder
+                )
+        );
+        setItem(31, borderTimer,
+                event -> processIncreaseAndDecreaseClick(
+                        event,
+                        manager.getGameController().getGameBorderController()::setTimeBeforeBorderShrink,
+                        manager.getGameController().getGameBorderController()::getTimeBeforeBorderShrink,
+                        1,
+                        1,
+                        2 * 60f,
+                        0, // TODO : Change default value back to 20 mins
+                        "minute(s)"
+                )
+        );
+        setItem(33, borderSpeed,
+                event -> processIncreaseAndDecreaseClick(
+                        event,
+                        manager.getGameController().getGameBorderController()::setBorderShrinkSpeed,
+                        manager.getGameController().getGameBorderController()::getBorderShrinkSpeed,
+                        0.1f,
+                        0.1f,
+                        2,
+                        0.1f,
+                        "bloc(s) / s"
+                )
+        );
 
         // Set the return arrow
         setItem(40, new ItemBuilder(Material.ARROW).name("Retour").build(),
@@ -108,5 +172,45 @@ public class GameBordersSubMenu extends FastInv {
     @Override
     protected void onClick(InventoryClickEvent event) {
         event.setCancelled(true);
+    }
+
+    private void processIncreaseAndDecreaseClick(InventoryClickEvent event, Consumer<Float> setter, Supplier<Float> getter, float increase, float decrease, float maxvalue, float minvalue, String unit) {
+        if(event.getClick().isLeftClick()){
+            setter.accept(getter.get() + increase);
+            if(getter.get() > maxvalue) setter.accept(maxvalue); // limit value
+        } else if(event.getClick().isRightClick()){
+            setter.accept(getter.get() - decrease);
+            if(getter.get() < minvalue) setter.accept(minvalue); // limit value
+        }
+
+        // update item and indicate new value
+        ItemStack item = event.getCurrentItem();
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(Arrays.asList(
+                "",
+                ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GOLD + MinecraftDecimalFormat.format(getter.get()) + " " + unit,
+                "",
+                ChatColor.GRAY + "Clic gauche : +" + increase + " " + unit,
+                ChatColor.GRAY + "Clic droit : -" + decrease + " " + unit
+        ));
+        item.setItemMeta(meta);
+    }
+
+    public void swapBorderType(InventoryClickEvent event, Consumer<Boolean> setter, Supplier<Boolean> getter) {
+        setter.accept(!getter.get()); // swap activation state
+        String text = getter.get() ? ChatColor.GREEN + "Téléportation" : ChatColor.RED + "Élimination";
+
+        Main.logDev("Border type is now " + text + "with safeBorder at " + getter.get());
+
+        // update item and indicate new value
+        ItemStack item = event.getCurrentItem();
+        ItemMeta meta = item.getItemMeta();
+
+        List<String> lore = meta.getLore();
+        lore.set(1, ChatColor.YELLOW + "Valeur actuelle : " + text);
+
+        meta.setLore(lore);
+
+        item.setItemMeta(meta);
     }
 }

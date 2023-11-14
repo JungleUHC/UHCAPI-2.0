@@ -1,5 +1,7 @@
 package fr.altaks.uhcapi2;
 
+import fr.altaks.uhcapi2.commands.StartCommand;
+import fr.altaks.uhcapi2.commands.ValidateCommand;
 import fr.altaks.uhcapi2.commands.WorldTPCommand;
 import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IPluginCommand;
@@ -101,7 +103,7 @@ public class Main extends JavaPlugin {
 
         // Register commands and listeners if they are.
         IPluginCommand[] commands = new IPluginCommand[]{
-            new WorldTPCommand()
+            new WorldTPCommand(), new ValidateCommand(this), new StartCommand(this)
         };
         Listener[] listeners = new Listener[]{
             new HostListener(this), new PlayerListener(this)

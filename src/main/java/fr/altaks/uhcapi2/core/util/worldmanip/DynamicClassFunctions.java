@@ -17,13 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 public class DynamicClassFunctions {
 
-    public static final HashMap<String, Class<?>> classes = new HashMap<String, Class<?>>();
-    public static final HashMap<String, Method> methods = new HashMap<String, Method>();
-    public static final HashMap<String, Field> fields = new HashMap<String, Field>();
+    public static final HashMap<String, Class<?>> classes = new HashMap<>();
+    public static final HashMap<String, Method> methods = new HashMap<>();
+    public static final HashMap<String, Field> fields = new HashMap<>();
     public static String nmsPackage = "net.minecraft.server.v1_8_R3";
     public static String obcPackage = "org.bukkit.craftbukkit.v1_8_R3";
     //methods
@@ -42,7 +41,7 @@ public class DynamicClassFunctions {
                 obcPackage = craftClass.getPackage().getName();
                 nmsPackage = returnType.getPackage().getName();
                 return true;
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
         return false;
@@ -130,7 +129,7 @@ public class DynamicClassFunctions {
         if(regionfiles == null) return false;
         if(rafField == null) return false;
 
-        ArrayList<Object> removedKeys = new ArrayList<Object>();
+        ArrayList<Object> removedKeys = new ArrayList<>();
         try {
             for(Object o : regionfiles.entrySet()){
                 Map.Entry e = (Map.Entry) o;
@@ -170,7 +169,7 @@ public class DynamicClassFunctions {
             Map<String, World> worlds = (Map<String, World>) f.get(Bukkit.getServer());
             worlds.remove(world.getName().toLowerCase());
             f.setAccessible(false);
-        } catch (IllegalAccessException ex) {
+        } catch (IllegalAccessException ignored) {
         }
 
         Object ms = getMinecraftServer();
@@ -183,18 +182,14 @@ public class DynamicClassFunctions {
             if(wid > -1) {
                 worldList.remove(wid);
             }
-        } catch (IllegalArgumentException e) {
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
+        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ignored) {
         }
     }
 
     protected static Object getMinecraftServer() {
         try {
             return methods.get("CraftServer.getServer()").invoke(Bukkit.getServer());
-        } catch (IllegalArgumentException e) {
-        } catch (IllegalAccessException e) {
-        } catch (InvocationTargetException e) {
+        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException ignored) {
         }
 
         return null;

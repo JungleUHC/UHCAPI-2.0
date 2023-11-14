@@ -1,6 +1,5 @@
 package fr.altaks.uhcapi2.views.scenarios;
 
-import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.mrmicky.fastinv.FastInv;

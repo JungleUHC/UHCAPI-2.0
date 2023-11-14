@@ -1,9 +1,7 @@
 package fr.altaks.uhcapi2.views.world.submenus;
 
-import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.controllers.WorldsController;
 import fr.altaks.uhcapi2.core.GameManager;
-import fr.altaks.uhcapi2.core.util.LoreUtil;
 import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
