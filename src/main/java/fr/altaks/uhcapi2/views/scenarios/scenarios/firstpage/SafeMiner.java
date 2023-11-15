@@ -27,7 +27,7 @@ public class SafeMiner implements Scenario {
     }
 
     @Override
-    public void setup(Main main) {
+    public void startScenario(Main main) {
 
     }
 }

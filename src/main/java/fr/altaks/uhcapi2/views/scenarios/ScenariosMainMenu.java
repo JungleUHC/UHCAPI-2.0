@@ -1,6 +1,7 @@
 package fr.altaks.uhcapi2.views.scenarios;
 
 import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.scenarios.scenarios.firstpage.*;
@@ -49,7 +50,7 @@ public class ScenariosMainMenu extends FastInv {
 
     private final ArrayList<Scenario> selectedScenarios = new ArrayList<>();
 
-    public ScenariosMainMenu(HostMainMenu upperMenu) {
+    public ScenariosMainMenu(GameManager manager, HostMainMenu upperMenu) {
         super(6*9, "Configuration des scenarios");
 
         scenariosMainSecondPageMenu = new ScenariosMainSecondPageMenu(upperMenu, this);
@@ -78,9 +79,9 @@ public class ScenariosMainMenu extends FastInv {
 
             // place the scenario item in the menu
             if(scenario.getSlot() < 6*9){
-                setItem(scenario.getSlot(), finalItem);
+                setItem(scenario.getSlot(), finalItem, event -> manager.getScenariosController().switchScenarioActivationState(scenario));
             } else {
-                scenariosMainSecondPageMenu.setItem(scenario.getSlot() - 6*9, finalItem);
+                scenariosMainSecondPageMenu.setItem(scenario.getSlot() - 6*9, finalItem, event -> manager.getScenariosController().switchScenarioActivationState(scenario));
             }
             scenariosSlots.put(scenario.getSlot(), scenario);
         }

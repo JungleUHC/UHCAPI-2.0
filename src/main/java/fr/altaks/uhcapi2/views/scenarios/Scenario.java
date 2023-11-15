@@ -15,7 +15,7 @@ public interface Scenario extends Listener {
 
     int getSlot();
 
-    void setup(Main main);
+    void startScenario(Main main);
 
     default boolean isConfigurable() {
         return false;
