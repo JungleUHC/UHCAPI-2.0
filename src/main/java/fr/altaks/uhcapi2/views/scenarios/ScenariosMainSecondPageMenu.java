@@ -51,7 +51,7 @@ public class ScenariosMainSecondPageMenu extends FastInv {
         // add glowing effect to the item if it was in the selected scenarios list
         ItemStack item = event.getCurrentItem();
 
-        firstPage.switchScenarioActivationState(scenario);
-        firstPage.changeItemVisualActivationState(scenario, item, firstPage.getSelectedScenarios().contains(scenario));
+        firstPage.getManager().getScenariosController().switchScenarioActivationState(scenario);
+        firstPage.changeItemVisualActivationState(scenario, item, firstPage.getManager().getScenariosController().getScenariosToEnable().contains(scenario));
     }
 }

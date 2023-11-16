@@ -9,6 +9,11 @@ import java.util.ArrayList;
 public class ScenariosController implements IController {
 
     private final Main main;
+
+    public ArrayList<Scenario> getScenariosToEnable() {
+        return scenariosToEnable;
+    }
+
     private final ArrayList<Scenario> scenariosToEnable = new ArrayList<>();
 
     public ScenariosController(Main main) {
@@ -19,6 +24,7 @@ public class ScenariosController implements IController {
     public void onGameStart() {
         for(Scenario scenario : scenariosToEnable){
             scenario.startScenario(main);
+            Main.logDev("Starting scenario " + scenario.getName());
         }
     }
 
@@ -28,8 +34,10 @@ public class ScenariosController implements IController {
      */
     public void switchScenarioActivationState(Scenario scenario){
         if(scenariosToEnable.contains(scenario)){
+            Main.logDev("Disabling scenario " + scenario.getName());
             scenariosToEnable.remove(scenario);
         } else {
+            Main.logDev("Enabling scenario " + scenario.getName());
             scenariosToEnable.add(scenario);
         }
     }

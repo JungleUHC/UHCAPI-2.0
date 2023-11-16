@@ -173,6 +173,7 @@ public class GameManager {
 
         this.gameController.onGameStart();
         this.worldsController.onGameStart();
+        this.scenariosController.onGameStart();
     }
 
     public GameState getGameState() {

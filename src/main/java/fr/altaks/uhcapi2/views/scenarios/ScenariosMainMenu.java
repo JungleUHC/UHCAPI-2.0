@@ -44,15 +44,15 @@ public class ScenariosMainMenu extends FastInv {
 
     private final HashMap<Integer, Scenario> scenariosSlots = new HashMap<>();
 
-    public ArrayList<Scenario> getSelectedScenarios() {
-        return selectedScenarios;
+    public GameManager getManager() {
+        return manager;
     }
 
-    private final ArrayList<Scenario> selectedScenarios = new ArrayList<>();
+    private final GameManager manager;
 
     public ScenariosMainMenu(GameManager manager, HostMainMenu upperMenu) {
         super(6*9, "Configuration des scenarios");
-
+        this.manager = manager;
         scenariosMainSecondPageMenu = new ScenariosMainSecondPageMenu(upperMenu, this);
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
@@ -79,9 +79,9 @@ public class ScenariosMainMenu extends FastInv {
 
             // place the scenario item in the menu
             if(scenario.getSlot() < 6*9){
-                setItem(scenario.getSlot(), finalItem, event -> manager.getScenariosController().switchScenarioActivationState(scenario));
+                setItem(scenario.getSlot(), finalItem);
             } else {
-                scenariosMainSecondPageMenu.setItem(scenario.getSlot() - 6*9, finalItem, event -> manager.getScenariosController().switchScenarioActivationState(scenario));
+                scenariosMainSecondPageMenu.setItem(scenario.getSlot() - 6*9, finalItem);
             }
             scenariosSlots.put(scenario.getSlot(), scenario);
         }
@@ -107,19 +107,8 @@ public class ScenariosMainMenu extends FastInv {
 
         // add glowing effect to the item if it was in the selected scenarios list
         ItemStack item = event.getCurrentItem();
-
-        switchScenarioActivationState(scenario);
-        changeItemVisualActivationState(scenario, item, selectedScenarios.contains(scenario));
-    }
-
-    public void switchScenarioActivationState(Scenario scenario){
-        if(selectedScenarios.contains(scenario)){
-            selectedScenarios.remove(scenario);
-            Main.logDebug("Removed scenario " + scenario.getName() + " from selected scenarios");
-        } else {
-            selectedScenarios.add(scenario);
-            Main.logDebug("Added scenario " + scenario.getName() + " to selected scenarios");
-        }
+        manager.getScenariosController().switchScenarioActivationState(scenario);
+        changeItemVisualActivationState(scenario, item, manager.getScenariosController().getScenariosToEnable().contains(scenario));
     }
 
     private String[] wrapLore(String loreToWrap, int charsAmountPerLine) {
