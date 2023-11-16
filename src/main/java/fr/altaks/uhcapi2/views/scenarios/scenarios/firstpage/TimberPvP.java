@@ -59,8 +59,6 @@ public class TimberPvP implements Scenario {
         for(BlockFace face : BlockFace.values()){
             timberNearbyWood(breaker, block.getRelative(face), recursionDepth + 1);
         }
-
-
     }
 
 
