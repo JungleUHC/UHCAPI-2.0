@@ -5,9 +5,12 @@ import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.altaks.uhcapi2.views.scenarios.Scenario;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -50,6 +53,13 @@ public class DirectToInventory  implements Scenario {
         materialConversionMap.put(Material.SAND, Material.GLASS);
     }
 
+    private final ArrayList<Block> blockPlacedByPlayers = new ArrayList<>();
+
+    @EventHandler
+    public void onPlayerPlacesBlockEvent(BlockPlaceEvent event) {
+        if(event.getPlayer().getGameMode() == GameMode.SURVIVAL) blockPlacedByPlayers.add(event.getBlockPlaced());
+    }
+
     @Override
     public void startScenario(Main main) {
         Bukkit.getPluginManager().registerEvents(this, main);
@@ -70,22 +80,32 @@ public class DirectToInventory  implements Scenario {
     @SuppressWarnings("unused")
     @EventHandler
     public void onPlayerBreaksOre(BlockBreakEvent event){
-        if(ores.contains(event.getBlock().getType())){
+        if(blockPlacedByPlayers.contains(event.getBlock())) {
+            blockPlacedByPlayers.remove(event.getBlock());
+        } else if(ores.contains(event.getBlock().getType())){
             Collection<ItemStack> drops = event.getBlock().getDrops(event.getPlayer().getItemInHand());
             if(event.getPlayer().getItemInHand() != null) event.getPlayer().getItemInHand().setDurability((short) (event.getPlayer().getItemInHand().getDurability() + 1));
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
+
             if(main.getGameManager().getScenariosController().getEnabledScenarioInstances().containsKey(CutClean.class)){
-                for(ItemStack drop : drops){
-                    if(materialConversionMap.containsKey(drop.getType())) {
-                        drop.setType(materialConversionMap.get(drop.getType()));
-                    }
-                    event.getPlayer().getInventory().addItem(drop);
+                for(ItemStack drop : drops) if(materialConversionMap.containsKey(drop.getType())) {
+                    drop.setType(materialConversionMap.get(drop.getType()));
                 }
-            } else {
-                for(ItemStack drop : drops){
-                    event.getPlayer().getInventory().addItem(drop);
+            }
+
+            if(!blockPlacedByPlayers.contains(event.getBlock())) {
+                if(main.getGameManager().getScenariosController().getEnabledScenarioInstances().containsKey(DoubleOres.class)){
+                    for(ItemStack drop : drops) drop.setAmount(drop.getAmount() * 2);
                 }
+
+                if(main.getGameManager().getScenariosController().getEnabledScenarioInstances().containsKey(TripleOres.class)){
+                    for(ItemStack drop : drops) drop.setAmount(drop.getAmount() * 3);
+                }
+            }
+
+            for(ItemStack drop : drops){
+                event.getPlayer().getInventory().addItem(drop);
             }
         }
     }
