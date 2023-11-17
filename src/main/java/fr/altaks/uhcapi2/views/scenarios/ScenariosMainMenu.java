@@ -67,11 +67,11 @@ public class ScenariosMainMenu extends FastInv {
             // Generate the scenario item
             ItemBuilder itemBuilder = scenario.getIcon()
                     .name(ChatColor.YELLOW + scenario.getName())
-                    .lore(wrappedLore)
-                    .flags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+                    .flags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES)
+                    .lore(wrappedLore);
 
             if(scenario.isConfigurable()){
-                itemBuilder.addLore("", ChatColor.GREEN + "Cliquez pour configurer ce scenario");
+                itemBuilder.addLore(scenario.getConfigurationLore());
             }
 
             ItemStack finalItem = itemBuilder.build();
@@ -105,10 +105,14 @@ public class ScenariosMainMenu extends FastInv {
         Scenario scenario = scenariosSlots.get(event.getSlot());
         if(scenario == null) throw new RuntimeException("Scenario not found");
 
-        // add glowing effect to the item if it was in the selected scenarios list
-        ItemStack item = event.getCurrentItem();
-        manager.getScenariosController().switchScenarioActivationState(scenario);
-        changeItemVisualActivationState(scenario, item, manager.getScenariosController().getScenariosToEnable().contains(scenario));
+        if(event.isRightClick() && scenario.isConfigurable()) {
+            scenario.processClick(event);
+        } else {
+            // add glowing effect to the item if it was in the selected scenarios list
+            ItemStack item = event.getCurrentItem();
+            manager.getScenariosController().switchScenarioActivationState(scenario);
+            changeItemVisualActivationState(scenario, item, manager.getScenariosController().getScenariosToEnable().contains(scenario));
+        }
     }
 
     private String[] wrapLore(String loreToWrap, int charsAmountPerLine) {
