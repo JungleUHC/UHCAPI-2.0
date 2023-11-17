@@ -5,6 +5,7 @@ import fr.altaks.uhcapi2.core.IController;
 import fr.altaks.uhcapi2.views.scenarios.Scenario;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ScenariosController implements IController {
 
@@ -16,6 +17,12 @@ public class ScenariosController implements IController {
 
     private final ArrayList<Scenario> scenariosToEnable = new ArrayList<>();
 
+    public HashMap<Class<? extends Scenario>, Scenario> getEnabledScenarioInstances() {
+        return enabledScenarioInstances;
+    }
+
+    private final HashMap<Class<? extends Scenario>, Scenario> enabledScenarioInstances = new HashMap<>();
+
     public ScenariosController(Main main) {
         this.main = main;
     }
@@ -24,6 +31,7 @@ public class ScenariosController implements IController {
     public void onGameStart() {
         for(Scenario scenario : scenariosToEnable){
             scenario.startScenario(main);
+            enabledScenarioInstances.put(scenario.getClass(), scenario);
             Main.logDev("Starting scenario " + scenario.getName());
         }
     }
