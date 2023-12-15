@@ -1,7 +1,6 @@
 package fr.altaks.uhcapi2.controllers.game;
 
 import fr.altaks.uhcapi2.Main;
-import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IController;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
