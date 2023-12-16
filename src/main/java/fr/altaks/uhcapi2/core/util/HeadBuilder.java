@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -28,6 +29,14 @@ public class HeadBuilder {
             e.printStackTrace();
         }
 
+        item.setItemMeta(meta);
+        return new ItemBuilder(item);
+    }
+
+    public static ItemBuilder of(Player player){
+        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        meta.setOwner(player.getName());
         item.setItemMeta(meta);
         return new ItemBuilder(item);
     }

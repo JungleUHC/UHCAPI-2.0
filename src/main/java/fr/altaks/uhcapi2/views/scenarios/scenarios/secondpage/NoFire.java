@@ -38,7 +38,7 @@ public class NoFire implements Scenario {
     @EventHandler
     public void onPlayerTakesFireDamage(EntityDamageEvent event){
         if(!(event.getEntity() instanceof Player)) return;
-        if(event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK){
+        if(event.getCause() == EntityDamageEvent.DamageCause.FIRE || event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.LAVA){
             event.setCancelled(true);
         }
     }

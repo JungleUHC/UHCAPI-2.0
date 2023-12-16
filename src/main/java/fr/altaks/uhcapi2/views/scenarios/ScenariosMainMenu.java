@@ -24,8 +24,6 @@ import java.util.List;
 
 public class ScenariosMainMenu extends FastInv {
 
-    private HostMainMenu upperMenu;
-
     private final ScenariosMainSecondPageMenu scenariosMainSecondPageMenu;
 
     private final String SECOND_PAGE_VALUE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjYzMTRkMzFiMDk1ZTRkNDIxNzYwNDk3YmU2YTE1NmY0NTlkOGM5OTU3YjdlNmIxYzEyZGViNGU0Nzg2MGQ3MSJ9fX0=";
@@ -39,7 +37,7 @@ public class ScenariosMainMenu extends FastInv {
             new SafeMiner(), new FastSmelter(), new DiamondLimit(), new GoldLimit(), new SpeedyMiner(), new NoFall(), new BetaZombies(),
             new AllStone(), new DirectToInventory(), new VeinMiner(), new DoubleOres(), new TripleOres(), new NoNametag(), new IronMan(),
 
-            new Unbreakable(), new GoldenHead(), new MasterLevel(), new NoFire(), new NoNether(), new NoRod(), new UltraApple(), new MinHP()
+            new Unbreakable(), new GoldenHead(), new MasterLevel(), new NoFire(), new NoNether(), new NoRod(), new UltraApple(), new MinHP(), new FinalHeal()
     );
 
     private final HashMap<Integer, Scenario> scenariosSlots = new HashMap<>();
