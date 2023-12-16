@@ -4,6 +4,10 @@ import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.altaks.uhcapi2.views.scenarios.Scenario;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
 
 public class AllStone implements Scenario {
 
@@ -29,7 +33,15 @@ public class AllStone implements Scenario {
     }
 
     @Override
-    public void setup(Main main) {
+    public void startScenario(Main main) {
+        Bukkit.getPluginManager().registerEvents(this, main);
+    }
 
+    @SuppressWarnings("unused")
+    @EventHandler
+    public void onPlayerBreaksStone(BlockBreakEvent event){
+        if(event.getBlock().getType() == Material.STONE){
+            event.getBlock().setType(Material.COBBLESTONE);
+        }
     }
 }

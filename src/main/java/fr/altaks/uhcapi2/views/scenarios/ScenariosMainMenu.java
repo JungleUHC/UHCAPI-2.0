@@ -1,6 +1,7 @@
 package fr.altaks.uhcapi2.views.scenarios;
 
 import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.scenarios.scenarios.firstpage.*;
@@ -23,8 +24,6 @@ import java.util.List;
 
 public class ScenariosMainMenu extends FastInv {
 
-    private HostMainMenu upperMenu;
-
     private final ScenariosMainSecondPageMenu scenariosMainSecondPageMenu;
 
     private final String SECOND_PAGE_VALUE = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjYzMTRkMzFiMDk1ZTRkNDIxNzYwNDk3YmU2YTE1NmY0NTlkOGM5OTU3YjdlNmIxYzEyZGViNGU0Nzg2MGQ3MSJ9fX0=";
@@ -38,20 +37,20 @@ public class ScenariosMainMenu extends FastInv {
             new SafeMiner(), new FastSmelter(), new DiamondLimit(), new GoldLimit(), new SpeedyMiner(), new NoFall(), new BetaZombies(),
             new AllStone(), new DirectToInventory(), new VeinMiner(), new DoubleOres(), new TripleOres(), new NoNametag(), new IronMan(),
 
-            new Unbreakable(), new GoldenHead(), new MasterLevel(), new NoFire(), new NoNether(), new NoRod(), new UltraApple(), new MinHP()
+            new Unbreakable(), new GoldenHead(), new MasterLevel(), new NoFire(), new NoNether(), new NoRod(), new UltraApple(), new MinHP(), new FinalHeal()
     );
 
     private final HashMap<Integer, Scenario> scenariosSlots = new HashMap<>();
 
-    public ArrayList<Scenario> getSelectedScenarios() {
-        return selectedScenarios;
+    public GameManager getManager() {
+        return manager;
     }
 
-    private final ArrayList<Scenario> selectedScenarios = new ArrayList<>();
+    private final GameManager manager;
 
-    public ScenariosMainMenu(HostMainMenu upperMenu) {
+    public ScenariosMainMenu(GameManager manager, HostMainMenu upperMenu) {
         super(6*9, "Configuration des scenarios");
-
+        this.manager = manager;
         scenariosMainSecondPageMenu = new ScenariosMainSecondPageMenu(upperMenu, this);
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
@@ -66,11 +65,11 @@ public class ScenariosMainMenu extends FastInv {
             // Generate the scenario item
             ItemBuilder itemBuilder = scenario.getIcon()
                     .name(ChatColor.YELLOW + scenario.getName())
-                    .lore(wrappedLore)
-                    .flags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+                    .flags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES)
+                    .lore(wrappedLore);
 
             if(scenario.isConfigurable()){
-                itemBuilder.addLore("", ChatColor.GREEN + "Cliquez pour configurer ce scenario");
+                itemBuilder.addLore(scenario.getConfigurationLore());
             }
 
             ItemStack finalItem = itemBuilder.build();
@@ -104,20 +103,13 @@ public class ScenariosMainMenu extends FastInv {
         Scenario scenario = scenariosSlots.get(event.getSlot());
         if(scenario == null) throw new RuntimeException("Scenario not found");
 
-        // add glowing effect to the item if it was in the selected scenarios list
-        ItemStack item = event.getCurrentItem();
-
-        switchScenarioActivationState(scenario);
-        changeItemVisualActivationState(scenario, item, selectedScenarios.contains(scenario));
-    }
-
-    public void switchScenarioActivationState(Scenario scenario){
-        if(selectedScenarios.contains(scenario)){
-            selectedScenarios.remove(scenario);
-            Main.logDebug("Removed scenario " + scenario.getName() + " from selected scenarios");
+        if(event.isRightClick() && scenario.isConfigurable()) {
+            scenario.processClick(event);
         } else {
-            selectedScenarios.add(scenario);
-            Main.logDebug("Added scenario " + scenario.getName() + " to selected scenarios");
+            // add glowing effect to the item if it was in the selected scenarios list
+            ItemStack item = event.getCurrentItem();
+            manager.getScenariosController().switchScenarioActivationState(scenario);
+            changeItemVisualActivationState(scenario, item, manager.getScenariosController().getScenariosToEnable().contains(scenario));
         }
     }
 

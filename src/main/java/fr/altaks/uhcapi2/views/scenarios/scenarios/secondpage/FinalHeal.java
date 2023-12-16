@@ -13,20 +13,20 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class UltraApple implements Scenario {
+public class FinalHeal implements Scenario {
 
     public String getName() {
-        return "Ultra Apple";
+        return "Final Heal";
     }
 
     @Override
     public String getDescription() {
-        return "Les joueurs reçoivent périodiquement une pomme d'or comme récompense.";
+        return "Les joueurs reçoivent une régénération complète de leurs points de vie après un certain temps dans la partie.";
     }
 
     @Override
     public ItemBuilder getIcon() {
-        return new ItemBuilder(Material.GOLDEN_APPLE);
+        return new ItemBuilder(Material.GOLD_NUGGET);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class UltraApple implements Scenario {
 
     @Override
     public int getSlot() {
-        return 66;
+        return 74;
     }
 
     @Override
@@ -46,19 +46,19 @@ public class UltraApple implements Scenario {
             public void run() {
                 for(Player player : Bukkit.getOnlinePlayers()){
                     if(player.getGameMode() == GameMode.SURVIVAL){
-                        player.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE));
+                        player.setHealth(player.getMaxHealth());
                     }
                 }
             }
-        }.runTaskTimer(main, 0, giveDelay * 60 * 20L); // minutes -> seconds -> ticks
+        }.runTaskLater(main, healingDelay * 60 * 20L); // minutes -> seconds -> ticks
     }
 
-    private int giveDelay = 5; // minutes
+    private int healingDelay = 20; // minutes
 
     @Override
     public String[] getConfigurationLore() {
         return new String[]{
-                ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GREEN + giveDelay + " minutes",
+                ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GREEN + healingDelay + " minutes",
                 "",
                 ChatColor.GRAY + "Clic droit pour augmenter de 1 minute",
                 ChatColor.GRAY + "Shift + Clic droit pour diminuer de 1 minute"
@@ -68,11 +68,11 @@ public class UltraApple implements Scenario {
     @Override
     public void processClick(InventoryClickEvent event) {
         int modifier = (event.isShiftClick() ? -1 : 1);
-        giveDelay += modifier;
+        healingDelay += modifier;
 
-        if(giveDelay < 1) giveDelay = 1;
+        if(healingDelay < 1) healingDelay = 1;
 
         // update item lore
-        LoreUtil.updateLore(event.getCurrentItem(), -4, ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GREEN + giveDelay + " minutes");
+        LoreUtil.updateLore(event.getCurrentItem(), -4, ChatColor.YELLOW + "Valeur actuelle : " + ChatColor.GREEN + healingDelay + " minutes");
     }
 }
