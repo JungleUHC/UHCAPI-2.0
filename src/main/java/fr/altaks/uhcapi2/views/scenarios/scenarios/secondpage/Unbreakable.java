@@ -39,8 +39,6 @@ public class Unbreakable implements Scenario {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onItemTakesDamage(PlayerItemDamageEvent event){
-        event.getItem().setDurability((short)0);
-        event.setDamage(0);
         ItemMeta meta = event.getItem().getItemMeta();
         meta.spigot().setUnbreakable(true);
         event.getItem().setItemMeta(meta);
