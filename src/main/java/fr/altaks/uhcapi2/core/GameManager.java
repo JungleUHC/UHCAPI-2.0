@@ -3,6 +3,7 @@ package fr.altaks.uhcapi2.core;
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.controllers.GameController;
 import fr.altaks.uhcapi2.controllers.ScenariosController;
+import fr.altaks.uhcapi2.controllers.TimersController;
 import fr.altaks.uhcapi2.controllers.WorldsController;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
@@ -31,6 +32,7 @@ public class GameManager {
     private WorldsController worldsController;
     private GameController gameController;
     private ScenariosController scenariosController;
+    private TimersController timersController;
 
     public GameManager(Main main){
         this.main = main;
@@ -39,6 +41,7 @@ public class GameManager {
         this.worldsController = new WorldsController(main);
         this.gameController = new GameController(this, main);
         this.scenariosController = new ScenariosController(main);
+        this.timersController = new TimersController(this, main);
     }
 
     private Player host;
@@ -174,6 +177,7 @@ public class GameManager {
         this.gameController.onGameStart();
         this.worldsController.onGameStart();
         this.scenariosController.onGameStart();
+        this.timersController.onGameStart();
     }
 
     public GameState getGameState() {
@@ -218,5 +222,9 @@ public class GameManager {
 
     public void setScenariosController(ScenariosController scenariosController) {
         this.scenariosController = scenariosController;
+    }
+
+    public TimersController getTimersController() {
+        return timersController;
     }
 }
