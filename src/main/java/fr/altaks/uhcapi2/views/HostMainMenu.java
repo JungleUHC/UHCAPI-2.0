@@ -64,7 +64,7 @@ public class HostMainMenu extends FastInv {
             .name(ChatColor.RESET +""+ ChatColor.GREEN + "\u00BB Lancer la partie \u00AB")
             .build();
 
-    private ItemStack stopButotn = HeadBuilder.of(STOP_VALUE)
+    private ItemStack stopButton = HeadBuilder.of(STOP_VALUE)
             .name(ChatColor.RESET +""+ ChatColor.RED +"La partie ne peut pas être lancée :(")
             .lore(ChatColor.GRAY + "Veuillez choisir un mode de jeu")
             .build();
@@ -118,7 +118,7 @@ public class HostMainMenu extends FastInv {
         setItem(42, configWhitelist);
 
         // Sixth line
-        setItem(49, startButton);
+        setItem(49, stopButton);
 
         this.main = main;
         gamemodeSelectionMenu = new GameModeSelectionMenu(this.main);

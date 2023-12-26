@@ -12,12 +12,19 @@ import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.InvalidDescriptionException;
+import org.bukkit.plugin.InvalidPluginException;
+import org.bukkit.plugin.Plugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class GameManager {
 
@@ -151,6 +158,28 @@ public class GameManager {
             return true;
         }
         return false;
+    }
+
+    public void loadGame(){
+        if(this.gameState != GameState.WAITING_TO_START) return;
+        if(this.chosenGameMode == null) return;
+
+        File configFile = new File(main.getDataFolder(), "other-config.yml");
+        try {
+            Plugin plugin = Bukkit.getPluginManager().loadPlugin(this.chosenGameMode.getPluginFile());
+            plugin.saveDefaultConfig();
+
+            FileConfiguration config = plugin.getConfig();
+
+            // inject controllers infos
+            this.timersController.onConfigLoad(config);
+
+            plugin.saveConfig();
+
+        } catch (InvalidPluginException | InvalidDescriptionException e) {
+            Bukkit.getLogger().log(Level.SEVERE, "Could not load game mode plugin " + this.chosenGameMode.getPluginFile().getName(), e);
+            return;
+        }
     }
 
     // Starts the game

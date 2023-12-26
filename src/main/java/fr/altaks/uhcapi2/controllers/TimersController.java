@@ -6,17 +6,20 @@ import fr.altaks.uhcapi2.core.GameMode;
 import fr.altaks.uhcapi2.core.IController;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class TimersController implements IController {
 
     private int minutesBeforePvp = 20;
     private int minutesBeforeInvincibilityEnds = 5;
+    private int minutesBeforeRolesAreGiven = 20;
 
     private final HashMap<Integer, GameMode.RoleTimer> slotsToTimers = new HashMap<>();
 
@@ -49,6 +52,19 @@ public class TimersController implements IController {
         }.runTaskLater(main, minutesBeforePvp * 60 * 20L); // minutes -> seconds -> ticks
     }
 
+    @Override
+    public void onConfigLoad(FileConfiguration config) {
+        config.set("timers.time-before-pvp", minutesBeforePvp);
+        config.set("timers.time-before-taking-damage", minutesBeforeInvincibilityEnds);
+        config.set("timers.time-before-roles-are-given", minutesBeforeRolesAreGiven);
+
+        if(main.getGameManager().getChosenGameMode() != null){
+            for(Map.Entry<GameMode.RoleTimer, Long> entry : main.getGameManager().getChosenGameMode().getRolesTimers().entrySet()){
+                config.set("roles.timers." + entry.getKey().getPath(), entry.getValue());
+            }
+        }
+    }
+
     @EventHandler
     public void onPlayerTakesDamage(EntityDamageEvent event){
         if(event.getEntity() instanceof Player){
@@ -78,5 +94,13 @@ public class TimersController implements IController {
 
     public HashMap<Integer, GameMode.RoleTimer> getSlotsToTimers() {
         return slotsToTimers;
+    }
+
+    public int getMinutesBeforeRolesAreGiven() {
+        return minutesBeforeRolesAreGiven;
+    }
+
+    public void setMinutesBeforeRolesAreGiven(int minutesBeforeRolesAreGiven) {
+        this.minutesBeforeRolesAreGiven = minutesBeforeRolesAreGiven;
     }
 }
