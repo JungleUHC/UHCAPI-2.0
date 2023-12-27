@@ -2,6 +2,7 @@ package fr.altaks.uhcapi2.views.gamemode;
 
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.GameMode;
+import fr.altaks.uhcapi2.views.parameters.ParametersMenu;
 import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
 import fr.altaks.uhcapi2.views.timers.TimersRolesMenu;
 import fr.mrmicky.fastinv.FastInv;
@@ -104,6 +105,7 @@ public class GameModeSelectionMenu extends FastInv {
         // Create related menu instances in the manager
         main.getGameManager().setRolesAmountsMainMenu(new RolesAmountsMainMenu(main, main.getGameManager().getHostMainMenu()));
         main.getGameManager().setTimersRolesMenu(new TimersRolesMenu(main, main.getGameManager().getHostMainMenu().getTimersMainMenu()));
+        main.getGameManager().setParametersMenu(new ParametersMenu(main, main.getGameManager().getHostMainMenu()));
     }
 
     private GameMode getGameModeFromConfigurator(File pluginFile, File configurator){

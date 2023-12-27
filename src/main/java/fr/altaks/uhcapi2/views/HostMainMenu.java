@@ -15,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class HostMainMenu extends FastInv {
@@ -43,6 +44,10 @@ public class HostMainMenu extends FastInv {
             .name(ChatColor.RESET +""+ ChatColor.YELLOW + "Configuration supplémentaire")
             .build();
 
+    private ItemStack configParameters = new ItemBuilder(Material.REDSTONE_COMPARATOR)
+            .name(ChatColor.RESET +""+ ChatColor.YELLOW + "Configuration des paramètres")
+            .build();
+
     private ItemStack configTimers = new ItemBuilder(Material.WATCH)
             .name(ChatColor.RESET +""+ ChatColor.YELLOW + "Configuration des timers")
             .build();
@@ -64,7 +69,7 @@ public class HostMainMenu extends FastInv {
             .name(ChatColor.RESET +""+ ChatColor.GREEN + "\u00BB Lancer la partie \u00AB")
             .build();
 
-    private ItemStack stopButotn = HeadBuilder.of(STOP_VALUE)
+    private ItemStack stopButton = HeadBuilder.of(STOP_VALUE)
             .name(ChatColor.RESET +""+ ChatColor.RED +"La partie ne peut pas être lancée :(")
             .lore(ChatColor.GRAY + "Veuillez choisir un mode de jeu")
             .build();
@@ -111,14 +116,16 @@ public class HostMainMenu extends FastInv {
         setItem(26, configTimers, event -> timersMainMenu.open((Player) event.getWhoClicked()));
 
         // Fourth line
-        setItem(31, configSupp);
+        setItem(31, configSupp, event -> {
+            event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Veuillez choisir un mode de jeu avant de configurer les paramètres supplémentaires");
+        });
 
         // Fifth line
         setItem(38, configWorld, event -> worldMainMenu.open((Player) event.getWhoClicked()));
         setItem(42, configWhitelist);
 
         // Sixth line
-        setItem(49, startButton);
+        setItem(49, stopButton);
 
         this.main = main;
         gamemodeSelectionMenu = new GameModeSelectionMenu(this.main);
@@ -130,6 +137,18 @@ public class HostMainMenu extends FastInv {
         event.setCancelled(true);
     }
 
+    @Override
+    protected void onOpen(InventoryOpenEvent e) {
+        if(main.getGameManager().getChosenGameMode() != null){
+            if(main.getGameManager().getChosenGameMode().getRolesParameters().isEmpty()){
+                setItem(31, configParameters, event -> event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Ce mode de jeu n'a pas de paramètres supplémentaires"));
+            } else {
+                setItem(31, configParameters, event -> main.getGameManager().getParametersMenu().open((Player) event.getWhoClicked()));
+            }
+        } else {
+            setItem(31, configSupp, event -> event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Veuillez choisir un mode de jeu avant de configurer les paramètres supplémentaires"));
+        }
+    }
 
     public TimersMainMenu getTimersMainMenu() {
         return timersMainMenu;

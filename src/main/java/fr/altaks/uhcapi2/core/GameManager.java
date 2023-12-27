@@ -1,22 +1,28 @@
 package fr.altaks.uhcapi2.core;
 
 import fr.altaks.uhcapi2.Main;
-import fr.altaks.uhcapi2.controllers.GameController;
-import fr.altaks.uhcapi2.controllers.ScenariosController;
-import fr.altaks.uhcapi2.controllers.WorldsController;
+import fr.altaks.uhcapi2.controllers.*;
 import fr.altaks.uhcapi2.views.HostMainMenu;
+import fr.altaks.uhcapi2.views.parameters.ParametersMenu;
 import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
 import fr.altaks.uhcapi2.views.timers.TimersRolesMenu;
 import fr.mrmicky.fastinv.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.InvalidDescriptionException;
+import org.bukkit.plugin.InvalidPluginException;
+import org.bukkit.plugin.Plugin;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class GameManager {
 
@@ -27,10 +33,13 @@ public class GameManager {
 
     private RolesAmountsMainMenu rolesAmountsMainMenu;
     private TimersRolesMenu timersRolesMenu;
+    private ParametersMenu parametersMenu;
 
     private WorldsController worldsController;
     private GameController gameController;
     private ScenariosController scenariosController;
+    private TimersController timersController;
+    private ParametersController parametersController;
 
     public GameManager(Main main){
         this.main = main;
@@ -39,6 +48,8 @@ public class GameManager {
         this.worldsController = new WorldsController(main);
         this.gameController = new GameController(this, main);
         this.scenariosController = new ScenariosController(main);
+        this.timersController = new TimersController(this, main);
+        this.parametersController = new ParametersController(main);
     }
 
     private Player host;
@@ -150,6 +161,29 @@ public class GameManager {
         return false;
     }
 
+    public void loadGame(){
+        if(this.gameState != GameState.WAITING_TO_START) return;
+        if(this.chosenGameMode == null) return;
+
+        File configFile = new File(main.getDataFolder(), "other-config.yml");
+        try {
+            Plugin plugin = Bukkit.getPluginManager().loadPlugin(this.chosenGameMode.getPluginFile());
+            plugin.saveDefaultConfig();
+
+            FileConfiguration config = plugin.getConfig();
+
+            // inject controllers infos
+            this.timersController.onConfigLoad(config);
+            this.parametersController.onConfigLoad(config);
+
+            plugin.saveConfig();
+
+        } catch (InvalidPluginException | InvalidDescriptionException e) {
+            Bukkit.getLogger().log(Level.SEVERE, "Could not load game mode plugin " + this.chosenGameMode.getPluginFile().getName(), e);
+            return;
+        }
+    }
+
     // Starts the game
     public void start(){
         // Changing gamestate
@@ -174,6 +208,7 @@ public class GameManager {
         this.gameController.onGameStart();
         this.worldsController.onGameStart();
         this.scenariosController.onGameStart();
+        this.timersController.onGameStart();
     }
 
     public GameState getGameState() {
@@ -216,7 +251,19 @@ public class GameManager {
         return scenariosController;
     }
 
-    public void setScenariosController(ScenariosController scenariosController) {
-        this.scenariosController = scenariosController;
+    public TimersController getTimersController() {
+        return timersController;
+    }
+
+    public ParametersController getParametersController() {
+        return parametersController;
+    }
+
+    public ParametersMenu getParametersMenu() {
+        return parametersMenu;
+    }
+
+    public void setParametersMenu(ParametersMenu parametersMenu) {
+        this.parametersMenu = parametersMenu;
     }
 }

@@ -36,3 +36,8 @@ commands:
     usage: "/start"
     permission: "uhcapi2.start"
     permission-message: "Vous n'avez pas la permission de lancer le jeu de force"
+  configload:
+    description: "Charge la configuration du jeu"
+    usage: "/configload"
+    permission: "uhcapi2.configload"
+    permission-message: "Vous n'avez pas la permission de charger la configuration de force"
