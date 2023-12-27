@@ -15,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class HostMainMenu extends FastInv {
@@ -41,6 +42,10 @@ public class HostMainMenu extends FastInv {
 
     private ItemStack configSupp = new ItemBuilder(Material.BEDROCK)
             .name(ChatColor.RESET +""+ ChatColor.YELLOW + "Configuration supplémentaire")
+            .build();
+
+    private ItemStack configParameters = new ItemBuilder(Material.REDSTONE_COMPARATOR)
+            .name(ChatColor.RESET +""+ ChatColor.YELLOW + "Configuration des paramètres")
             .build();
 
     private ItemStack configTimers = new ItemBuilder(Material.WATCH)
@@ -111,7 +116,9 @@ public class HostMainMenu extends FastInv {
         setItem(26, configTimers, event -> timersMainMenu.open((Player) event.getWhoClicked()));
 
         // Fourth line
-        setItem(31, configSupp);
+        setItem(31, configSupp, event -> {
+            event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Veuillez choisir un mode de jeu avant de configurer les paramètres supplémentaires");
+        });
 
         // Fifth line
         setItem(38, configWorld, event -> worldMainMenu.open((Player) event.getWhoClicked()));
@@ -130,6 +137,18 @@ public class HostMainMenu extends FastInv {
         event.setCancelled(true);
     }
 
+    @Override
+    protected void onOpen(InventoryOpenEvent e) {
+        if(main.getGameManager().getChosenGameMode() != null){
+            if(main.getGameManager().getChosenGameMode().getRolesParameters().isEmpty()){
+                setItem(31, configParameters, event -> event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Ce mode de jeu n'a pas de paramètres supplémentaires"));
+            } else {
+                setItem(31, configParameters, event -> main.getGameManager().getParametersMenu().open((Player) event.getWhoClicked()));
+            }
+        } else {
+            setItem(31, configSupp, event -> event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Veuillez choisir un mode de jeu avant de configurer les paramètres supplémentaires"));
+        }
+    }
 
     public TimersMainMenu getTimersMainMenu() {
         return timersMainMenu;
