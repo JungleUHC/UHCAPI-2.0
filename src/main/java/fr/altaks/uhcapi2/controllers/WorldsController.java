@@ -139,6 +139,8 @@ public class WorldsController implements IController {
                     }
 
                     Main.logDev("Unloaded the game world.");
+
+                    System.gc();
                 }
 
                 Main.logDev("Awaiting for world creation...");
@@ -160,6 +162,11 @@ public class WorldsController implements IController {
                 creator.createWorld();
 
                 Main.logDebug("Created the game world.");
+
+                main.getGameManager().getHost().sendMessage(Main.MSG_PREFIX + ChatColor.GREEN + "La génération du monde est terminée !");
+                for(Player coHost : main.getGameManager().getCoHosts()){
+                    coHost.sendMessage(Main.MSG_PREFIX + ChatColor.GREEN + "La génération du monde est terminée !");
+                }
 
                 // Preload chunks around spawn
                 World newGameWorld = Bukkit.getWorld("game");

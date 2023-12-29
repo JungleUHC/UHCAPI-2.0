@@ -23,6 +23,9 @@ website: mc.jungleuhc.fr
 ## The prefix that will be used in the console to log outputs
 prefix: "UHCAPI"
 
+depend:
+  - WorldEdit
+
 commands:
   worldtp:
     description: "Teleporte le joueur dans un monde donne"
@@ -50,6 +53,8 @@ commands:
   world:
     aliases: ["w"]
     description: "Gere les mondes du jeu"
+    permission: "host.world"
+    permission-message: "Vous n'avez pas la permission de gerer les mondes"
   host:
     aliases: ["h"]
     description: "Permet d'acceder aux commandes d'hote"
