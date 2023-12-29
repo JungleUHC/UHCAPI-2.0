@@ -75,6 +75,7 @@ public class GameInvsSubMenu extends FastInv {
     }
 
     private void processStartInvClick(InventoryClickEvent event){
+        if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
         if(event.isRightClick()){
             manager.getGameController().getGameInvsController().preparePlayerForInventoryCloning((Player) event.getWhoClicked(), true);
         } else {
@@ -83,6 +84,7 @@ public class GameInvsSubMenu extends FastInv {
     }
 
     private void processDeathInvClick(InventoryClickEvent event){
+        if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
         if(event.isRightClick()){
             manager.getGameController().getGameInvsController().preparePlayerForInventoryCloning((Player) event.getWhoClicked(), false);
         } else {

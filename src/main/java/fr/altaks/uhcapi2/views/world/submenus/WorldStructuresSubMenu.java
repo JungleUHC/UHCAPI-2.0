@@ -89,6 +89,8 @@ public class WorldStructuresSubMenu extends FastInv {
         if(event.getClickedInventory() == null || event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
         if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
 
+        if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+
         if(slotsToStructureType.containsKey(event.getSlot())){
             this.manager.getWorldsController().switchStructureActivationStatus(slotsToStructureType.get(event.getSlot()));
 

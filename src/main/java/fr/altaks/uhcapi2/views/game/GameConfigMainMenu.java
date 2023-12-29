@@ -113,6 +113,7 @@ public class GameConfigMainMenu  extends FastInv {
     }
 
     private void processXpBoostClick(InventoryClickEvent event){
+        if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
         if(event.isLeftClick()){
             // Toggle xp boost
             if(manager.getGameController().isXpBoostEnabled()){

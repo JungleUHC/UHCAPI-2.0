@@ -33,8 +33,12 @@ public class WorldNewWorldSubMenu extends FastInv {
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
-        setItem(21, START_CREATION, event -> manager.getWorldsController().startWorldGeneration());
+        setItem(21, START_CREATION, event -> {
+            if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+            manager.getWorldsController().startWorldGeneration();
+        });
         setItem(23, STOP_CREATION, event -> {
+            if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
             if(!manager.getWorldsController().cancelWorldGeneration())
                 event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "La génération du monde n'a pas pu être annulée");;
         });

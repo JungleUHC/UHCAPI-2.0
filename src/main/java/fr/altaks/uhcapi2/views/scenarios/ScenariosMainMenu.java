@@ -98,6 +98,8 @@ public class ScenariosMainMenu extends FastInv {
         if(event.getClickedInventory() == null || event.getView().getBottomInventory() == event.getClickedInventory()) return;
         if(!scenariosSlots.containsKey(event.getSlot())) return;
         if(Arrays.asList(49, 41).contains(event.getSlot())) return; // return arrow or second page
+        
+        if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
 
         // get the scenario from the clicked item
         Scenario scenario = scenariosSlots.get(event.getSlot());

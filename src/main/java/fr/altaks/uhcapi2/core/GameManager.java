@@ -75,6 +75,10 @@ public class GameManager {
         return hostMenuItem;
     }
 
+    public boolean canModifyRules(Player player){
+        return this.gameState != GameState.STARTED && (player.equals(this.host) || this.coHosts.contains(player));
+    }
+
     private final ItemStack hostMenuItem = new ItemBuilder(Material.NETHER_STAR)
             .enchant(Enchantment.DURABILITY, 1)
             .flags(ItemFlag.HIDE_ENCHANTS)
@@ -85,6 +89,7 @@ public class GameManager {
                     ChatColor.GRAY + "Accessible par l'hôte et les co-hôtes uniquement !"
             )
             .build();
+
     public ItemStack getHostGameLaunchItem() {
         return hostGameLaunchItem;
     }

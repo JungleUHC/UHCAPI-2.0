@@ -64,14 +64,21 @@ public class TimersMainMenu extends FastInv {
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
-        setItem(20, pvpConfig, event -> processClick(event, main.getGameManager().getTimersController()::setMinutesBeforePvp, main.getGameManager().getTimersController()::getMinutesBeforePvp, 0));
+        setItem(20, pvpConfig, event -> {
+            if(!main.getGameManager().canModifyRules((Player) event.getWhoClicked())) return;
+            processClick(event, main.getGameManager().getTimersController()::setMinutesBeforePvp, main.getGameManager().getTimersController()::getMinutesBeforePvp, 0);
+        });
         setItem(22, timersRoles, event -> {
+
             if(event.isShiftClick() && event.isRightClick()){
                 // if the role menu is set, open it, otherwise say that the game mode is not loaded
                 if(main.getGameManager().getTimersRolesMenu() != null){
                     main.getGameManager().getTimersRolesMenu().open((Player) event.getWhoClicked());
                 }
             } else if(currentlySelectedGameModeContainsRoles()){
+
+                if(!main.getGameManager().canModifyRules((Player) event.getWhoClicked())) return;
+
                 int modifier = (event.isLeftClick() ? 1 : -1);
                 int newValue = main.getGameManager().getTimersController().getMinutesBeforeRolesAreGiven() + modifier;
 
@@ -96,7 +103,10 @@ public class TimersMainMenu extends FastInv {
                 event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "Veuillez choisir un mode de jeu avant de configurer les timers des rôles");
             }
         });
-        setItem(24, invincibilityConfig, event -> processClick(event, main.getGameManager().getTimersController()::setMinutesBeforeInvincibilityEnds, main.getGameManager().getTimersController()::getMinutesBeforeInvincibilityEnds, 0));
+        setItem(24, invincibilityConfig, event -> {
+            if(!main.getGameManager().canModifyRules((Player) event.getWhoClicked())) return;
+            processClick(event, main.getGameManager().getTimersController()::setMinutesBeforeInvincibilityEnds, main.getGameManager().getTimersController()::getMinutesBeforeInvincibilityEnds, 0);
+        });
 
         // Set the return arrow
         setItem(40, new ItemBuilder(Material.ARROW).name("Retour").build(),

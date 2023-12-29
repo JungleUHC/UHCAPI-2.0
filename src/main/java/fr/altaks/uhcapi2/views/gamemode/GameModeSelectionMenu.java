@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -77,6 +78,8 @@ public class GameModeSelectionMenu extends FastInv {
         // checks to avoid NPEs
         if(event.getClickedInventory() == null || event.getView().getBottomInventory() == event.getClickedInventory()) return;
         if(event.getCurrentItem() == null) return;
+
+        if(!main.getGameManager().canModifyRules((Player) event.getWhoClicked())) return;
 
         // when an item is clicked, print the chosen game mode file name to the console
         Pair<File, File> gameMode = availableGameModes.get(event.getCurrentItem());

@@ -108,6 +108,8 @@ public class ParametersMenu extends FastInv {
         if(event.getClickedInventory() == null || event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
         if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
 
+        if(!main.getGameManager().canModifyRules((Player) event.getWhoClicked())) return;
+
         if(this.slotsToParameters.containsKey(event.getSlot())){
             GameMode.RoleParameter parameter = this.slotsToParameters.get(event.getSlot());
             Object value = main.getGameManager().getChosenGameMode().getRolesParameters().get(parameter);

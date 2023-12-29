@@ -4,6 +4,7 @@ import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.IPluginCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class RulesCommand implements IPluginCommand {
 
@@ -25,6 +26,10 @@ public class RulesCommand implements IPluginCommand {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if(command.getName().equalsIgnoreCase(getCommandName()) && commandSender instanceof Player){
+            // open game config inventory
+            main.getGameManager().getHostMainMenu().open((Player) commandSender);
+        }
         return false;
     }
 }

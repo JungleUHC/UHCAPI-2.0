@@ -45,6 +45,9 @@ public class ScenariosMainSecondPageMenu extends FastInv {
         if(!firstPage.getScenariosSlots().containsKey(event.getSlot() + 6*9)) return;
         if(Arrays.asList(49, 39).contains(event.getSlot())) return; // return arrow or second page
 
+
+        if(!firstPage.getManager().canModifyRules((Player) event.getWhoClicked())) return;
+
         Scenario scenario = firstPage.getScenariosSlots().get(event.getSlot() + 6*9);
         if(scenario == null) throw new RuntimeException("Scenario not found");
 

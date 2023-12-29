@@ -105,62 +105,72 @@ public class GameBordersSubMenu extends FastInv {
 
         // 11 13 15
         setItem(11, initialSize,
-                event -> processIncreaseAndDecreaseClick(
-                        event,
-                        manager.getGameController().getGameBorderController()::setInitialBorderSize,
-                        manager.getGameController().getGameBorderController()::getInitialBorderSize,
-                        205,
-                        250,
-                        Float.MAX_VALUE,
-                        manager.getGameController().getGameBorderController().getFinalBorderSize(),
-                        "blocs"
-                )
+                event -> {
+                    if(manager.canModifyRules((Player) event.getWhoClicked())) processIncreaseAndDecreaseClick(
+                            event,
+                            manager.getGameController().getGameBorderController()::setInitialBorderSize,
+                            manager.getGameController().getGameBorderController()::getInitialBorderSize,
+                            205,
+                            250,
+                            Float.MAX_VALUE,
+                            manager.getGameController().getGameBorderController().getFinalBorderSize(),
+                            "blocs"
+                    );
+                }
         );
         setItem(13, finalSize,
-                event -> processIncreaseAndDecreaseClick(
-                        event,
-                        manager.getGameController().getGameBorderController()::setFinalBorderSize,
-                        manager.getGameController().getGameBorderController()::getFinalBorderSize,
-                        205,
-                        250,
-                        manager.getGameController().getGameBorderController().getInitialBorderSize(),
-                        1,
-                        "blocs"
-                )
+                event -> {
+                    if(manager.canModifyRules((Player) event.getWhoClicked()))processIncreaseAndDecreaseClick(
+                            event,
+                            manager.getGameController().getGameBorderController()::setFinalBorderSize,
+                            manager.getGameController().getGameBorderController()::getFinalBorderSize,
+                            205,
+                            250,
+                            manager.getGameController().getGameBorderController().getInitialBorderSize(),
+                            1,
+                            "blocs"
+                    );
+                }
         );
         setItem(15, suppConfig);
 
         // 29 31 33
         setItem(29, borderType,
-                event -> swapBorderType(
-                        event,
-                        manager.getGameController().getGameBorderController()::setSafeBorder,
-                        manager.getGameController().getGameBorderController()::isSafeBorder
-                )
+                event -> {
+                    if(manager.canModifyRules((Player) event.getWhoClicked())) swapBorderType(
+                            event,
+                            manager.getGameController().getGameBorderController()::setSafeBorder,
+                            manager.getGameController().getGameBorderController()::isSafeBorder
+                    );
+                }
         );
         setItem(31, borderTimer,
-                event -> processIncreaseAndDecreaseClick(
-                        event,
-                        manager.getGameController().getGameBorderController()::setTimeBeforeBorderShrink,
-                        manager.getGameController().getGameBorderController()::getTimeBeforeBorderShrink,
-                        1,
-                        1,
-                        2 * 60f,
-                        0, // TODO : Change default value back to 20 mins
-                        "minute(s)"
-                )
+                event -> {
+                    if(manager.canModifyRules((Player) event.getWhoClicked())) processIncreaseAndDecreaseClick(
+                            event,
+                            manager.getGameController().getGameBorderController()::setTimeBeforeBorderShrink,
+                            manager.getGameController().getGameBorderController()::getTimeBeforeBorderShrink,
+                            1,
+                            1,
+                            2 * 60f,
+                            0,
+                            "minute(s)"
+                    );
+                }
         );
         setItem(33, borderSpeed,
-                event -> processIncreaseAndDecreaseClick(
-                        event,
-                        manager.getGameController().getGameBorderController()::setBorderShrinkSpeed,
-                        manager.getGameController().getGameBorderController()::getBorderShrinkSpeed,
-                        0.1f,
-                        0.1f,
-                        2,
-                        0.1f,
-                        "bloc(s) / s"
-                )
+                event -> {
+                    if(manager.canModifyRules((Player) event.getWhoClicked())) processIncreaseAndDecreaseClick(
+                            event,
+                            manager.getGameController().getGameBorderController()::setBorderShrinkSpeed,
+                            manager.getGameController().getGameBorderController()::getBorderShrinkSpeed,
+                            0.1f,
+                            0.1f,
+                            2,
+                            0.1f,
+                            "bloc(s) / s"
+                    );
+                }
         );
 
         // Set the return arrow

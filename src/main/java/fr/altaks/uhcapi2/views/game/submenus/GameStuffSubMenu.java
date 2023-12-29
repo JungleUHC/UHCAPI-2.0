@@ -84,9 +84,18 @@ public class GameStuffSubMenu extends FastInv {
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
         // 11 13 15 30 32
-        setItem(11, swordConfig, event -> manager.getGameController().getGameStuffController().getSwordsLimitsInventory().open((Player) event.getWhoClicked()));
-        setItem(13, armorConfig, event -> manager.getGameController().getGameStuffController().getArmorsLimitsInventory().open((Player) event.getWhoClicked()));
-        setItem(15, bowConfig, event -> manager.getGameController().getGameStuffController().getBowsLimitsInventory().open((Player) event.getWhoClicked()));
+        setItem(11, swordConfig, event -> {
+            if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+            manager.getGameController().getGameStuffController().getSwordsLimitsInventory().open((Player) event.getWhoClicked());
+        });
+        setItem(13, armorConfig, event -> {
+            if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+            manager.getGameController().getGameStuffController().getArmorsLimitsInventory().open((Player) event.getWhoClicked());
+        });
+        setItem(15, bowConfig, event -> {
+            if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+            manager.getGameController().getGameStuffController().getBowsLimitsInventory().open((Player) event.getWhoClicked());
+        });
 
         setItem(30, pearlConfig, this::processPearlConfigClick);
         setItem(32, bucketConfig, this::processBucketConfigClick);
@@ -115,6 +124,8 @@ public class GameStuffSubMenu extends FastInv {
     }
 
     private void processPearlConfigClick(InventoryClickEvent event){
+        if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+
         // switch the pearl state and change lore of the item
         manager.getGameController().getGameStuffController().setAreEnderPearlEnabled(
                 !manager.getGameController().getGameStuffController().areEnderPearlEnabled()
@@ -133,6 +144,8 @@ public class GameStuffSubMenu extends FastInv {
     }
 
     private void processBucketConfigClick(InventoryClickEvent event){
+        if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+
         // process the click :
         // - left click -> switch water bucket activation state
         // - right click -> switch lava bucket activation state

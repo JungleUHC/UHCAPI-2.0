@@ -61,6 +61,8 @@ public class GameMobsSubMenu extends FastInv {
         if(event.getClickedInventory() == null || event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
         if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
 
+        if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+
         if(slotsToEntityType.containsKey(event.getSlot())){
             EntityType entityType = slotsToEntityType.get(event.getSlot());
             manager.getGameController().getGameMobsController().switchMobActivation(entityType);

@@ -61,6 +61,8 @@ public class TimersRolesMenu extends FastInv {
         if(event.getClickedInventory() == null || event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
         if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
 
+        if(!main.getGameManager().canModifyRules((Player) event.getWhoClicked())) return;
+
         // check if the clicked item is a timer item
         if(main.getGameManager().getTimersController().getSlotsToTimers().containsKey(event.getSlot())){
             // Get the timer and the time value
