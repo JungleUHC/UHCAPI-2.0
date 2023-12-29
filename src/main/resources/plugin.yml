@@ -53,3 +53,13 @@ commands:
   host:
     aliases: ["h"]
     description: "Permet d'acceder aux commandes d'hote"
+  doc:
+    description: "Permet d'acceder a la documentation"
+  say:
+    description: "Envoie un message a tous les joueurs op de la partie"
+    usage: "/say <message>"
+  mod:
+    description: "Permet d'echanger des messages entre les moderateurs"
+    usage: "/mod <message>"
+    permission: "staff.mod"
+    permission-message: "Vous n'avez pas la permission d'envoyer un message aux moderateurs"
