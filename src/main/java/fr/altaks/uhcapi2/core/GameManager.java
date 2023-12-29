@@ -20,7 +20,6 @@ import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -40,6 +39,7 @@ public class GameManager {
     private ScenariosController scenariosController;
     private TimersController timersController;
     private ParametersController parametersController;
+    private RolesAmountController rolesAmountController;
 
     public GameManager(Main main){
         this.main = main;
@@ -50,6 +50,7 @@ public class GameManager {
         this.scenariosController = new ScenariosController(main);
         this.timersController = new TimersController(this, main);
         this.parametersController = new ParametersController(main);
+        this.rolesAmountController = new RolesAmountController(main);
     }
 
     private Player host;
@@ -175,6 +176,7 @@ public class GameManager {
             // inject controllers infos
             this.timersController.onConfigLoad(config);
             this.parametersController.onConfigLoad(config);
+            this.rolesAmountController.onConfigLoad(config);
 
             plugin.saveConfig();
 
@@ -265,5 +267,9 @@ public class GameManager {
 
     public void setParametersMenu(ParametersMenu parametersMenu) {
         this.parametersMenu = parametersMenu;
+    }
+
+    public RolesAmountController getRolesAmountController() {
+        return rolesAmountController;
     }
 }

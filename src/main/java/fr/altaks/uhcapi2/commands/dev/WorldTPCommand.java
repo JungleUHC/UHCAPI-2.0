@@ -1,4 +1,4 @@
-package fr.altaks.uhcapi2.commands;
+package fr.altaks.uhcapi2.commands.dev;
 
 import fr.altaks.uhcapi2.core.IPluginCommand;
 import org.bukkit.Bukkit;

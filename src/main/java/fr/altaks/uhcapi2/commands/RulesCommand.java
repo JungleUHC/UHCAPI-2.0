@@ -5,17 +5,17 @@ import fr.altaks.uhcapi2.core.IPluginCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-public class ConfigLoad implements IPluginCommand {
+public class RulesCommand implements IPluginCommand {
 
     private Main main;
 
-    public ConfigLoad(Main main){
+    public RulesCommand(Main main){
         this.main = main;
     }
 
     @Override
     public String getCommandName() {
-        return "configload";
+        return "rules";
     }
 
     @Override
@@ -25,15 +25,6 @@ public class ConfigLoad implements IPluginCommand {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if(command.getName().equalsIgnoreCase(getCommandName())){
-            if(main.getGameManager().getChosenGameMode() != null){
-                commandSender.sendMessage("§aLoading config...");
-                main.getGameManager().loadGame();
-            } else {
-                commandSender.sendMessage("§cYou must choose a gamemode before loading a config");
-            }
-            return true;
-        }
         return false;
     }
 }

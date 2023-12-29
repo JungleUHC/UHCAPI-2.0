@@ -1,9 +1,13 @@
 package fr.altaks.uhcapi2;
 
-import fr.altaks.uhcapi2.commands.ConfigLoad;
-import fr.altaks.uhcapi2.commands.StartCommand;
-import fr.altaks.uhcapi2.commands.ValidateCommand;
-import fr.altaks.uhcapi2.commands.WorldTPCommand;
+import fr.altaks.uhcapi2.commands.GroupCommand;
+import fr.altaks.uhcapi2.commands.HostCommand;
+import fr.altaks.uhcapi2.commands.RulesCommand;
+import fr.altaks.uhcapi2.commands.WorldCommand;
+import fr.altaks.uhcapi2.commands.dev.ConfigLoad;
+import fr.altaks.uhcapi2.commands.dev.StartCommand;
+import fr.altaks.uhcapi2.commands.dev.ValidateCommand;
+import fr.altaks.uhcapi2.commands.dev.WorldTPCommand;
 import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IPluginCommand;
 import fr.altaks.uhcapi2.core.util.worldmanip.DynamicClassFunctions;
@@ -104,7 +108,7 @@ public class Main extends JavaPlugin {
 
         // Register commands and listeners if they are.
         IPluginCommand[] commands = new IPluginCommand[]{
-            new WorldTPCommand(), new ValidateCommand(this), new StartCommand(this), new ConfigLoad(this)
+            new WorldTPCommand(), new ValidateCommand(this), new StartCommand(this), new ConfigLoad(this), new GroupCommand(this), new RulesCommand(this), new WorldCommand(this), new HostCommand(this)
         };
         Listener[] listeners = new Listener[]{
             new HostListener(this), new PlayerListener(this)
