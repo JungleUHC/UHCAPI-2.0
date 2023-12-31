@@ -68,3 +68,5 @@ commands:
     usage: "/mod <message>"
     permission: "staff.mod"
     permission-message: "Vous n'avez pas la permission d'envoyer un message aux moderateurs"
+  vote:
+    description: "Permet de voter pour une action"

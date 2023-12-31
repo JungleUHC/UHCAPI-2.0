@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class GameBorderController implements IController {
 
@@ -25,6 +26,16 @@ public class GameBorderController implements IController {
         this.main = main;
     }
 
+    private BukkitTask borderReductionTask;
+    private BukkitRunnable borderReductionRunnable;
+
+    public void forceBorderReduction() {
+        if(borderReductionTask != null){
+            borderReductionTask.cancel();
+        }
+        this.borderReductionRunnable.run();
+    }
+
     @Override
     public void onGameStart() {
 
@@ -36,7 +47,7 @@ public class GameBorderController implements IController {
             }
         }
 
-        new BukkitRunnable() {
+        this.borderReductionRunnable = new BukkitRunnable() {
 
             @Override
             public void run() {
@@ -83,7 +94,8 @@ public class GameBorderController implements IController {
 
             }
 
-        }.runTaskLater(main, (long) (timeBeforeBorderShrink * 60 * 20)); // convert times into game ticks
+        }; // convert times into game ticks
+        this.borderReductionTask = this.borderReductionRunnable.runTaskLater(main, (long) (timeBeforeBorderShrink * 60 * 20));
     }
 
     public float getInitialBorderSize() {

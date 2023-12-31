@@ -2,6 +2,7 @@ package fr.altaks.uhcapi2.core;
 
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.controllers.*;
+import fr.altaks.uhcapi2.services.VoteService;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.altaks.uhcapi2.views.parameters.ParametersMenu;
 import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
@@ -41,6 +42,8 @@ public class GameManager {
     private ParametersController parametersController;
     private RolesAmountController rolesAmountController;
 
+    private VoteService voteService;
+
     public GameManager(Main main){
         this.main = main;
         this.hostMainMenu = new HostMainMenu(this, main);
@@ -51,6 +54,8 @@ public class GameManager {
         this.timersController = new TimersController(this, main);
         this.parametersController = new ParametersController(main);
         this.rolesAmountController = new RolesAmountController(main);
+
+        this.voteService = new VoteService(main);
     }
 
     private Player host;
@@ -276,5 +281,9 @@ public class GameManager {
 
     public RolesAmountController getRolesAmountController() {
         return rolesAmountController;
+    }
+
+    public VoteService getVoteService() {
+        return voteService;
     }
 }

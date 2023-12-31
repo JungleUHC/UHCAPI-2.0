@@ -107,7 +107,7 @@ public class Main extends JavaPlugin {
         IPluginCommand[] commands = new IPluginCommand[]{
             new WorldTPCommand(), new ValidateCommand(this), new StartCommand(this), new ConfigLoad(this),
             new GroupCommand(this), new RulesCommand(this), new WorldCommand(this), new HostCommand(this),
-            new DocCommand(this), new SayCommand(this), new ModCommand(this)
+            new DocCommand(this), new SayCommand(this), new ModCommand(this), new VoteCommand(this)
         };
         Listener[] listeners = new Listener[]{
             new HostListener(this), new PlayerListener(this)
