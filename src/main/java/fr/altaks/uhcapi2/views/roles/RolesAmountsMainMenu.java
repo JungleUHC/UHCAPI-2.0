@@ -70,6 +70,9 @@ public class RolesAmountsMainMenu extends FastInv {
         if(event.getClickedInventory() == null || event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
         if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
 
+
+        if(!main.getGameManager().canModifyRules((Player) event.getWhoClicked())) return;
+
         // Check if the clicked item is a team item
         if(slotToTeam.containsKey(event.getSlot())){
             Main.logDebug("Player " + event.getWhoClicked().getName() + " clicked on team " + slotToTeam.get(event.getSlot()).getName());

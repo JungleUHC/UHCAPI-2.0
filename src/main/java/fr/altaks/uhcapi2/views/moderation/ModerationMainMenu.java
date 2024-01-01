@@ -32,15 +32,13 @@ public class ModerationMainMenu extends FastInv {
         setItems(getBorders(), ItemBuilder.FILLING_PANE);
 
         // Set the access roles icon
-        setItem(12, accessRolesIcon);
+        setItem(12, accessRolesIcon); // TODO : Implement the access roles feature
 
         // Set the access teams icon
-        setItem(14, accessTeamsIcon);
+        setItem(14, accessTeamsIcon); // TODO : Implement the access teams feature
 
         // Set the return arrow
-        setItem(22, new ItemBuilder(Material.ARROW).name("Retour").build(), event -> {
-            upperMenu.open((Player) event.getWhoClicked());
-        });
+        setItem(22, new ItemBuilder(Material.ARROW).name("Retour").build(), event -> upperMenu.open((Player) event.getWhoClicked()));
     }
 
     @Override

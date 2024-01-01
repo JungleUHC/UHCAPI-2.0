@@ -2,6 +2,7 @@ package fr.altaks.uhcapi2.views.gamemode;
 
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.GameMode;
+import fr.altaks.uhcapi2.views.parameters.ParametersMenu;
 import fr.altaks.uhcapi2.views.roles.RolesAmountsMainMenu;
 import fr.altaks.uhcapi2.views.timers.TimersRolesMenu;
 import fr.mrmicky.fastinv.FastInv;
@@ -12,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -77,6 +79,8 @@ public class GameModeSelectionMenu extends FastInv {
         if(event.getClickedInventory() == null || event.getView().getBottomInventory() == event.getClickedInventory()) return;
         if(event.getCurrentItem() == null) return;
 
+        if(!main.getGameManager().canModifyRules((Player) event.getWhoClicked())) return;
+
         // when an item is clicked, print the chosen game mode file name to the console
         Pair<File, File> gameMode = availableGameModes.get(event.getCurrentItem());
         if(gameMode == null) throw new RuntimeException("GameMode not found");
@@ -104,6 +108,7 @@ public class GameModeSelectionMenu extends FastInv {
         // Create related menu instances in the manager
         main.getGameManager().setRolesAmountsMainMenu(new RolesAmountsMainMenu(main, main.getGameManager().getHostMainMenu()));
         main.getGameManager().setTimersRolesMenu(new TimersRolesMenu(main, main.getGameManager().getHostMainMenu().getTimersMainMenu()));
+        main.getGameManager().setParametersMenu(new ParametersMenu(main, main.getGameManager().getHostMainMenu()));
     }
 
     private GameMode getGameModeFromConfigurator(File pluginFile, File configurator){

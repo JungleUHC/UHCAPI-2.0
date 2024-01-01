@@ -1,7 +1,13 @@
 package fr.altaks.uhcapi2;
 
+import fr.altaks.uhcapi2.commands.*;
+import fr.altaks.uhcapi2.commands.dev.ConfigLoad;
+import fr.altaks.uhcapi2.commands.dev.StartCommand;
+import fr.altaks.uhcapi2.commands.dev.ValidateCommand;
+import fr.altaks.uhcapi2.commands.dev.WorldTPCommand;
 import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.core.IPluginCommand;
+import fr.altaks.uhcapi2.core.util.worldmanip.DynamicClassFunctions;
 import fr.altaks.uhcapi2.listeners.HostListener;
 import fr.altaks.uhcapi2.listeners.PlayerListener;
 import fr.mrmicky.fastinv.FastInvManager;
@@ -99,7 +105,9 @@ public class Main extends JavaPlugin {
 
         // Register commands and listeners if they are.
         IPluginCommand[] commands = new IPluginCommand[]{
-
+            new WorldTPCommand(), new ValidateCommand(this), new StartCommand(this), new ConfigLoad(this),
+            new GroupCommand(this), new RulesCommand(this), new WorldCommand(this), new HostCommand(this),
+            new DocCommand(this), new SayCommand(this), new ModCommand(this), new VoteCommand(this)
         };
         Listener[] listeners = new Listener[]{
             new HostListener(this), new PlayerListener(this)
@@ -132,10 +140,17 @@ public class Main extends JavaPlugin {
             }
         }
 
-        // Your code here...
-
+        // Misceallaneous registrations
         this.gameManager = new GameManager(this);
         FastInvManager.register(this);
+
+        // Inject NMS unload methods into the server
+        if(!DynamicClassFunctions.setPackages()) {
+            Main.logDev("NMS/OBC package could not be detected, using " + DynamicClassFunctions.nmsPackage + " and " + DynamicClassFunctions.obcPackage);
+        }
+        DynamicClassFunctions.setClasses();
+        DynamicClassFunctions.setMethods();
+        DynamicClassFunctions.setFields();
 
 
         logDebug("Registered " + commandsCount + " commands and " + successfullyLoadedListenersCount + " listeners successfully.");

@@ -22,3 +22,51 @@ website: mc.jungleuhc.fr
 
 ## The prefix that will be used in the console to log outputs
 prefix: "UHCAPI"
+
+depend:
+  - WorldEdit
+
+commands:
+  worldtp:
+    description: "Teleporte le joueur dans un monde donne"
+    usage: "/worldtp <world>"
+    permission: "uhcapi2.worldtp"
+  validate:
+    description: "Valide la configuration de l'inventaire du joueur"
+    usage: "/validate <startinv/deathinv>"
+  start:
+    description: "Lance le jeu"
+    usage: "/start"
+    permission: "uhcapi2.start"
+    permission-message: "Vous n'avez pas la permission de lancer le jeu de force"
+  configload:
+    description: "Charge la configuration du jeu"
+    usage: "/configload"
+    permission: "uhcapi2.configload"
+    permission-message: "Vous n'avez pas la permission de charger la configuration de force"
+  group:
+    aliases: ["g"]
+    description: "Gere les groupes de joueurs"
+  rules:
+    aliases: ["r"]
+    description: "Gere les regles du jeu"
+  world:
+    aliases: ["w"]
+    description: "Gere les mondes du jeu"
+    permission: "host.world"
+    permission-message: "Vous n'avez pas la permission de gerer les mondes"
+  host:
+    aliases: ["h"]
+    description: "Permet d'acceder aux commandes d'hote"
+  doc:
+    description: "Permet d'acceder a la documentation"
+  say:
+    description: "Envoie un message a tous les joueurs op de la partie"
+    usage: "/say <message>"
+  mod:
+    description: "Permet d'echanger des messages entre les moderateurs"
+    usage: "/mod <message>"
+    permission: "staff.mod"
+    permission-message: "Vous n'avez pas la permission d'envoyer un message aux moderateurs"
+  vote:
+    description: "Permet de voter pour une action"

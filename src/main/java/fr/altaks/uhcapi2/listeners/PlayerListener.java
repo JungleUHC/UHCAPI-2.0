@@ -70,6 +70,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerQuitsTheServer(PlayerQuitEvent event){
-        event.setQuitMessage("[" + ChatColor.RED + "+" + ChatColor.RESET + "] " + event.getPlayer().getName());
+        event.setQuitMessage("[" + ChatColor.RED + "-" + ChatColor.RESET + "] " + event.getPlayer().getName());
     }
 }

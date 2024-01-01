@@ -1,6 +1,5 @@
 package fr.altaks.uhcapi2.views.scenarios;
 
-import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.altaks.uhcapi2.views.HostMainMenu;
 import fr.mrmicky.fastinv.FastInv;
@@ -46,13 +45,20 @@ public class ScenariosMainSecondPageMenu extends FastInv {
         if(!firstPage.getScenariosSlots().containsKey(event.getSlot() + 6*9)) return;
         if(Arrays.asList(49, 39).contains(event.getSlot())) return; // return arrow or second page
 
+
+        if(!firstPage.getManager().canModifyRules((Player) event.getWhoClicked())) return;
+
         Scenario scenario = firstPage.getScenariosSlots().get(event.getSlot() + 6*9);
         if(scenario == null) throw new RuntimeException("Scenario not found");
 
-        // add glowing effect to the item if it was in the selected scenarios list
-        ItemStack item = event.getCurrentItem();
+        if(event.isRightClick() && scenario.isConfigurable()) {
+            scenario.processClick(event);
+        } else {
+            // add glowing effect to the item if it was in the selected scenarios list
+            ItemStack item = event.getCurrentItem();
 
-        firstPage.switchScenarioActivationState(scenario);
-        firstPage.changeItemVisualActivationState(scenario, item, firstPage.getSelectedScenarios().contains(scenario));
+            firstPage.getManager().getScenariosController().switchScenarioActivationState(scenario);
+            firstPage.changeItemVisualActivationState(scenario, item, firstPage.getManager().getScenariosController().getScenariosToEnable().contains(scenario));
+        }
     }
 }

@@ -3,7 +3,11 @@ package fr.altaks.uhcapi2.views.scenarios.scenarios.firstpage;
 import fr.altaks.uhcapi2.Main;
 import fr.altaks.uhcapi2.views.scenarios.Scenario;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 public class NoFall  implements Scenario {
 
@@ -27,7 +31,15 @@ public class NoFall  implements Scenario {
     }
 
     @Override
-    public void setup(Main main) {
+    public void startScenario(Main main) {
+        Bukkit.getPluginManager().registerEvents(this, main);
+    }
 
+    @SuppressWarnings("unused")
+    @EventHandler
+    public void onPlayerFallDamage(EntityDamageEvent event){
+        if(event.getEntity() instanceof Player && event.getCause() == EntityDamageEvent.DamageCause.FALL){
+            event.setCancelled(true);
+        }
     }
 }

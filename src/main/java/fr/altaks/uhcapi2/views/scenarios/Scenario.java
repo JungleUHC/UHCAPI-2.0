@@ -2,6 +2,7 @@ package fr.altaks.uhcapi2.views.scenarios;
 
 import fr.altaks.uhcapi2.Main;
 import fr.mrmicky.fastinv.ItemBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -15,13 +16,17 @@ public interface Scenario extends Listener {
 
     int getSlot();
 
-    void setup(Main main);
+    void startScenario(Main main);
 
     default boolean isConfigurable() {
         return false;
     }
 
     default void processClick(InventoryClickEvent event){}
+
+    default String[] getConfigurationLore(){
+        return new String[]{ChatColor.YELLOW + "Cliquez pour configurer ce scénario"};
+    }
 
     /*
     Cat Eyes (non configurable) : Accorde l'effet de vision nocturne à tous les joueurs, ce qui rend la nuit moins obscure.

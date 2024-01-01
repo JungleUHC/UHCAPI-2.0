@@ -15,13 +15,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 public class TimersRolesMenu extends FastInv {
 
     private final Main main;
-
-    private final HashMap<Integer, GameMode.RoleTimer> slotsToTimers = new HashMap<>();
 
     public TimersRolesMenu(Main main, TimersMainMenu upperMenu) {
         super(6*9, "Timers des rôles");
@@ -52,7 +49,7 @@ public class TimersRolesMenu extends FastInv {
                 break;
             }
             setItem(slot, generateTimerItem(entry.getKey(), entry.getValue()));
-            slotsToTimers.put(slot, entry.getKey());
+            main.getGameManager().getTimersController().getSlotsToTimers().put(slot, entry.getKey());
         }
     }
 
@@ -64,10 +61,12 @@ public class TimersRolesMenu extends FastInv {
         if(event.getClickedInventory() == null || event.getClickedInventory().equals(event.getView().getBottomInventory())) return;
         if(event.getCurrentItem() == null || event.getCurrentItem().getType() == Material.AIR) return;
 
+        if(!main.getGameManager().canModifyRules((Player) event.getWhoClicked())) return;
+
         // check if the clicked item is a timer item
-        if(slotsToTimers.containsKey(event.getSlot())){
+        if(main.getGameManager().getTimersController().getSlotsToTimers().containsKey(event.getSlot())){
             // Get the timer and the time value
-            GameMode.RoleTimer timer = slotsToTimers.get(event.getSlot());
+            GameMode.RoleTimer timer = main.getGameManager().getTimersController().getSlotsToTimers().get(event.getSlot());
             Long timeValue = main.getGameManager().getChosenGameMode().getRolesTimers().get(timer);
 
             int modifier = (event.isLeftClick() ? 1 : -1);
@@ -109,7 +108,7 @@ public class TimersRolesMenu extends FastInv {
         item.setItemMeta(meta);
     }
 
-    private final int[] verticalCenteredRows = {
+    private static final int[] verticalCenteredRows = {
             0,  1,  2,  3,  4,  5,  6,  7,  8,
             45, 46, 47, 48, 49, 50, 51, 52, 53
     };

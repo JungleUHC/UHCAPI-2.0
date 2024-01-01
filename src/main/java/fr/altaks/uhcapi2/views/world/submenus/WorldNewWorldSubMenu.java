@@ -1,5 +1,7 @@
 package fr.altaks.uhcapi2.views.world.submenus;
 
+import fr.altaks.uhcapi2.Main;
+import fr.altaks.uhcapi2.core.GameManager;
 import fr.altaks.uhcapi2.views.world.WorldMainMenu;
 import fr.altaks.uhcapi2.core.util.HeadBuilder;
 import fr.mrmicky.fastinv.FastInv;
@@ -25,14 +27,21 @@ public class WorldNewWorldSubMenu extends FastInv {
             .name(ChatColor.RED + "\u2715 Rétracter")
             .build();
 
-    public WorldNewWorldSubMenu(WorldMainMenu upperMenu) {
+    public WorldNewWorldSubMenu(GameManager manager, WorldMainMenu upperMenu) {
         super(5*9, "Création du monde");
         this.upperMenu = upperMenu;
 
         setItems(getCorners(), ItemBuilder.FILLING_PANE);
 
-        setItem(21, START_CREATION);
-        setItem(23, STOP_CREATION);
+        setItem(21, START_CREATION, event -> {
+            if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+            manager.getWorldsController().startWorldGeneration();
+        });
+        setItem(23, STOP_CREATION, event -> {
+            if(!manager.canModifyRules((Player) event.getWhoClicked())) return;
+            if(!manager.getWorldsController().cancelWorldGeneration())
+                event.getWhoClicked().sendMessage(Main.MSG_PREFIX + ChatColor.RED + "La génération du monde n'a pas pu être annulée");;
+        });
 
         // Set the return arrow
         setItem(40, new ItemBuilder(Material.ARROW).name("Retour").build(),
